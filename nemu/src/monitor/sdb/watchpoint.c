@@ -20,6 +20,8 @@
 typedef struct watchpoint {
   int NO;
   struct watchpoint *next;
+  char expr[32];
+  word_t old;
 
   /* TODO: Add more members if necessary */
 
@@ -27,6 +29,11 @@ typedef struct watchpoint {
 
 static WP wp_pool[NR_WP] = {};
 static WP *head = NULL, *free_ = NULL;
+static int nr_wp = 0;
+
+static WP* new_wp();
+void free_wp(WP *wp);
+void wp_display();
 
 void init_wp_pool() {
   int i;
@@ -40,4 +47,76 @@ void init_wp_pool() {
 }
 
 /* TODO: Implement the functionality of watchpoint */
+
+WP* new_wp() {
+  //check space enough
+  assert(free_);
+  WP *ret = free_;
+  free_ = free_->next;
+  WP *temp = head;
+  if (nr_wp == 0) {
+    head = wp_pool;
+    head->next = NULL;
+  }else{
+    while (temp->next) temp = temp->next;
+    temp->next = ret;
+    ret->next = NULL;
+  }
+  nr_wp++;
+  return ret;
+}
+
+void free_wp(WP *wp) {
+  assert(head);
+  WP *temp = head;
+  if (temp == wp) head = NULL;
+  else {
+    while (temp && temp->next != wp) temp = temp->next;
+    temp->next = wp->next;
+  }
+  wp->next = free_;
+  free_ = wp;
+  nr_wp--;
+}
+
+void wp_watch(char *expr, word_t res) {
+  WP* wp = new_wp();
+
+  strcpy(wp->expr, expr);
+  wp->old = res;
+
+  printf("Watchpoint %d: %s\n", wp->NO, expr);
+}
+
+void wp_delete(int no) {
+  assert(no < NR_WP);
+  WP* wp = &wp_pool[no];
+  free_wp(wp);
+  printf("Delete watchpoint %d: %s\n", wp->NO, wp->expr);
+}
+
+void wp_display() {
+  WP* temp = head;
+  if (temp) {
+    printf("%-8s%-10s%-8s%-8s%-8s%-8s\n", "Num", "Type", "Disp", "Enb", "Address", "What");
+    while (temp) {
+      printf("%-8d%-10s%-8s%-8s%-8s%-8s\n", temp->NO, "watchpoint", "keep", "y", " ", temp->expr);
+      temp = temp->next;
+    }
+  }else puts("No watchpoints.");
+}
+
+void difftest_watchpoint() {
+  WP* temp = head;
+  while (temp)
+  {
+    word_t new = expr(temp->expr,NULL);
+    if (new != temp->old) {
+      printf("Watchpoint %d :%s\n",temp->NO,temp->expr);
+      printf("Old value = %d\nNew value = %d\n",temp->old,new);
+      temp->old = new;
+    }
+    temp = temp->next;
+  }
+}
 

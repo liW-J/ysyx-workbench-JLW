@@ -31,8 +31,48 @@ static char *code_format =
 "  return 0; "
 "}";
 
+
+
+static int buf_len = sizeof(buf)/sizeof(buf[0]);
+static char *buf_position = buf;
+
+static int choose(int n) {
+  return rand() % n;
+}
+
+static void gen(int token_type){
+  if (buf_position < buf+buf_len) {
+  int nr_writes = snprintf(buf_position, buf_len, "%c", token_type);
+    if (nr_writes > 0) {
+      buf_position += nr_writes;
+    }
+  }
+}
+
+static void gen_rand_op(){
+  int op_type_list[] = {'+','-','*','/'};
+  int op_type = op_type_list[choose(sizeof(op_type_list)/sizeof(op_type_list[0]))];
+  gen(op_type);
+}
+
+static void gen_num(){
+  int num = choose(INT8_MAX);
+  if (buf_position < buf+buf_len) {
+    int nr_writes = snprintf(buf_position, buf_len, "%d", num);
+    if (nr_writes > 0) {
+      buf_position += nr_writes;
+    }
+  }
+}
+
+
+
 static void gen_rand_expr() {
-  buf[0] = '\0';
+  switch (choose(3)) {
+    case 0: gen_num(); break;
+    case 1: gen('('); gen_rand_expr(); gen(')'); break;
+    default: gen_rand_expr(); gen_rand_op(); gen_rand_expr(); break;
+  }
 }
 
 int main(int argc, char *argv[]) {
@@ -44,8 +84,8 @@ int main(int argc, char *argv[]) {
   }
   int i;
   for (i = 0; i < loop; i ++) {
+    buf_position = buf;
     gen_rand_expr();
-
     sprintf(code_buf, code_format, buf);
 
     FILE *fp = fopen("/tmp/.code.c", "w");
@@ -53,17 +93,18 @@ int main(int argc, char *argv[]) {
     fputs(code_buf, fp);
     fclose(fp);
 
-    int ret = system("gcc /tmp/.code.c -o /tmp/.expr");
+    int ret = system("gcc /tmp/.code.c -Wall -Werror -o  /tmp/.expr");
     if (ret != 0) continue;
 
     fp = popen("/tmp/.expr", "r");
     assert(fp != NULL);
 
-    int result;
+    uint32_t result;
     ret = fscanf(fp, "%d", &result);
     pclose(fp);
 
-    printf("%u %s\n", result, buf);
+
+    printf("%d %s\n", result, buf);
   }
   return 0;
 }

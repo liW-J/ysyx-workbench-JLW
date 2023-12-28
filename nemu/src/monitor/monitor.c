@@ -23,6 +23,7 @@ void init_difftest(char *ref_so_file, long img_size, int port);
 void init_device();
 void init_sdb();
 void init_disasm(const char *triple);
+void init_expr();
 
 static void welcome() {
   Log("Trace: %s", MUXDEF(CONFIG_TRACE, ANSI_FMT("ON", ANSI_FG_GREEN), ANSI_FMT("OFF", ANSI_FG_RED)));
@@ -32,8 +33,8 @@ static void welcome() {
   Log("Build time: %s, %s", __TIME__, __DATE__);
   printf("Welcome to %s-NEMU!\n", ANSI_FMT(str(__GUEST_ISA__), ANSI_FG_YELLOW ANSI_BG_RED));
   printf("For help, type \"help\"\n");
-  Log("Exercise: Please remove me in the source code and compile NEMU again.");
-  assert(0);
+  // Log("Exercise: Please remove me in the source code and compile NEMU again.");
+  // assert(0);
 }
 
 #ifndef CONFIG_TARGET_AM
@@ -138,7 +139,7 @@ void init_monitor(int argc, char *argv[]) {
                                "bad"))) "-pc-linux-gnu"
   ));
 #endif
-
+  init_expr();
   /* Display welcome message. */
   welcome();
 }
