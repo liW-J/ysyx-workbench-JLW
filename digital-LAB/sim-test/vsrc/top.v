@@ -1,6 +1,4 @@
-`include "MuxKeyWithDefault.v"
-
-module mux41b(a,s,y);
+module top(a,s,y);
   input  [7:0] a;
   input  [1:0] s;
   output [1:0] y;
