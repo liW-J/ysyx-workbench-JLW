@@ -10,6 +10,7 @@
 !README.md
 !.gitignore
 !init.sh
+!/digital-LAB/*
 /nvboard
 /am-kernels
 /fceux-am
