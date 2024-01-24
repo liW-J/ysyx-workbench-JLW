@@ -1,15 +1,16 @@
 module ps2_keyboard(clk,clrn,ps2_clk,ps2_data,data,
-                    ready,nextdata_n,overflow,count);
+                    ready,nextdata_n,overflow,kbd_count);
     input clk,clrn,ps2_clk,ps2_data;
     input nextdata_n;
     output [7:0] data;
     output reg  ready;
     output reg  overflow;     // fifo overflow
-    output reg  [3:0] count;  // count ps2_data bits
+    output reg  [3:0] kbd_count;  // count ps2_data bits
 
     // internal signal, for test
     reg [9:0] buffer;        // ps2_data bits
     reg [7:0] fifo[7:0];     // data fifo
+    reg [3:0] count;  // count ps2_data bits
     reg [2:0] w_ptr,r_ptr;   // fifo write and read pointers
     // detect falling edge of ps2_clk
     reg [2:0] ps2_clk_sync;
@@ -39,7 +40,10 @@ module ps2_keyboard(clk,clrn,ps2_clk,ps2_data,data,
                 if ((buffer[0] == 0) &&  // start bit
                     (ps2_data)       &&  // stop bit
                     (^buffer[9:1])) begin      // odd  parity
-                    $display("scan code: %x", t_buffer[8:1]);
+                    $display("kbd_scan_code: %x", buffer[8:1]);
+
+                    if (buffer[8:1] == 8'hf0) kbd_count <= kbd_count + 1'b1;
+                    
                     fifo[w_ptr] <= buffer[8:1];  // kbd scan code
                     w_ptr <= w_ptr+3'b1;
                     ready <= 1'b1;
@@ -53,6 +57,6 @@ module ps2_keyboard(clk,clrn,ps2_clk,ps2_data,data,
             end
         end
     end
-    assign data = fifo[r_ptr]; //always set output data
+    assign data = fifo[r_ptr-1]; //always set output data
 
 endmodule
