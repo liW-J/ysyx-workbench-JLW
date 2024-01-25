@@ -15,39 +15,38 @@ module num2bcd (
 
     assign reg0 = i_b;
 
-    // 第1次移位
     bcd_shift bcd_shift_inst0(
         .i_num(reg0),
         .o_num(reg1));
-    // 第2次移位
+  
     bcd_shift bcd_shift1(
         .i_num(reg1),
         .o_num(reg2));
-    // 第3次移位
+
     bcd_shift bcd_shift2(
         .i_num(reg2),
         .o_num(reg3));
-    // 第4次移位
+   
     bcd_shift bcd_shift3(
         .i_num(reg3),
         .o_num(reg4));
-    // 第5次移位
+
     bcd_shift bcd_shift4(
         .i_num(reg4),
         .o_num(reg5));
-    // 第6次移位
+ 
     bcd_shift bcd_shift5(
         .i_num(reg5),
         .o_num(reg6));
-    // 第7次移位
+   
     bcd_shift bcd_shift6(
         .i_num(reg6),
         .o_num(reg7));
-    // 第8次移位
+   
     bcd_shift bcd_shift7(
         .i_num(reg7),
         .o_num(reg8));
-    // 输出BCD
+
     assign o_bcd = { reg8[19:8] };
 
 endmodule
