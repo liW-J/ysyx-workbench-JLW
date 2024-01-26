@@ -144,7 +144,8 @@ static bool make_token(char *e) {
             }
 
             //check '*'
-            if((find_token_type == '*' ) && ((tokens[nr_token-1].type == '(' ) || (tokens[nr_token-1].type == '+' || tokens[nr_token-1].type == '-' || nr_token == 0)) ){
+            if((find_token_type == '*' ) && 
+            ((tokens[nr_token-1].type == '(' ) || (tokens[nr_token-1].type == '+' || tokens[nr_token-1].type == '-' || nr_token == 0)) ){
               find_token_type = DEREF;
             }
 

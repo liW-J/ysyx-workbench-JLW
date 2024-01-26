@@ -167,8 +167,8 @@ static struct {
   { "info", "Display the state your input of the program", cmd_info },
   { "x", "Scan memory", cmd_x },
   { "p", "EXPR evaluation", cmd_p },
-  { "w", "", cmd_w},
-  { "d", "", cmd_d},
+  { "w", "Set watchpoint", cmd_w},
+  { "d", "Delete watchpoint", cmd_d},
 
 
   /* TODO: Add more commands */
