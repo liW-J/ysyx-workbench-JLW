@@ -20,6 +20,7 @@ object GCDSpec extends ChiselUtestTester {
     test("GCD") {
       testCircuit(new DecoupledGcd(16)) {
         dut =>
+          println(s"------testing------")
           dut.input.initSource()
           dut.input.setSourceClock(dut.clock)
           dut.output.initSink()
