@@ -19,4 +19,9 @@ out/
 .bsp/
 .idea/
 .idea_modules/
+.vscode/
 test_run_dir/
+.bloop/
+
+# plugin
+.metals/

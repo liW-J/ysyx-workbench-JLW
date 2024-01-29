@@ -50,27 +50,27 @@
   `endif // not def ENABLE_INITIAL_MEM_
 `endif // not def SYNTHESIS
 
-module GCD(	// @[<stdin>:3:10]
+module TOP(	// @[<stdin>:3:10]
   input         clock,	// @[<stdin>:4:11]
                 reset,	// @[<stdin>:5:11]
-  input  [15:0] io_value1,	// @[cpu/src/GCD.scala:9:14]
-                io_value2,	// @[cpu/src/GCD.scala:9:14]
-  input         io_loadingValues,	// @[cpu/src/GCD.scala:9:14]
-  output [15:0] io_outputGCD,	// @[cpu/src/GCD.scala:9:14]
-  output        io_outputValid	// @[cpu/src/GCD.scala:9:14]
+  input  [15:0] io_value1,	// @[cpu/src/TOP.scala:5:14]
+                io_value2,	// @[cpu/src/TOP.scala:5:14]
+  input         io_loadingValues,	// @[cpu/src/TOP.scala:5:14]
+  output [15:0] io_outputGCD,	// @[cpu/src/TOP.scala:5:14]
+  output        io_outputValid	// @[cpu/src/TOP.scala:5:14]
 );
 
-  reg [15:0] x;	// @[cpu/src/GCD.scala:17:14]
-  reg [15:0] y;	// @[cpu/src/GCD.scala:18:14]
+  reg [15:0] x;	// @[cpu/src/TOP.scala:13:14]
+  reg [15:0] y;	// @[cpu/src/TOP.scala:14:14]
   always @(posedge clock) begin	// @[<stdin>:4:11]
-    if (io_loadingValues) begin	// @[cpu/src/GCD.scala:9:14]
-      x <= io_value1;	// @[cpu/src/GCD.scala:17:14]
-      y <= io_value2;	// @[cpu/src/GCD.scala:18:14]
+    if (io_loadingValues) begin	// @[cpu/src/TOP.scala:5:14]
+      x <= io_value1;	// @[cpu/src/TOP.scala:13:14]
+      y <= io_value2;	// @[cpu/src/TOP.scala:14:14]
     end
-    else if (x > y)	// @[cpu/src/GCD.scala:17:14, :18:14, :20:10]
-      x <= x - y;	// @[cpu/src/GCD.scala:17:14, :18:14, :20:24]
-    else	// @[cpu/src/GCD.scala:20:10]
-      y <= y - x;	// @[cpu/src/GCD.scala:17:14, :18:14, :20:49]
+    else if (x > y)	// @[cpu/src/TOP.scala:13:14, :14:14, :16:10]
+      x <= x - y;	// @[cpu/src/TOP.scala:13:14, :14:14, :16:24]
+    else	// @[cpu/src/TOP.scala:16:10]
+      y <= y - x;	// @[cpu/src/TOP.scala:13:14, :14:14, :16:49]
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// @[<stdin>:3:10]
     `ifdef FIRRTL_BEFORE_INITIAL	// @[<stdin>:3:10]
@@ -83,15 +83,15 @@ module GCD(	// @[<stdin>:3:10]
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT	// @[<stdin>:3:10]
         _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// @[<stdin>:3:10]
-        x = _RANDOM[/*Zero width*/ 1'b0][15:0];	// @[<stdin>:3:10, cpu/src/GCD.scala:17:14]
-        y = _RANDOM[/*Zero width*/ 1'b0][31:16];	// @[<stdin>:3:10, cpu/src/GCD.scala:17:14, :18:14]
+        x = _RANDOM[/*Zero width*/ 1'b0][15:0];	// @[<stdin>:3:10, cpu/src/TOP.scala:13:14]
+        y = _RANDOM[/*Zero width*/ 1'b0][31:16];	// @[<stdin>:3:10, cpu/src/TOP.scala:13:14, :14:14]
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// @[<stdin>:3:10]
       `FIRRTL_AFTER_INITIAL	// @[<stdin>:3:10]
     `endif // FIRRTL_AFTER_INITIAL
   `endif // ENABLE_INITIAL_REG_
-  assign io_outputGCD = x;	// @[<stdin>:3:10, cpu/src/GCD.scala:17:14]
-  assign io_outputValid = y == 16'h0;	// @[<stdin>:3:10, cpu/src/GCD.scala:18:14, :28:23]
+  assign io_outputGCD = x;	// @[<stdin>:3:10, cpu/src/TOP.scala:13:14]
+  assign io_outputValid = y == 16'h0;	// @[<stdin>:3:10, cpu/src/TOP.scala:14:14, :24:23]
 endmodule
 
