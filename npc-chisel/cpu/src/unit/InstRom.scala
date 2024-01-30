@@ -2,7 +2,6 @@ package unit
 
 import chisel3._
 import chisel3.util._
-import chisel3.util.experimental.loadMemoryFromFile
 
 import config.Configs._
 

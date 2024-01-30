@@ -1,6 +1,7 @@
 package config
 
 import chisel3._
+import chisel3.util._
 import math._
 
 object Configs {
@@ -19,4 +20,8 @@ object Configs {
 
   val REG_NUMS = 32   // 寄存器数量
   val REG_NUMS_LOG = ceil(log(REG_NUMS) / log(2)).toInt   // 寄存器号位数
+
+  // enum imm type
+  val typeI :: typeU :: typeS :: typeJ :: typeR :: typeB :: noTYPE :: Nil = Enum(7)
+
 }
