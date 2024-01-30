@@ -7,13 +7,13 @@ import chisel3.experimental.BundleLiterals._
 import utest._
 
 import config.Configs._
-import unit._
+import unit.PCRegister
 
-object PCRegTest extends ChiselUtestTester {
+object PCRegisterTest extends ChiselUtestTester {
   val tests = Tests {
-    test("PCReg") {
-      testCircuit(new PCReg()) { dut =>
-        println(s"------------testing-pcReg-BEGIN------------")
+    test("PCRegister") {
+      testCircuit(new PCRegister()) { dut =>
+        println(s"------------testing-PCReg-BEGIN------------")
         println(s"START_ADDR: ${START_ADDR.toHexString}")
         // initIO
         dut.io.ctrlBranch.poke(false.B)
@@ -62,7 +62,7 @@ object PCRegTest extends ChiselUtestTester {
           dut.io.addrOut.expect(target.U)
           addr = target
         }
-        println(s"------------testing-pcReg-END------------")
+        println(s"------------testing-PCReg-END------------")
       }
     }
   }

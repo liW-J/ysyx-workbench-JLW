@@ -9,7 +9,7 @@ import config.Configs._
 // PCReg
 //-----------------------------------------------------------------------------
 //
-// Description :
+// Description : every clk pcAddr + 4, except Jump OR Branch to target pcAddr
 //
 // Input  : 
 //              1) ctrlJump [Bool] : judge Jump
@@ -17,10 +17,10 @@ import config.Configs._
 //              3) resultBranch [Bool] : Branch result 
 //              4) addrTarget [UInt(ADDR_WIDTH.W)] : if Branch SUCCESS or Jump , to this addr
 // Output :
-//              1) addrOut []: target address
+//              1) addrOut [UInt(ADDR_WIDTH.W)] : target address
 //
 //-----------------------------------------------------------------------------
-class PCRegIO extends Bundle {
+class PCRegisterIO extends Bundle {
   val ctrlJump     = Input(Bool()) 
   val ctrlBranch   = Input(Bool()) 
   val resultBranch = Input(Bool())
@@ -28,16 +28,16 @@ class PCRegIO extends Bundle {
   val addrOut      = Output(UInt(ADDR_WIDTH.W)) 
 }
 
-class PCReg extends Module {
-  val io = IO(new PCRegIO()) 
+class PCRegister extends Module {
+  val io = IO(new PCRegisterIO()) 
 
-  val regPC = RegInit(UInt(ADDR_WIDTH.W), START_ADDR.U) // init pcAddr: 0x80000000
+  val pcReg = RegInit(UInt(ADDR_WIDTH.W), START_ADDR.U) // init pcAddr: 0x80000000
 
   when(io.ctrlJump || (io.ctrlBranch && io.resultBranch)) {
-    regPC := io.addrTarget
+    pcReg := io.addrTarget
   }.otherwise { 
-    regPC := regPC + ADDR_BYTE_WIDTH.U
+    pcReg := pcReg + ADDR_BYTE_WIDTH.U
   }
 
-  io.addrOut := regPC 
+  io.addrOut := pcReg 
 }

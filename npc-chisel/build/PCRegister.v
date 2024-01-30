@@ -50,24 +50,24 @@
   `endif // not def ENABLE_INITIAL_MEM_
 `endif // not def SYNTHESIS
 
-module PCReg(	// @[<stdin>:3:10]
+module PCRegister(	// @[<stdin>:3:10]
   input         clock,	// @[<stdin>:4:11]
                 reset,	// @[<stdin>:5:11]
-                io_ctrlJump,	// @[cpu/src/unit/PCReg.scala:19:16]
-                io_ctrlBranch,	// @[cpu/src/unit/PCReg.scala:19:16]
-                io_resultBranch,	// @[cpu/src/unit/PCReg.scala:19:16]
-  input  [31:0] io_addrTarget,	// @[cpu/src/unit/PCReg.scala:19:16]
-  output [31:0] io_addrOut	// @[cpu/src/unit/PCReg.scala:19:16]
+                io_ctrlJump,	// @[cpu/src/unit/PCReg.scala:32:14]
+                io_ctrlBranch,	// @[cpu/src/unit/PCReg.scala:32:14]
+                io_resultBranch,	// @[cpu/src/unit/PCReg.scala:32:14]
+  input  [31:0] io_addrTarget,	// @[cpu/src/unit/PCReg.scala:32:14]
+  output [31:0] io_addrOut	// @[cpu/src/unit/PCReg.scala:32:14]
 );
 
-  reg [31:0] regPC;	// @[cpu/src/unit/PCReg.scala:21:24]
+  reg [31:0] pcReg;	// @[cpu/src/unit/PCReg.scala:34:22]
   always @(posedge clock) begin	// @[<stdin>:4:11]
     if (reset)	// @[<stdin>:4:11]
-      regPC <= 32'h0;	// @[cpu/src/unit/PCReg.scala:21:24]
-    else if (io_ctrlJump | io_ctrlBranch & io_resultBranch)	// @[cpu/src/unit/PCReg.scala:23:{23,41}]
-      regPC <= io_addrTarget;	// @[cpu/src/unit/PCReg.scala:21:24]
-    else	// @[cpu/src/unit/PCReg.scala:23:23]
-      regPC <= regPC + 32'h4;	// @[cpu/src/unit/PCReg.scala:21:24, :26:24]
+      pcReg <= 32'h80000000;	// @[cpu/src/unit/PCReg.scala:34:22]
+    else if (io_ctrlJump | io_ctrlBranch & io_resultBranch)	// @[cpu/src/unit/PCReg.scala:36:{20,38}]
+      pcReg <= io_addrTarget;	// @[cpu/src/unit/PCReg.scala:34:22]
+    else	// @[cpu/src/unit/PCReg.scala:36:20]
+      pcReg <= pcReg + 32'h4;	// @[cpu/src/unit/PCReg.scala:34:22, :39:20]
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// @[<stdin>:3:10]
     `ifdef FIRRTL_BEFORE_INITIAL	// @[<stdin>:3:10]
@@ -80,13 +80,13 @@ module PCReg(	// @[<stdin>:3:10]
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT	// @[<stdin>:3:10]
         _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// @[<stdin>:3:10]
-        regPC = _RANDOM[/*Zero width*/ 1'b0];	// @[<stdin>:3:10, cpu/src/unit/PCReg.scala:21:24]
+        pcReg = _RANDOM[/*Zero width*/ 1'b0];	// @[<stdin>:3:10, cpu/src/unit/PCReg.scala:34:22]
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// @[<stdin>:3:10]
       `FIRRTL_AFTER_INITIAL	// @[<stdin>:3:10]
     `endif // FIRRTL_AFTER_INITIAL
   `endif // ENABLE_INITIAL_REG_
-  assign io_addrOut = regPC;	// @[<stdin>:3:10, cpu/src/unit/PCReg.scala:21:24]
+  assign io_addrOut = pcReg;	// @[<stdin>:3:10, cpu/src/unit/PCReg.scala:34:22]
 endmodule
 
