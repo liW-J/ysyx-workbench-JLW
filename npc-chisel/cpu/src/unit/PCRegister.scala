@@ -22,9 +22,9 @@ import utils._
 //
 //-----------------------------------------------------------------------------
 class PCRegisterIO extends Bundle {
-  val ctrlJump     = Input(Bool()) 
-  val ctrlBranch   = Input(Bool()) 
-  val resultBranch = Input(Bool())
+  val isJump     = Input(Bool()) 
+  val isBranch   = Input(Bool()) 
+  val resBranch = Input(Bool())
   val addrTarget   = Input(UInt(ADDR_WIDTH.W)) 
   val pc      = Output(UInt(ADDR_WIDTH.W)) 
 }
@@ -34,7 +34,7 @@ class PCRegister extends Module {
 
   val pcReg = RegInit(UInt(ADDR_WIDTH.W), START_ADDR.U) // init pcAddr: 0x80000000
 
-  when(io.ctrlJump || (io.ctrlBranch && io.resultBranch)) {
+  when(io.isJump || (io.isBranch && io.resBranch)) {
     pcReg := io.addrTarget
   }.otherwise { 
     pcReg := pcReg + ADDR_BYTE_WIDTH.U

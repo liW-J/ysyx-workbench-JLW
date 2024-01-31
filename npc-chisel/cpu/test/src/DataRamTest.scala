@@ -24,12 +24,12 @@ object DataRam extends ChiselUtestTester {
         dut.io.bundleDataControl.isLoad.poke(false.B)
         dut.io.bundleDataControl.isStore.poke(false.B)
         dut.io.bundleDataControl.lsType.poke(LS_W)
-        dut.io.bundleDataControl.writeEnable.poke(false.B)
+        dut.io.bundleDataControl.isSigned.poke(false.B)
         dut.io.dataStore.poke(0.U(DATA_WIDTH.W))
-        dut.io.resALU.poke(0.U(DATA_WIDTH.W))
+        dut.io.resEX.poke(0.U(DATA_WIDTH.W))
         // 非LS指令
         for (i <- 0 to MEM_DATA_SIZE - 1) {
-            dut.io.resALU.poke((i * DATA_BYTE_WIDTH).U)
+            dut.io.resEX.poke((i * DATA_BYTE_WIDTH).U)
             dut.clock.step(1)
             dut.io.res.expect((i * DATA_BYTE_WIDTH).U)
         }

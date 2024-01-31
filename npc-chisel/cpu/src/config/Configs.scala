@@ -12,16 +12,16 @@ object Configs {
 
   val START_ADDR = 0x80000000L // pc起始地址
 
-  val INST_WIDTH = 32 // 指令位宽
-  val INST_BYTE_WIDTH = INST_WIDTH / 8 // 指令位宽按字节算
+  val INST_WIDTH          = 32 // 指令位宽
+  val INST_BYTE_WIDTH     = INST_WIDTH / 8 // 指令位宽按字节算
   val INST_BYTE_WIDTH_LOG = ceil(log(INST_BYTE_WIDTH) / log(2)).toInt // 指令地址对齐的偏移量
-  val MEM_INST_SIZE = 1024 // 指令内存大小
+  val MEM_INST_SIZE       = 1024 // 指令内存大小
 
-  val REG_NUMS = 32   // 寄存器数量
-  val REG_NUMS_LOG = ceil(log(REG_NUMS) / log(2)).toInt   // 寄存器号位数
-  
-  val DATA_BYTE_WIDTH = DATA_WIDTH / 8 // 数据位宽按字节算
+  val REG_NUMS     = 32 // 寄存器数量
+  val REG_NUMS_LOG = ceil(log(REG_NUMS) / log(2)).toInt // 寄存器号位数
+
+  val DATA_BYTE_WIDTH     = DATA_WIDTH / 8 // 数据位宽按字节算
   val DATA_BYTE_WIDTH_LOG = ceil(log(DATA_BYTE_WIDTH) / log(2)).toInt // 数据地址对齐的偏移量
-  val MEM_DATA_SIZE = 1024 // 数据内存大小
- 
+  val MEM_DATA_SIZE       = 1024 // 数据内存大小
+
 }

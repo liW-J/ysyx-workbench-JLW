@@ -23,7 +23,7 @@ object IDTest extends ChiselUtestTester {
                 println(dut.io.bundleReg.rs2.peekInt())
                 println(dut.io.imm.peek())
                 println(dut.io.bundleReg.rd.peekInt())
-                println(dut.io.bundleCtrl.peek())
+                println(dut.io.BundleControl.peek())
         }
         println(s"------------testing-ID-END------------")
       }

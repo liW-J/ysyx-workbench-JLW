@@ -4,16 +4,20 @@ import chisel3._
 import config.Configs._
 import config.OPcodes._
 import config.LStypes._
+import config.EXEtypes._
 
 
-class BundleIDControl extends Bundle {
+class BundleControl extends Bundle {
   val isALUSrc = Output(Bool())
   val isJump = Output(Bool())
   val isBranch = Output(Bool())
+  val isJAL = Output(Bool())
   val isLoad = Output(Bool())
   val isStore = Output(Bool())
   val isSigned = Output(Bool()) // unsignNum or signNum
-  val opcode = Output(UInt(OP_TYPES_WIDTH.W))
+  val writeEnable = Output(Bool())
+  val lsType = Output(UInt(LS_TYPE_WIDTH.W))
+  val exeType = Output(UInt(EXE_TYPES_WIDTH.W))
 }
 
 class BundleReg extends Bundle {
@@ -35,5 +39,4 @@ class BundleDataControl extends Bundle {
     val isStore = Input(Bool())
     val isSigned = Input(Bool())
     val lsType = Input(UInt(LS_TYPE_WIDTH.W))
-    val writeEnable = Input(Bool())
 }

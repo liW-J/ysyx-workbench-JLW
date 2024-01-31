@@ -23,15 +23,14 @@ class ExecIO extends Bundle {
     val dataRead2 = Input(UInt(DATA_WIDTH.W))
     val imm = Input(UInt(DATA_WIDTH.W))
     val pc = Input(UInt(ADDR_WIDTH.W))
-    val resultBranch = Output(Bool())
+    val resBranch = Output(Bool())
     val res = Output(UInt(DATA_WIDTH.W))
 }
 
 class EX extends Module {
     val io = IO(new ExecIO())
 
-    // 用于输出比较结果和计算结果
-    val resultBranch = WireDefault(false.B)
+    val resBranch = WireDefault(false.B)
     
     val res = WireDefault(0.U(DATA_WIDTH.W))
     val src1 = WireDefault(0.U(DATA_WIDTH.W))
@@ -40,7 +39,6 @@ class EX extends Module {
     src1 := Mux(io.bundleEXControl.isJAL, io.pc, io.dataRead1)
     src2 := Mux(io.bundleEXControl.isALUSrc, io.imm, io.dataRead2)
 
-    // 根据bundleAluControl中的信号进行选择
     switch(io.bundleEXControl.exeType) {
         is(EXE_ADD) {
             res := src1 +& src2
@@ -48,5 +46,5 @@ class EX extends Module {
     }
 
     io.res := res
-    io.resultBranch := resultBranch
+    io.resBranch := resBranch
 }

@@ -23,7 +23,7 @@ import utils._
 //-----------------------------------------------------------------------------
 class GPRFileIO extends Bundle {
   val writeEnable = Input(Bool())
-  val ctrlJump    = Input(Bool())
+  val isJump    = Input(Bool())
   val pc          = Input(UInt(ADDR_WIDTH.W))
   val dataWrite   = Input(UInt(DATA_WIDTH.W))
   val bundleReg   = Flipped(new BundleReg)
@@ -46,8 +46,8 @@ class GPRFile extends Module {
 
   // if we is TRUE && not $zero , write
   when(io.writeEnable && io.bundleReg.rd =/= 0.U) {
-    when (io.ctrlJump) { regs.write(io.bundleReg.rd, io.pc + INST_BYTE_WIDTH.U)
+    when (io.isJump) { // JAL or JALR will set pc+4 into $rd
+      regs.write(io.bundleReg.rd, io.pc + INST_BYTE_WIDTH.U)
     }.otherwise { regs.write(io.bundleReg.rd, io.dataWrite) }
   } 
-
 }

@@ -16,9 +16,9 @@ object PCRegisterTest extends ChiselUtestTester {
         println(s"------------testing-PCReg-BEGIN------------")
         println(s"START_ADDR: ${START_ADDR.toHexString}")
         // initIO
-        dut.io.ctrlBranch.poke(false.B)
-        dut.io.ctrlJump.poke(false.B)
-        dut.io.resultBranch.poke(false.B)
+        dut.io.isBranch.poke(false.B)
+        dut.io.isJump.poke(false.B)
+        dut.io.resBranch.poke(false.B)
         dut.io.addrTarget.poke(START_ADDR)
         dut.io.pc.expect(START_ADDR)
 
@@ -35,17 +35,17 @@ object PCRegisterTest extends ChiselUtestTester {
         }
 
         // Jump
-        dut.io.ctrlJump.poke(true.B)
+        dut.io.isJump.poke(true.B)
         for (target <- target_list) {
           dut.io.addrTarget.poke(target.U)
           dut.clock.step()
           dut.io.pc.expect(target.U)
           addr = target
         }
-        dut.io.ctrlJump.poke(false.B)
+        dut.io.isJump.poke(false.B)
 
         // Branch UNSUCCESS
-        dut.io.ctrlBranch.poke(true.B)
+        dut.io.isBranch.poke(true.B)
         for (target <- target_list) {
           dut.io.addrTarget.poke(target.U)
           addr += ADDR_BYTE_WIDTH
@@ -54,7 +54,7 @@ object PCRegisterTest extends ChiselUtestTester {
         }
 
         // Branch SUCCESS
-        dut.io.resultBranch.poke(true.B)
+        dut.io.resBranch.poke(true.B)
         for (target <- target_list) {
           dut.io.addrTarget.poke(target.U)
           addr += ADDR_BYTE_WIDTH

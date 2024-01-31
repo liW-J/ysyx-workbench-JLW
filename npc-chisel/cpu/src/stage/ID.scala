@@ -7,6 +7,8 @@ import config.Configs._
 import config.OPcodes._
 import config.OPtypes._
 import utils._
+import config.EXEtypes._
+import config.LStypes._
 
 //-----------------------------------------------------------------------------
 // ID
@@ -18,10 +20,10 @@ import utils._
 //
 //-----------------------------------------------------------------------------
 class DecoderIO extends Bundle {
-  val inst       = Input(UInt(INST_WIDTH.W))
-  val bundleCtrl = new BundleIDControl()
-  val bundleReg  = new BundleReg()
-  val imm        = Output(UInt(DATA_WIDTH.W))
+  val inst          = Input(UInt(INST_WIDTH.W))
+  val BundleControl = new BundleControl()
+  val bundleReg     = new BundleReg()
+  val imm           = Output(UInt(DATA_WIDTH.W))
 }
 
 class ID extends Module with DecodeUtils {
@@ -34,9 +36,12 @@ class ID extends Module with DecodeUtils {
   // val funct3   = Reg(io.inst(14, 12))
   // val funct7   = Reg(io.inst(31, 27))
 
-  val imm      = WireDefault(0.U(32.W))
-  val isALUSrc, isJump, isBranch, isLoad, isStore, isSigned = WireDefault(false.B)
-  val opcode   = WireDefault(0.U(OP_TYPES_WIDTH.W))
+  val isALUSrc, isJump, isBranch, isJAL, isLoad, isStore, isSigned, writeEnable = WireDefault(false.B)
+
+  val opcode  = WireDefault(0.U(OP_TYPES_WIDTH.W))
+  val lsType  = WireDefault(0.U(LS_TYPE_WIDTH.W))
+  val exeType = WireDefault(0.U(EXE_TYPES_WIDTH.W))
+  val imm     = WireDefault(0.U(32.W))
 
   opcode := io.inst(6, 0)
 
@@ -47,16 +52,20 @@ class ID extends Module with DecodeUtils {
     is(ADDI_OP) {
       printf("addi")
       isALUSrc := true.B
+      exeType  := EXE_ADD
       imm      := decodeImm(io.inst, typeI)
     }
   }
 
-  io.bundleCtrl.isALUSrc := isALUSrc
-  io.bundleCtrl.isJump   := isJump
-  io.bundleCtrl.isBranch := isBranch
-  io.bundleCtrl.isLoad   := isLoad
-  io.bundleCtrl.isStore  := isStore
-  io.bundleCtrl.isSigned := isSigned
-  io.bundleCtrl.opcode   := opcode
-  io.imm                 := imm
+  io.BundleControl.isALUSrc    := isALUSrc
+  io.BundleControl.isJump      := isJump
+  io.BundleControl.isBranch    := isBranch
+  io.BundleControl.isJAL       := isJAL
+  io.BundleControl.isLoad      := isLoad
+  io.BundleControl.isStore     := isStore
+  io.BundleControl.isSigned    := isSigned
+  io.BundleControl.writeEnable := writeEnable
+  io.BundleControl.lsType      := lsType
+  io.BundleControl.exeType     := exeType
+  io.imm                       := imm
 }
