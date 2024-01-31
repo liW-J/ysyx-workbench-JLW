@@ -1,0 +1,21 @@
+package config
+
+import chisel3._
+
+//enum EXE_OP for EX stage
+object EXEop {
+    val EXEOP_TYPES_WIDTH = 4
+    val EXE_NOP = "b0000".U(EXEOP_TYPES_WIDTH.W)
+    val EXE_ADD = "b0001".U(EXEOP_TYPES_WIDTH.W)
+    val EXE_SUB = "b0010".U(EXEOP_TYPES_WIDTH.W)
+    val EXE_AND = "b0011".U(EXEOP_TYPES_WIDTH.W)
+    val EXE_OR = "b0100".U(EXEOP_TYPES_WIDTH.W)
+    val EXE_XOR = "b0101".U(EXEOP_TYPES_WIDTH.W)
+    val EXE_SLL = "b0110".U(EXEOP_TYPES_WIDTH.W)
+    val EXE_SRA = "b0111".U(EXEOP_TYPES_WIDTH.W)
+    val EXE_EQ = "b1000".U(EXEOP_TYPES_WIDTH.W)
+    val EXE_NEQ = "b1001".U(EXEOP_TYPES_WIDTH.W)
+    val EXE_LT = "b1010".U(EXEOP_TYPES_WIDTH.W)
+    val EXE_GE = "b1011".U(EXEOP_TYPES_WIDTH.W)
+}
+

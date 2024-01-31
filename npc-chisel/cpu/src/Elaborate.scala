@@ -1,9 +1,10 @@
 import unit.PCRegister
 import circt.stage._
-import unit.GPRFile
+import stage.EX
+
 
 object Elaborate extends App {
-  def top = new GPRFile()
+  def top = new EX()
   val generator = Seq(chisel3.stage.ChiselGeneratorAnnotation(() => top))
   (new ChiselStage).execute(args, generator :+ CIRCTTargetAnnotation(CIRCTTarget.Verilog))
 }

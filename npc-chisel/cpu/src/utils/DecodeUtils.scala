@@ -5,6 +5,7 @@ import chisel3.util._
 
 import config.Configs._
 import config.OPcodes._
+import config.{Configs, OPcodes}
 
 trait DecodeUtils {
 

@@ -7,13 +7,13 @@ import chisel3.experimental.BundleLiterals._
 import utest._
 
 import config.Configs._
-import unit.Decoder
+import _root_.stage.ID
 
-object DecoderTest extends ChiselUtestTester {
+object IDTest extends ChiselUtestTester {
   val tests = Tests {
-    test("Decoder") {
-      testCircuit(new Decoder()) { dut =>
-        println(s"------------testing-Decoder-BEGIN------------")
+    test("ID") {
+      testCircuit(new ID()) { dut =>
+        println(s"------------testing-ID-BEGIN------------")
         // ADDI x1, x1, 0x4
         // EBREAK 
         val inst_list = Seq(0x00408093L.U, 0x00100073L.U)
@@ -25,7 +25,7 @@ object DecoderTest extends ChiselUtestTester {
                 println(dut.io.bundleReg.rd.peekInt())
                 println(dut.io.bundleCtrl.peek())
         }
-        println(s"------------testing-Decoder-END------------")
+        println(s"------------testing-ID-END------------")
       }
     }
   }
