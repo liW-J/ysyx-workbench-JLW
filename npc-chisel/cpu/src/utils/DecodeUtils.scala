@@ -4,8 +4,7 @@ import chisel3._
 import chisel3.util._
 
 import config.Configs._
-import config.OPcodes._
-import config.{Configs, OPcodes}
+import config.OPtypes._
 
 trait DecodeUtils {
 

@@ -4,9 +4,9 @@ import chisel3._
 import chisel3.util._
 
 import config.Configs._
-import config.OPcodes._
+import config.OPtypes._
 import utils._
-import config.EXEop._
+import config.EXEtypes._
 
 //-----------------------------------------------------------------------------
 // EX
@@ -41,7 +41,7 @@ class EX extends Module {
     src2 := Mux(io.bundleEXControl.isALUSrc, io.imm, io.dataRead2)
 
     // 根据bundleAluControl中的信号进行选择
-    switch(io.bundleEXControl.exeOP) {
+    switch(io.bundleEXControl.exeType) {
         is(EXE_ADD) {
             res := src1 +& src2
         }

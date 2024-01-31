@@ -3,12 +3,16 @@ package utils
 import chisel3._
 import config.Configs._
 import config.OPcodes._
-import config.{Configs, OPcodes}
+import config.LStypes._
+
 
 class BundleIDControl extends Bundle {
-  val isALUSrc = Input(Bool())
-  val isJump = Output(UInt())
-  val isBranch = Output(UInt())
+  val isALUSrc = Output(Bool())
+  val isJump = Output(Bool())
+  val isBranch = Output(Bool())
+  val isLoad = Output(Bool())
+  val isStore = Output(Bool())
+  val isSigned = Output(Bool()) // unsignNum or signNum
   val opcode = Output(UInt(OP_TYPES_WIDTH.W))
 }
 
@@ -22,5 +26,14 @@ class BundleEXControl extends Bundle {
     val isALUSrc = Input(Bool())
     val isJAL = Input(Bool())
     val isBranch = Input(Bool())
-    val exeOP = Input(UInt(OP_TYPES_WIDTH.W))    
+    val isSigned = Input(Bool())
+    val exeType = Input(UInt(OP_TYPES_WIDTH.W))    
+}
+
+class BundleDataControl extends Bundle {
+    val isLoad = Input(Bool())
+    val isStore = Input(Bool())
+    val isSigned = Input(Bool())
+    val lsType = Input(UInt(LS_TYPE_WIDTH.W))
+    val writeEnable = Input(Bool())
 }

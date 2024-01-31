@@ -1,7 +1,6 @@
 package config
 
 import chisel3._
-import chisel3.util._
 import math._
 
 object Configs {
@@ -20,8 +19,9 @@ object Configs {
 
   val REG_NUMS = 32   // 寄存器数量
   val REG_NUMS_LOG = ceil(log(REG_NUMS) / log(2)).toInt   // 寄存器号位数
-
-  // enum imm type
-  val typeI :: typeU :: typeS :: typeJ :: typeR :: typeB :: noTYPE :: Nil = Enum(7)
-
+  
+  val DATA_BYTE_WIDTH = DATA_WIDTH / 8 // 数据位宽按字节算
+  val DATA_BYTE_WIDTH_LOG = ceil(log(DATA_BYTE_WIDTH) / log(2)).toInt // 数据地址对齐的偏移量
+  val MEM_DATA_SIZE = 1024 // 数据内存大小
+ 
 }

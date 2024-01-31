@@ -8,5 +8,3 @@ object OPcodes {
     val ADDI_OP = "b00100".U(OP_TYPES_WIDTH.W);
     val EBREAK_OP = "b11100".U(OP_TYPES_WIDTH.W)
 }
-
-

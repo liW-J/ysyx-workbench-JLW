@@ -21,7 +21,6 @@ import utils._
 //              1) addrOut [UInt(ADDR_WIDTH.W)] : target address
 //
 //-----------------------------------------------------------------------------
-
 class GPRFileIO extends Bundle {
   val writeEnable = Input(Bool())
   val ctrlJump    = Input(Bool())

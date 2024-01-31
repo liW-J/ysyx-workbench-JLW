@@ -7,7 +7,7 @@ import config.Configs._
 import utils._
 
 //-----------------------------------------------------------------------------
-// PCReg
+// PCRegister
 //-----------------------------------------------------------------------------
 //
 // Description : every clk pcAddr + 4, except Jump OR Branch to target pcAddr

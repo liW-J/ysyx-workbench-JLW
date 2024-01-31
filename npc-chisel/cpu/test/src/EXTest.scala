@@ -7,7 +7,7 @@ import chisel3.experimental.BundleLiterals._
 import utest._
 
 import config.Configs._
-import config.EXEop._
+import config.EXEtypes._
 import _root_.stage.EX
 
 object EXTest extends ChiselUtestTester {
@@ -21,7 +21,7 @@ object EXTest extends ChiselUtestTester {
         dut.io.bundleEXControl.isBranch.poke(false.B)
         dut.io.bundleEXControl.isALUSrc.poke(false.B)
         dut.io.bundleEXControl.isJAL.poke(false.B)
-        dut.io.bundleEXControl.exeOP.poke(EXE_ADD)
+        dut.io.bundleEXControl.exeType.poke(EXE_ADD)
         dut.io.pc.poke(0.U)
         dut.io.imm.poke(4.U)
         dut.io.dataRead1.poke(src1.U)
@@ -30,7 +30,7 @@ object EXTest extends ChiselUtestTester {
         val result = src1 + src2
         dut.io.res.expect((result.toLong & 0xffffffffL).U)
 
-        println(s"------------testing-EX-BEGIN------------")
+        println(s"------------testing-EX-END------------")
       }
     }
   }
