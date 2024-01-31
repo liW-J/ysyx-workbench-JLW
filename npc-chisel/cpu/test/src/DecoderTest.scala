@@ -7,12 +7,12 @@ import chisel3.experimental.BundleLiterals._
 import utest._
 
 import config.Configs._
-import unit._
+import unit.Decoder
 
 object DecoderTest extends ChiselUtestTester {
   val tests = Tests {
     test("Decoder") {
-      testCircuit(new Decode()) { dut =>
+      testCircuit(new Decoder()) { dut =>
         println(s"------------testing-Decoder-BEGIN------------")
         // ADDI x1, x1, 0x4
         // EBREAK 

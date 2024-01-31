@@ -20,7 +20,7 @@ object PCRegisterTest extends ChiselUtestTester {
         dut.io.ctrlJump.poke(false.B)
         dut.io.resultBranch.poke(false.B)
         dut.io.addrTarget.poke(START_ADDR)
-        dut.io.addrOut.expect(START_ADDR)
+        dut.io.pc.expect(START_ADDR)
 
         val target_list = Seq.fill(10)(scala.util.Random.nextInt().toLong & 0xffffffffL)
 
@@ -31,7 +31,7 @@ object PCRegisterTest extends ChiselUtestTester {
           dut.io.addrTarget.poke(target.U)
           addr += ADDR_BYTE_WIDTH
           dut.clock.step()
-          dut.io.addrOut.expect(addr.U)
+          dut.io.pc.expect(addr.U)
         }
 
         // Jump
@@ -39,7 +39,7 @@ object PCRegisterTest extends ChiselUtestTester {
         for (target <- target_list) {
           dut.io.addrTarget.poke(target.U)
           dut.clock.step()
-          dut.io.addrOut.expect(target.U)
+          dut.io.pc.expect(target.U)
           addr = target
         }
         dut.io.ctrlJump.poke(false.B)
@@ -50,7 +50,7 @@ object PCRegisterTest extends ChiselUtestTester {
           dut.io.addrTarget.poke(target.U)
           addr += ADDR_BYTE_WIDTH
           dut.clock.step()
-          dut.io.addrOut.expect(addr.U)
+          dut.io.pc.expect(addr.U)
         }
 
         // Branch SUCCESS
@@ -59,7 +59,7 @@ object PCRegisterTest extends ChiselUtestTester {
           dut.io.addrTarget.poke(target.U)
           addr += ADDR_BYTE_WIDTH
           dut.clock.step()
-          dut.io.addrOut.expect(target.U)
+          dut.io.pc.expect(target.U)
           addr = target
         }
         println(s"------------testing-PCReg-END------------")

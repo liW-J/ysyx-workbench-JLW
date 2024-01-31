@@ -26,7 +26,7 @@ class PCRegisterIO extends Bundle {
   val ctrlBranch   = Input(Bool()) 
   val resultBranch = Input(Bool())
   val addrTarget   = Input(UInt(ADDR_WIDTH.W)) 
-  val addrOut      = Output(UInt(ADDR_WIDTH.W)) 
+  val pc      = Output(UInt(ADDR_WIDTH.W)) 
 }
 
 class PCRegister extends Module {
@@ -40,5 +40,5 @@ class PCRegister extends Module {
     pcReg := pcReg + ADDR_BYTE_WIDTH.U
   }
 
-  io.addrOut := pcReg 
+  io.pc := pcReg 
 }
