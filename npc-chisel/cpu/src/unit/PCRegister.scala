@@ -12,14 +12,6 @@ import utils._
 //
 // Description : every clk pcAddr + 4, except Jump OR Branch to target pcAddr
 //
-// Input  : 
-//              1) ctrlJump [Bool] : judge Jump
-//              2) ctrlBranch [Bool] : judge Branch
-//              3) resultBranch [Bool] : Branch result 
-//              4) addrTarget [UInt(ADDR_WIDTH.W)] : if Branch SUCCESS or Jump , to this addr
-// Output :
-//              1) addrOut [UInt(ADDR_WIDTH.W)] : target address
-//
 //-----------------------------------------------------------------------------
 class PCRegisterIO extends Bundle {
   val isJump     = Input(Bool()) 

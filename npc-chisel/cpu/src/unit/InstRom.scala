@@ -5,18 +5,6 @@ import chisel3.util._
 
 import config.Configs._
 
-//-----------------------------------------------------------------------------
-// InstRom
-//-----------------------------------------------------------------------------
-//
-// Description :  accept a addr, and find instruction from instRom
-//
-// Input  :
-//              1) addr [UInt(ADDR_WIDTH.W)] : addr to get corresponding instruction
-// Output :
-//              1) inst [UInt(INST_WIDTH.W)] : target instruction
-//
-//-----------------------------------------------------------------------------
 class InstRomIO extends Bundle {
   val addr = Input(UInt(ADDR_WIDTH.W))
   val inst = Output(UInt(INST_WIDTH.W))

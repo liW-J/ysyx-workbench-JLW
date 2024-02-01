@@ -6,21 +6,6 @@ import chisel3.util._
 import config.Configs._
 import utils._
 
-//-----------------------------------------------------------------------------
-// GPRFile
-//-----------------------------------------------------------------------------
-//
-// Description : a GPR File to control reg read or write
-//
-// Input  :
-//              1) ctrlRegWrite [Bool] : judge Jump
-//              2) ctrlBranch [Bool] : judge Branch
-//              3) resultBranch [Bool] : Branch result
-//              4) addrTarget [UInt(ADDR_WIDTH.W)] : if Branch SUCCESS or Jump , to this addr
-// Output :
-//              1) addrOut [UInt(ADDR_WIDTH.W)] : target address
-//
-//-----------------------------------------------------------------------------
 class GPRFileIO extends Bundle {
   val writeEnable = Input(Bool())
   val isJump    = Input(Bool())
