@@ -151,6 +151,35 @@ config ITRACE_COND
   string "Only trace instructions when the condition is true"
   default "true"
 
+config IRINGBUF
+  depends on TRACE && TARGET_NATIVE_ELF && ENGINE_INTERPRETER
+  bool "Enable ring buffer"
+  default y
+
+config IRINGBUF_COND
+  depends on IRINGBUF
+  string "Only output ring buffer when the condition is true"
+  default "true"
+
+config MTRACE
+  depends on TRACE && TARGET_NATIVE_ELF && ENGINE_INTERPRETER
+  bool "Enable memory tracer"
+  default y
+
+config MTRACE_COND
+  depends on MTRACE
+  string "Only output memory status when the condition is true"
+
+config FTRACE
+  depends on TRACE && TARGET_NATIVE_ELF && ENGINE_INTERPRETER
+  bool "Enable function tracer"
+  default y
+
+config FTRACE_COND
+  depends on FTRACE
+  string "Only output fuctions when the condition is true"
+  default "true"
+
 config WATCHPOINT
   bool "Enable watchopint status"
   default y
