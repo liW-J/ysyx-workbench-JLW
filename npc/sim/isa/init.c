@@ -13,37 +13,31 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
-#ifndef __COMMON_H__
-#define __COMMON_H__
+#include <isa.h>
+#include <memory/paddr.h>
 
-#include <stdint.h>
-#include <inttypes.h>
-#include <stdbool.h>
-#include <string.h>
+// this is not consistent with uint8_t
+// but it is ok since we do not access the array directly
+static const uint32_t img [] = {
+  0x00000297,  // auipc t0,0
+  0x00028823,  // sb  zero,16(t0)
+  0x0102c503,  // lbu a0,16(t0)
+  0x00100073,  // ebreak (used as nemu_trap)
+  0xdeadbeef,  // some data
+};
 
-#include <generated/autoconf.h>
-#include <macro.h>
+static void restart() {
+  /* Set the initial program counter. */
+  cpu.pc = RESET_VECTOR;
 
-#ifdef CONFIG_TARGET_AM
-#include <klib.h>
-#else
-#include <assert.h>
-#include <stdlib.h>
-#endif
+  /* The zero register is always 0. */
+  cpu.gpr[0] = 0;
+}
 
-#if CONFIG_MBASE + CONFIG_MSIZE > 0x100000000ul
-#define PMEM64 1
-#endif
+void init_isa() {
+  /* Load built-in image. */
+  memcpy(guest_to_host(RESET_VECTOR), img, sizeof(img));
 
-typedef uint32_t word_t;
-typedef int32_t  sword_t;
-#define FMT_WORD MUXDEF(CONFIG_ISA64, "0x%016" PRIx64, "0x%08" PRIx32)
-
-typedef word_t vaddr_t;
-typedef uint32_t paddr_t;
-#define FMT_PADDR MUXDEF(PMEM64, "0x%016" PRIx64, "0x%08" PRIx32)
-typedef uint16_t ioaddr_t;
-
-// #include <debug.h>
-
-#endif
+  /* Initialize this virtual computer system. */
+  restart();
+}

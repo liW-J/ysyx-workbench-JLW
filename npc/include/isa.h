@@ -13,37 +13,25 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
-#ifndef __COMMON_H__
-#define __COMMON_H__
+#ifndef __ISA_H__
+#define __ISA_H__
 
-#include <stdint.h>
-#include <inttypes.h>
-#include <stdbool.h>
-#include <string.h>
+// Located at src/isa/$(GUEST_ISA)/include/isa-def.h
+#include <common.h>
 
-#include <generated/autoconf.h>
-#include <macro.h>
+// The macro `__GUEST_ISA__` is defined in $(CFLAGS).
+// It will be expanded as "x86" or "mips32" ...
+typedef concat(__GUEST_ISA__, _CPU_state) CPU_state;
+typedef concat(__GUEST_ISA__, _ISADecodeInfo) ISADecodeInfo;
 
-#ifdef CONFIG_TARGET_AM
-#include <klib.h>
-#else
-#include <assert.h>
-#include <stdlib.h>
-#endif
+// reg
+extern CPU_state cpu;
+// void isa_reg_display();
+// word_t isa_reg_str2val(const char *name, bool *success);
 
-#if CONFIG_MBASE + CONFIG_MSIZE > 0x100000000ul
-#define PMEM64 1
-#endif
 
-typedef uint32_t word_t;
-typedef int32_t  sword_t;
-#define FMT_WORD MUXDEF(CONFIG_ISA64, "0x%016" PRIx64, "0x%08" PRIx32)
-
-typedef word_t vaddr_t;
-typedef uint32_t paddr_t;
-#define FMT_PADDR MUXDEF(PMEM64, "0x%016" PRIx64, "0x%08" PRIx32)
-typedef uint16_t ioaddr_t;
-
-// #include <debug.h>
+// monitor
+extern unsigned char isa_logo[];
+void init_isa();
 
 #endif

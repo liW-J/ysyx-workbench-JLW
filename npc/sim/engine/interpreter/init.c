@@ -13,37 +13,16 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
-#ifndef __COMMON_H__
-#define __COMMON_H__
+#include <cpu/cpu.h>
 
-#include <stdint.h>
-#include <inttypes.h>
-#include <stdbool.h>
-#include <string.h>
+void sdb_mainloop();
 
-#include <generated/autoconf.h>
-#include <macro.h>
-
+void engine_start() {
 #ifdef CONFIG_TARGET_AM
-#include <klib.h>
+  cpu_exec(-1);
 #else
-#include <assert.h>
-#include <stdlib.h>
+  /* Receive commands from user. */
+  // sdb_mainloop();
+  cpu_exec(-1);
 #endif
-
-#if CONFIG_MBASE + CONFIG_MSIZE > 0x100000000ul
-#define PMEM64 1
-#endif
-
-typedef uint32_t word_t;
-typedef int32_t  sword_t;
-#define FMT_WORD MUXDEF(CONFIG_ISA64, "0x%016" PRIx64, "0x%08" PRIx32)
-
-typedef word_t vaddr_t;
-typedef uint32_t paddr_t;
-#define FMT_PADDR MUXDEF(PMEM64, "0x%016" PRIx64, "0x%08" PRIx32)
-typedef uint16_t ioaddr_t;
-
-// #include <debug.h>
-
-#endif
+}

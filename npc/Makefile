@@ -1,13 +1,7 @@
 -include ../Makefile
 
-CPU      ?= x
+CPU      ?= single
 CPU_LIST := single pipeline multip
-
-ifeq ($(filter $(CPU_LIST), $(CPU)),)
-    ifeq ($(findstring $(MAKECMDGOALS), config|clean),)
-        $(error $$CPU is incorrect, optional values in [$(CPU_LIST)])
-    endif
-endif
 
 CPU_BLACKLIST = $(filter-out $(CPU), $(CPU_LIST))
 
@@ -41,7 +35,6 @@ VERILATOR_CFLAGS += -MMD --build -cc                                \
 
 INCS_DIR = $(NPC_HOME)/include           \
 					 $(NPC_HOME)/include/generated \
-					 $(NPC_HOME)/sim/include
 
 INCS     = $(shell find $(INCS_DIR) -name "*.h")
 INCFLAGS = $(addprefix -I, $(INCS_DIR))
@@ -66,16 +59,23 @@ LDFLAGS += $(CFLAGS_BUILD)                \
 
 SRCSS_DIR           = $(abspath $(NPC_HOME)/cpu/src)
 SRCSS_SRC_BLACKLIST =
-SRCSS_DIR_BLACKLIST = $(addprefix $(SRCSS_DIR)/stage/, $(CPU_BLACKLIST))
+# SRCSS_DIR_BLACKLIST = $(addprefix $(SRCSS_DIR)/stage/, $(CPU_BLACKLIST))
 SRCSS_BLACKLIST     = $(SRCSS_SRC_BLACKLIST)                               \
-                      $(shell find $(SRCSS_DIR_BLACKLIST) -name "*.scala")
+                      # $(shell find $(SRCSS_DIR_BLACKLIST) -name "*.scala")
 SRCSS_WHITELIST     = $(shell find $(SRCSS_DIR) -name "*.scala")
 SRCSS               = $(filter-out $(SRCSS_BLACKLIST), $(SRCSS_WHITELIST))
 
-SRCVS_GEN = $(DIR_BUILD)/$(CFG_CFLAGS_TOP_NAME).v
+SRCVS_GEN = $(BUILD_DIR)/$(CFG_CFLAGS_TOP_NAME).v
 # SRCVS_DIR = $(abspath $(NPC_HOME)/cpu/srcv)
 # SRCVS     = $(shell find $(SRCVS_DIR) -name "*.v")
 
+SRCCS_DIR += $(NPC_HOME)/sim             \
+             $(NPC_HOME)/sim/cpu         \
+             $(NPC_HOME)/sim/isa         \
+             $(NPC_HOME)/sim/memory      \
+             $(NPC_HOME)/sim/monitor     \
+             $(NPC_HOME)/sim/monitor/sdb \
+             $(NPC_HOME)/sim/utils
 SRCCS_SRC_BLACKLIST =
 SRCCS_DIR_BLACKLIST =
 SRCCS_BLACKLIST     = $(SRCCS_SRC_BLACKLIST)                               \
@@ -88,19 +88,10 @@ SRCS = $(SRCVS_GEN) $(SRCCS)
 
 CONFIG = $(NPC_HOME)/.config
 
-# BUILD_PATH = $(SRCSS_DIR)/common/Build.scala
-# BUILD_INFO = "package cpu.common\n\ntrait Build {\n    val CPU_TYPE = \"$(CPU)\"\n}"
-
-ifeq ($(shell cat $(BUILD_PATH) | grep $(CPU)),)
-    $(shell rm -rf out)
-    $(shell rm -rf ./build)
-    $(shell rm -rf ./test_run_dir)
-endif
-
 $(SRCVS_GEN): $(SRCSS)
 	$(call git_commit, "generate verilog")
-	mkdir -p $(BUILD_DIR) &&                          \
-	mill -i cpu.test.runMain Elaborate -td $(BUILD_DIR)
+	mkdir -p $(BUILD_DIR)                           
+	mill -i __.test.runMain Elaborate --target-dir $(BUILD_DIR)
 
 $(NPC_BIN): $(INCS) $(SRCS) $(CONFIG)
 	@rm -rf $(DIR_OBJ)
@@ -112,7 +103,7 @@ $(NPC_BIN): $(INCS) $(SRCS) $(CONFIG)
 	$(abspath $(NPC_BIN))
 
 ifdef CONFIG_DIFFTEST
-    ARGS_EMBED_DIFF = --diff=$(NEMU_HOME)/build/riscv32-nemu-interpreter-so
+    ARGS_EMBED_DIFF = --diff=$(Nsim_HOME)/build/riscv32-nsim-interpreter-so
 endif
 
 # override ARGS_EMBED ?= --log=$(BUILD_DIR)/npc-log.txt
@@ -124,12 +115,13 @@ NPC_EXEC := $(NPC_BIN) $(ARGS_EMBED) $(ARGS) $(IMG)
 .PHONY: test gen run gdb sim reformat checkformat clean
 
 config:
-	cd emu && make menuconfig
+	cd sim && make menuconfig
 
 gen: $(SRCVS_GEN)
 	@echo "success"
 
 run: $(NPC_BIN)
+	@echo "test"
 	$(call git_commit, "run NPC")
 	rm -rf $(DIR_BUILD)/wave.vcd
 	$(NPC_EXEC)
@@ -152,10 +144,13 @@ sim: $(NPC_BIN)
 test:
 	mill -i __.test
 
+testecho:
+	@echo "testecho" 
+
 verilog:
 	$(call git_commit, "generate verilog")
 	mkdir -p $(BUILD_DIR)
-	mill -i __.test.runMain Elaborate -td $(BUILD_DIR)
+	mill -i __.test.runMain Elaborate --target-dir $(BUILD_DIR)
 
 help:
 	mill -i __.test.runMain Elaborate --help
@@ -171,11 +166,3 @@ reformat:
 
 checkformat:
 	mill -i __.checkFormat
-
-ifdef CONFIG_TARGET_AM
-include $(AM_HOME)/Makefile
-LINKAGE += $(ARCHIVES)
-else
-# Include rules to build NEMU
-include $(NEMU_HOME)/scripts/native.mk
-endif
