@@ -18,6 +18,9 @@ export PATH := $(PATH):$(abspath ./utils)
 
 remove_quote = $(patsubst "%",%,$(1))
 
+# CONFIG_ISA = "riscv32"
+# CONFIG_ENGINE = "interpreter"
+
 CFG_CFLAGS_TOP_NAME   = TOP
 CFG_GUEST_ISA ?= $(call remove_quote, $(CONFIG_ISA))
 CFG_ENGINE    ?= $(call remove_quote, $(CONFIG_ENGINE))
@@ -33,8 +36,10 @@ VERILATOR_CFLAGS += -MMD --build -cc                                \
                     -O3 --x-assign fast --x-initial fast --noassert \
                     --trace                                         \
 
-INCS_DIR = $(NPC_HOME)/include           \
-					 $(NPC_HOME)/include/generated \
+INCS_DIR = $(NPC_HOME)/include           	\
+					 $(NPC_HOME)/include/generated 	\
+					 $(NPC_HOME)/build/obj_dir		 	\
+					 $(NPC_HOME)/sim/riscv32/include
 
 INCS     = $(shell find $(INCS_DIR) -name "*.h")
 INCFLAGS = $(addprefix -I, $(INCS_DIR))
@@ -44,9 +49,9 @@ CFLAGS_BUILD += $(if $(CONFIG_CC_LTO), -flto,)
 CFLAGS_BUILD += $(if $(CONFIG_CC_DEBUG), -Og -ggdb3,)
 CFLAGS_BUILD += $(if $(CONFIG_CC_ASAN), -fsanitize=address,)
 CFLAGS_BUILD += -DCFLAGS_CPU_TYPE=$(CPU)
+CFLAGS_BUILD += -D__GUEST_ISA__=$(CFG_GUEST_ISA)
 
 CFLAGS       += $(CFLAGS_BUILD)                                 \
-                -DCFLAGS_GUEST_ISA=$(CFG_GUEST_ISA)             \
                 -Wno-unused-result                              \
                 -DCFLAGS_TOP_NAME="\"V$(CFG_CFLAGS_TOP_NAME)\"" \
                 $(INCFLAGS)                                     \
@@ -71,11 +76,13 @@ SRCVS_GEN = $(BUILD_DIR)/$(CFG_CFLAGS_TOP_NAME).v
 
 SRCCS_DIR += $(NPC_HOME)/sim             \
              $(NPC_HOME)/sim/cpu         \
-             $(NPC_HOME)/sim/isa         \
+             $(NPC_HOME)/sim/riscv32         \
              $(NPC_HOME)/sim/memory      \
              $(NPC_HOME)/sim/monitor     \
              $(NPC_HOME)/sim/monitor/sdb \
-             $(NPC_HOME)/sim/utils
+             $(NPC_HOME)/sim/utils			 \
+						 $(NPC_HOME)/sim/engine      \
+						 $(NPC_HOME)/sim/engine/interpreter
 SRCCS_SRC_BLACKLIST =
 SRCCS_DIR_BLACKLIST =
 SRCCS_BLACKLIST     = $(SRCCS_SRC_BLACKLIST)                               \
@@ -121,7 +128,6 @@ gen: $(SRCVS_GEN)
 	@echo "success"
 
 run: $(NPC_BIN)
-	@echo "test"
 	$(call git_commit, "run NPC")
 	rm -rf $(DIR_BUILD)/wave.vcd
 	$(NPC_EXEC)
@@ -143,9 +149,6 @@ sim: $(NPC_BIN)
 
 test:
 	mill -i __.test
-
-testecho:
-	@echo "testecho" 
 
 verilog:
 	$(call git_commit, "generate verilog")

@@ -13,38 +13,30 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
-#ifndef __COMMON_H__
-#define __COMMON_H__
+#include <isa.h>
+#include "local-include/reg.h"
 
-#include <stdint.h>
-#include <inttypes.h>
-#include <stdbool.h>
-#include <string.h>
 
-#include <generated/autoconf.h>
-#include <macro.h>
-#include <log.h>
 
-#ifdef CONFIG_TARGET_AM
-#include <klib.h>
-#else
-#include <assert.h>
-#include <stdlib.h>
-#endif
 
-#if CONFIG_MBASE + CONFIG_MSIZE > 0x100000000ul
-#define PMEM64 1
-#endif
+const char *regs[] = {
+  "$0", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
+  "s0", "s1", "a0", "a1", "a2", "a3", "a4", "a5",
+  "a6", "a7", "s2", "s3", "s4", "s5", "s6", "s7",
+  "s8", "s9", "s10", "s11", "t3", "t4", "t5", "t6"
+};
 
-typedef uint32_t word_t;
-typedef int32_t  sword_t;
-#define FMT_WORD MUXDEF(CONFIG_ISA64, "0x%016" PRIx64, "0x%08" PRIx32)
+void isa_reg_display() {
+  for(int i = 0; i < MUXDEF(CONFIG_RVE, 16, 32); i++){
+    printf("%s\t%-#10x\t%-10d\n",reg_name(i), gpr(i), gpr(i));
+  }
+}
 
-typedef word_t vaddr_t;
-typedef uint32_t paddr_t;
-#define FMT_PADDR MUXDEF(PMEM64, "0x%016" PRIx64, "0x%08" PRIx32)
-typedef uint16_t ioaddr_t;
-
-#include <debug.h>
-
-#endif
+word_t isa_reg_str2val(const char *s, bool *success) {
+  for(int i = 0; i < MUXDEF(CONFIG_RVE, 16, 32); i++){
+    if(strcmp(s, reg_name(i)) == 0){
+      return gpr(i);
+    }
+  }
+  return 0;
+}

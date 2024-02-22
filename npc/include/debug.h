@@ -13,38 +13,25 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
-#ifndef __COMMON_H__
-#define __COMMON_H__
+#ifndef __DEBUG_H__
+#define __DEBUG_H__
 
-#include <stdint.h>
-#include <inttypes.h>
-#include <stdbool.h>
-#include <string.h>
+#include <common.h>
+#include <stdio.h>
+#include <utils.h>
 
-#include <generated/autoconf.h>
-#include <macro.h>
-#include <log.h>
+#define Assert(cond, format, ...) \
+  do { \
+    if (!(cond)) { \
+      MUXDEF(CONFIG_TARGET_AM, printf(ANSI_FMT(format, ANSI_FG_RED) "\n", ## __VA_ARGS__), \
+        (fflush(stdout), fprintf(stderr, ANSI_FMT(format, ANSI_FG_RED) "\n", ##  __VA_ARGS__))); \
+      IFNDEF(CONFIG_TARGET_AM, extern FILE* log_fp; fflush(log_fp)); \
+      assert(cond); \
+    } \
+  } while (0)
 
-#ifdef CONFIG_TARGET_AM
-#include <klib.h>
-#else
-#include <assert.h>
-#include <stdlib.h>
-#endif
+#define panic(format, ...) Assert(0, format, ## __VA_ARGS__)
 
-#if CONFIG_MBASE + CONFIG_MSIZE > 0x100000000ul
-#define PMEM64 1
-#endif
-
-typedef uint32_t word_t;
-typedef int32_t  sword_t;
-#define FMT_WORD MUXDEF(CONFIG_ISA64, "0x%016" PRIx64, "0x%08" PRIx32)
-
-typedef word_t vaddr_t;
-typedef uint32_t paddr_t;
-#define FMT_PADDR MUXDEF(PMEM64, "0x%016" PRIx64, "0x%08" PRIx32)
-typedef uint16_t ioaddr_t;
-
-#include <debug.h>
+#define TODO() panic("please implement me")
 
 #endif

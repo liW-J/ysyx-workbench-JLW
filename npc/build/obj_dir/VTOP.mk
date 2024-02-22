@@ -4,7 +4,7 @@
 # Execute this makefile from the object directory:
 #    make -f VTOP.mk
 
-default: /home/sends/local/share/ysyx-workbench/npc/build/-npc-
+default: /home/sends/local/share/ysyx-workbench/npc/build/riscv32-npc-interpreter
 
 ### Constants...
 # Perl executable (from $PERL)
@@ -35,12 +35,15 @@ VM_PREFIX = VTOP
 VM_MODPREFIX = VTOP
 # User CFLAGS (from -CFLAGS on Verilator command line)
 VM_USER_CFLAGS = \
+	-O2 \
 	-DCFLAGS_CPU_TYPE=single \
-	-DCFLAGS_GUEST_ISA= \
+	-D__GUEST_ISA__=riscv32 \
 	-Wno-unused-result \
 	-DCFLAGS_TOP_NAME="VTOP" \
 	-I/home/sends/local/share/ysyx-workbench/npc/include \
 	-I/home/sends/local/share/ysyx-workbench/npc/include/generated \
+	-I/home/sends/local/share/ysyx-workbench/npc/build/obj_dir \
+	-I/home/sends/local/share/ysyx-workbench/npc/sim/riscv32/include \
 	-I/usr/lib/llvm-11/include \
 	-std=c++14 \
 	-fno-exceptions \
@@ -52,7 +55,9 @@ VM_USER_CFLAGS = \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \
+	-O2 \
 	-DCFLAGS_CPU_TYPE=single \
+	-D__GUEST_ISA__=riscv32 \
 	-lreadline \
 	-ldl \
 	-pie \
@@ -64,7 +69,6 @@ VM_USER_CLASSES = \
 	cpu-exec \
 	hostcall \
 	init \
-	init \
 	main \
 	paddr \
 	vaddr \
@@ -72,6 +76,9 @@ VM_USER_CLASSES = \
 	expr \
 	sdb \
 	watchpoint \
+	init \
+	logo \
+	reg \
 	disasm \
 	log \
 	state \
@@ -82,10 +89,10 @@ VM_USER_DIR = \
 	/home/sends/local/share/ysyx-workbench/npc/sim \
 	/home/sends/local/share/ysyx-workbench/npc/sim/cpu \
 	/home/sends/local/share/ysyx-workbench/npc/sim/engine/interpreter \
-	/home/sends/local/share/ysyx-workbench/npc/sim/isa \
 	/home/sends/local/share/ysyx-workbench/npc/sim/memory \
 	/home/sends/local/share/ysyx-workbench/npc/sim/monitor \
 	/home/sends/local/share/ysyx-workbench/npc/sim/monitor/sdb \
+	/home/sends/local/share/ysyx-workbench/npc/sim/riscv32 \
 	/home/sends/local/share/ysyx-workbench/npc/sim/utils \
 
 
@@ -104,8 +111,6 @@ hostcall.o: /home/sends/local/share/ysyx-workbench/npc/sim/engine/interpreter/ho
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 init.o: /home/sends/local/share/ysyx-workbench/npc/sim/engine/interpreter/init.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
-init.o: /home/sends/local/share/ysyx-workbench/npc/sim/isa/init.c
-	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 main.o: /home/sends/local/share/ysyx-workbench/npc/sim/main.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 paddr.o: /home/sends/local/share/ysyx-workbench/npc/sim/memory/paddr.c
@@ -120,6 +125,12 @@ sdb.o: /home/sends/local/share/ysyx-workbench/npc/sim/monitor/sdb/sdb.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 watchpoint.o: /home/sends/local/share/ysyx-workbench/npc/sim/monitor/sdb/watchpoint.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+init.o: /home/sends/local/share/ysyx-workbench/npc/sim/riscv32/init.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+logo.o: /home/sends/local/share/ysyx-workbench/npc/sim/riscv32/logo.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+reg.o: /home/sends/local/share/ysyx-workbench/npc/sim/riscv32/reg.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 disasm.o: /home/sends/local/share/ysyx-workbench/npc/sim/utils/disasm.cc
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 log.o: /home/sends/local/share/ysyx-workbench/npc/sim/utils/log.c
@@ -130,7 +141,7 @@ timer.o: /home/sends/local/share/ysyx-workbench/npc/sim/utils/timer.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 
 ### Link rules... (from --exe)
-/home/sends/local/share/ysyx-workbench/npc/build/-npc-: $(VK_USER_OBJS) $(VK_GLOBAL_OBJS) $(VM_PREFIX)__ALL.a $(VM_HIER_LIBS)
+/home/sends/local/share/ysyx-workbench/npc/build/riscv32-npc-interpreter: $(VK_USER_OBJS) $(VK_GLOBAL_OBJS) $(VM_PREFIX)__ALL.a $(VM_HIER_LIBS)
 	$(LINK) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS) $(LIBS) $(SC_LIBS) -o $@
 
 

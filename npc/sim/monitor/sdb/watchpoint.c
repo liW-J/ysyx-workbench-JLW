@@ -107,16 +107,16 @@ void wp_display() {
 }
 
 void difftest_watchpoint() {
-  WP* temp = head;
-  while (temp)
-  {
-    word_t new = expr(temp->expr,NULL);
-    if (new != temp->old) {
-      printf("Watchpoint %d :%s\n",temp->NO,temp->expr);
-      printf("Old value = %d\nNew value = %d\n",temp->old,new);
-      temp->old = new;
-    }
-    temp = temp->next;
-  }
+  // WP* temp = head;
+  // while (temp)
+  // {
+  //   word_t new = expr(temp->expr,NULL);
+  //   if (new != temp->old) {
+  //     printf("Watchpoint %d :%s\n",temp->NO,temp->expr);
+  //     printf("Old value = %d\nNew value = %d\n",temp->old,new);
+  //     temp->old = new;
+  //   }
+  //   temp = temp->next;
+  // }
 }
 

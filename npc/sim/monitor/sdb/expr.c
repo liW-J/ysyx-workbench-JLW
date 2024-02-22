@@ -113,7 +113,7 @@ static bool make_token(char *e) {
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo; // end position
 
-        // Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
+        // Log(DEBUG,"match rules[%d] = \"%s\" at position %d with len %d: %.*s",
         //     i, rules[i].regex, position, substr_len, substr_len, substr_start);
 
         position += substr_len;
@@ -202,7 +202,7 @@ word_t eval(int p, int q){
   if (p > q){ // Bad expression
     return 0;
   }else if (p == q){  //Single token
-    // Log("get num: %s",tokens[p].str);
+    // Log(DEBUG, "get num: %s",tokens[p].str);
     word_t rc = 0;
     if(tokens[p].type == TK_REG){
       rc = isa_reg_str2val(tokens[p].str, NULL);
@@ -216,7 +216,7 @@ word_t eval(int p, int q){
     return eval(p + 1, q -1); //minify judge range
   }else{ // no parentheses ; do mian operating
     int op = get_op_position(p, q);
-    // Log("index: %d,get op : %c",op,tokens[op].type);
+    // Log(DEBUG, "index: %d,get op : %c",op,tokens[op].type);
     int val1 = eval(p, op - 1);
     int val2 = eval(op + 1, q);
 
@@ -242,7 +242,7 @@ int get_op_position(int p, int q){
 
   for (int i = p; i <= q; i++) { 
     tmp_level = 0;
-    // Log("get op:%d",tokens[i].type);
+    // Log(DEBUG, "get op:%d",tokens[i].type);
     switch (tokens[i].type) {
       case TK_NUM:
       case TK_HEX:
@@ -278,7 +278,7 @@ void init_expr(){
   word_t correct_result = 0, expr_result = 0;
   char buf[65535];
 
-  FILE *fp = fopen("/home/sends/local/share/ysyx-workbench/nemu/tools/gen-expr/build/input", "r");
+  FILE *fp = fopen("/home/sends/local/share/ysyx-workbench/npc/tools/gen-expr/build/input", "r");
   assert(fp != NULL);
   
   while (fgets(buf,65535,fp))
@@ -296,7 +296,7 @@ void init_expr(){
     printf("test_num:%d pass_num:%d\n",test_num,pass_num);
   }
   fclose(fp);
-  if (test_num == pass_num) Log("Finish init expr with %d test exprs passed!",pass_num);
-  else {Log("failed init expr!"); assert(0);} 
+  if (test_num == pass_num) Log(INFO, "Finish init expr with %d test exprs passed!",pass_num);
+  else {Log(ERROR, "failed init expr!"); assert(0);} 
 
 }

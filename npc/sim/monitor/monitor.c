@@ -13,12 +13,12 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
-// #include <isa.h>
-#include <common.h>
+#include <isa.h>
 #include <memory/paddr.h>
+#include <log.h>
 
-// void init_rand();
-// void init_log(const char *log_file);
+void init_rand();
+void init_log(const char *log_file);
 void init_mem();
 // void init_difftest(char *ref_so_file, long img_size, int port);
 // void init_device();
@@ -27,14 +27,14 @@ void init_sdb();
 void init_expr();
 
 static void welcome() {
-  Log("Trace: %s", MUXDEF(CONFIG_TRACE, ANSI_FMT("ON", ANSI_FG_GREEN), ANSI_FMT("OFF", ANSI_FG_RED)));
-  IFDEF(CONFIG_TRACE, Log("If trace is enabled, a log file will be generated "
+  Log(INFO, "Trace: %s", MUXDEF(CONFIG_TRACE, ANSI_FMT("ON", ANSI_FG_GREEN), ANSI_FMT("OFF", ANSI_FG_RED)));
+  IFDEF(CONFIG_TRACE, Log(INFO, "If trace is enabled, a log file will be generated "
         "to record the trace. This may lead to a large log file. "
         "If it is not necessary, you can disable it in menuconfig"));
-  Log("Build time: %s, %s", __TIME__, __DATE__);
-  printf("Welcome to %s-NEMU!\n", ANSI_FMT(str(__GUEST_ISA__), ANSI_FG_YELLOW ANSI_BG_RED));
+  Log(INFO, "Build time: %s, %s", __TIME__, __DATE__);
+  printf("Welcome to %s-NPC!\n", ANSI_FMT(str(__GUEST_ISA__), ANSI_FG_YELLOW ANSI_BG_RED));
   printf("For help, type \"help\"\n");
-  // Log("Exercise: Please remove me in the source code and compile NEMU again.");
+  // Log(INFO, "Exercise: Please remove me in the source code and compile NEMU again.");
   // assert(0);
 }
 
@@ -50,7 +50,7 @@ static int difftest_port = 1234;
 
 static long load_img() {
   if (img_file == NULL) {
-    Log("No image is given. Use the default build-in image.");
+    Log(INFO, "No image is given. Use the default build-in image.");
     return 4096; // built-in image size
   }
 
@@ -60,7 +60,7 @@ static long load_img() {
   fseek(fp, 0, SEEK_END);
   long size = ftell(fp);
 
-  Log("The image is %s, size = %ld", img_file, size);
+  Log(INFO, "The image is %s, size = %ld", img_file, size);
 
   fseek(fp, 0, SEEK_SET);
   int ret = fread(guest_to_host(RESET_VECTOR), size, 1, fp);
@@ -130,16 +130,16 @@ void init_monitor(int argc, char *argv[]) {
   /* Initialize the simple debugger. */
   init_sdb();
 
-#ifndef CONFIG_ISA_loongarch32r
-  IFDEF(CONFIG_ITRACE, init_disasm(
-    MUXDEF(CONFIG_ISA_x86,     "i686",
-    MUXDEF(CONFIG_ISA_mips32,  "mipsel",
-    MUXDEF(CONFIG_ISA_riscv,
-      MUXDEF(CONFIG_RV64,      "riscv64",
-                               "riscv32"),
-                               "bad"))) "-pc-linux-gnu"
-  ));
-#endif
+// #ifndef CONFIG_ISA_loongarch32r
+//   IFDEF(CONFIG_ITRACE, init_disasm(
+//     MUXDEF(CONFIG_ISA_x86,     "i686",
+//     MUXDEF(CONFIG_ISA_mips32,  "mipsel",
+//     MUXDEF(CONFIG_ISA_riscv,
+//       MUXDEF(CONFIG_RV64,      "riscv64",
+//                                "riscv32"),
+//                                "bad"))) "-pc-linux-gnu"
+//   ));
+// #endif
   init_expr();
   /* Display welcome message. */
   welcome();
@@ -148,7 +148,7 @@ void init_monitor(int argc, char *argv[]) {
 static long load_img() {
   extern char bin_start, bin_end;
   size_t size = &bin_end - &bin_start;
-  Log("img size = %ld", size);
+  Log(INFO, "img size = %ld", size);
   memcpy(guest_to_host(RESET_VECTOR), &bin_start, size);
   return size;
 }

@@ -38,7 +38,7 @@ static char* rl_gets() {
     line_read = NULL;
   }
 
-  line_read = readline("(nemu) ");
+  line_read = readline("(npc) ");
 
   if (line_read && *line_read) {
     add_history(line_read);
@@ -57,7 +57,7 @@ static int cmd_c(char *args) {
 
 static int cmd_q(char *args) {
   //modify state when force exit
-  nemu_state.state = NEMU_QUIT;
+  npc_state.state = NPC_QUIT;
   return -1;
 }
 
@@ -80,9 +80,9 @@ static int cmd_info(char *args){
     /* no argument given */
     printf("Please add entern r/w to display its state.\n");
   }
-  else if (strcmp(arg, "r") == 0){
-    isa_reg_display();
-  }
+  // else if (strcmp(arg, "r") == 0){
+  //   isa_reg_display();
+  // }
   else if (strcmp(arg, "w") == 0){
     wp_display();
   }
