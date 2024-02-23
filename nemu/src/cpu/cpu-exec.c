@@ -16,6 +16,7 @@
 #include <cpu/cpu.h>
 #include <cpu/decode.h>
 #include <cpu/difftest.h>
+#include <cpu/ifetch.h>
 #include <locale.h>
 
 /* The assembly code of instructions executed is only output to the screen
@@ -29,28 +30,26 @@ CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
-static bool g_print_iring = false;
+// static bool g_print_iring = false;
 static bool g_print_mem = false;
 static bool g_print_func = false;
 
 void device_update();
 void difftest_watchpoint();
+void display_iringbuf();
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 
 #ifdef CONFIG_ITRACE_COND
   if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
 #endif
-#ifdef CONFIG_IRINGBUF_COND
-  if (IRINGBUF_COND) //TODO
-#endif
+
 // no need to log mem at every step
 #ifdef CONFIG_FTRACE_COND
   if (FTRACE_COND) //TODO
 #endif
 
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
-  if (g_print_iring) { IFDEF(CONFIG_IRINGBUG, puts()); }
   if (g_print_mem) { IFDEF(CONFIG_MTRACE, puts()); }
   if (g_print_func) { IFDEF(CONFIG_FTRACE, puts()); }
 
@@ -63,6 +62,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   s->snpc = pc;
   isa_exec_once(s);
   cpu.pc = s->dnpc;
+
 #ifdef CONFIG_ITRACE
   char *p = s->logbuf;
   p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);
@@ -86,6 +86,12 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #else
   p[0] = '\0'; // the upstream llvm does not support loongarch32r
 #endif
+
+#ifdef CONFIG_IRINGBUF
+  void iringbuf_inst(word_t pc, uint32_t inst);
+  iringbuf_inst(s->pc, s->isa.inst.val);
+#endif
+
 #endif
 }
 
@@ -119,7 +125,7 @@ void cpu_exec(uint64_t n) {
   g_print_step = (n < MAX_INST_TO_PRINT);
   switch (nemu_state.state) {
     case NEMU_END: case NEMU_ABORT:
-      printf("Program execution has ended. To restart the program, exit NEMU and run again.\n");
+      LOG(WARN, "Program execution has ended. To restart the program, exit NEMU and run again.\n");
       return;
     default: nemu_state.state = NEMU_RUNNING;
   }
@@ -140,6 +146,12 @@ void cpu_exec(uint64_t n) {
            (nemu_state.halt_ret == 0 ? ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN) :
             ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED))),
           nemu_state.halt_pc);
+      if (nemu_state.state == NEMU_ABORT || nemu_state.halt_ret != 0){
+          LOG(ERROR, "show iringbuf:");
+          #ifdef CONFIG_IRINGBUF_COND
+            if (IRINGBUF_COND) { display_iringbuf(); }
+          #endif
+      }
       // fall through
     case NEMU_QUIT: statistic();
   }
