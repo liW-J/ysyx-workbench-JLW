@@ -1,11 +1,12 @@
+package stage
 
 import chisel3._
 import chisel3.util._
 
-import Configs._
-import OPtypes._
-// import utils._
-import EXEtypes._
+import config.Configs._
+import config.OPtypes._
+import utils._
+import config.EXEtypes._
 
 //-----------------------------------------------------------------------------
 // EX

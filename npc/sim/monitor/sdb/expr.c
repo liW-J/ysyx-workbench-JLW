@@ -296,7 +296,7 @@ void init_expr(){
     printf("test_num:%d pass_num:%d\n",test_num,pass_num);
   }
   fclose(fp);
-  if (test_num == pass_num) Log(INFO, "Finish init expr with %d test exprs passed!",pass_num);
-  else {Log(ERROR, "failed init expr!"); assert(0);} 
+  if (test_num == pass_num) LOG("Finish init expr with %d test exprs passed!",pass_num);
+  else {LOG("failed init expr!"); assert(0);} 
 
 }

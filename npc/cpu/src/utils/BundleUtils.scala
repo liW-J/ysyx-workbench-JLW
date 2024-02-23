@@ -1,9 +1,10 @@
+package utils
 
 import chisel3._
-import Configs._
-import OPcodes._
-import LStypes._
-import EXEtypes._
+import config.Configs._
+import config.OPcodes._
+import config.LStypes._
+import config.EXEtypes._
 
 
 class BundleControl extends Bundle {

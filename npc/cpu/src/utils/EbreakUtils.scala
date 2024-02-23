@@ -1,7 +1,9 @@
+package utils
+
 import chisel3._
 import chisel3.util._
 
-import Configs._
+import config.Configs._
  
 class Trap extends BlackBox with HasBlackBoxInline {
   val io = IO(new Bundle {

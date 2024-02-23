@@ -83,18 +83,7 @@ void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte) {
     gIP->printInst(&inst, pc, "", *gSTI, os);
 
     int skip = s.find_first_not_of('\t');
+    const char *p = s.c_str() + skip;
     assert((int)s.length() - skip < size);
-
-    std::string s_temp = s.substr(skip, s.length() - 1);
-    int inst_pos = s_temp.find('\t');
-    if (inst_pos != -1) {
-        s_temp.replace(inst_pos, 1, "");
-    }
-    else {
-        inst_pos = 3;
-    }
-    int space_len = (5 - inst_pos) + 4;
-    s_temp.insert(inst_pos, space_len, ' ');
-
-    strcpy(str, s_temp.c_str());
+    strcpy(str, p);
 }

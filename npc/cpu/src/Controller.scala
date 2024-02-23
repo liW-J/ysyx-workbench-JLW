@@ -1,7 +1,7 @@
 import chisel3._
 import chisel3.util._
 
-// import utils._
+import utils._
 
 
 class ControllerIO extends Bundle {

@@ -1,3 +1,4 @@
+package config
 
 import chisel3._
 

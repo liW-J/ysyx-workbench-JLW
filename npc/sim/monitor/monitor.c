@@ -16,6 +16,7 @@
 #include <isa.h>
 #include <memory/paddr.h>
 #include <log.h>
+#include <debug.h>
 
 void init_rand();
 void init_log(const char *log_file);
@@ -27,11 +28,11 @@ void init_sdb();
 void init_expr();
 
 static void welcome() {
-  Log(INFO, "Trace: %s", MUXDEF(CONFIG_TRACE, ANSI_FMT("ON", ANSI_FG_GREEN), ANSI_FMT("OFF", ANSI_FG_RED)));
-  IFDEF(CONFIG_TRACE, Log(INFO, "If trace is enabled, a log file will be generated "
+  LOG("Trace: %s", MUXDEF(CONFIG_TRACE, ANSI_FMT("ON", ANSI_FG_GREEN), ANSI_FMT("OFF", ANSI_FG_RED)));
+  IFDEF(CONFIG_TRACE, LOG("If trace is enabled, a log file will be generated "
         "to record the trace. This may lead to a large log file. "
         "If it is not necessary, you can disable it in menuconfig"));
-  Log(INFO, "Build time: %s, %s", __TIME__, __DATE__);
+  LOG("Build time: %s, %s", __TIME__, __DATE__);
   printf("Welcome to %s-NPC!\n", ANSI_FMT(str(__GUEST_ISA__), ANSI_FG_YELLOW ANSI_BG_RED));
   printf("For help, type \"help\"\n");
   // Log(INFO, "Exercise: Please remove me in the source code and compile NEMU again.");
@@ -50,7 +51,7 @@ static int difftest_port = 1234;
 
 static long load_img() {
   if (img_file == NULL) {
-    Log(INFO, "No image is given. Use the default build-in image.");
+    LOG("No image is given. Use the default build-in image.");
     return 4096; // built-in image size
   }
 

@@ -1,8 +1,9 @@
+package unit
 
 import chisel3._
 import chisel3.util._
 
-import Configs._
+import config.Configs._
 // import utils._
 
 //-----------------------------------------------------------------------------

@@ -106,7 +106,7 @@ void init_log(const char *log_file) {
     Assert(fp, "Can not open '%s'", log_file);
     log_fp = fp;
   }
-  Log(INFO, "LOG is written to %s", log_file ? log_file : "stdout");
+  LOG("LOG is written to %s", log_file ? log_file : "stdout");
 }
 
 bool log_enable() {

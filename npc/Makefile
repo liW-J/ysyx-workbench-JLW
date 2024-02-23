@@ -63,7 +63,7 @@ LDFLAGS += $(CFLAGS_BUILD)                \
            $(shell llvm-config-11 --libs) \
            -lSDL2
 
-SRCSS_DIR           = $(abspath $(NPC_HOME)/cpu/src)
+SRCSS_DIR           = $(abspath $(NPC_HOME)/cpu)
 SRCSS_SRC_BLACKLIST =
 # SRCSS_DIR_BLACKLIST = $(addprefix $(SRCSS_DIR)/stage/, $(CPU_BLACKLIST))
 SRCSS_BLACKLIST     = $(SRCSS_SRC_BLACKLIST)                               \
@@ -114,7 +114,7 @@ ifdef CONFIG_DIFFTEST
     ARGS_EMBED_DIFF = --diff=$(Nsim_HOME)/build/riscv32-nsim-interpreter-so
 endif
 
-# override ARGS_EMBED ?= --log=$(BUILD_DIR)/npc-log.txt
+override ARGS_EMBED ?= --log=$(BUILD_DIR)/npc-log.txt
 override ARGS_EMBED += $(ARGS_EMBED_DIFF)
 
 IMG ?=
