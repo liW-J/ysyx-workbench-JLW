@@ -65,7 +65,7 @@
 `endif // not def SYNTHESIS
 
 // VCS coverage exclude_file
-module instMem_combMem(	// @[cpu/src/unit/InstRom.scala:29:20]
+module instMem_combMem(	// @[cpu/src/unit/InstRom.scala:16:20]
   input  [9:0]  R0_addr,
   input         R0_en,
                 R0_clk,
@@ -80,40 +80,40 @@ module instMem_combMem(	// @[cpu/src/unit/InstRom.scala:29:20]
   output [31:0] R0_data
 );
 
-  reg [31:0] Memory[0:1023];	// @[cpu/src/unit/InstRom.scala:29:20]
-  always @(posedge W0_clk) begin	// @[cpu/src/unit/InstRom.scala:29:20]
-    if (W0_en)	// @[cpu/src/unit/InstRom.scala:29:20]
-      Memory[W0_addr] <= W0_data;	// @[cpu/src/unit/InstRom.scala:29:20]
-    if (W1_en)	// @[cpu/src/unit/InstRom.scala:29:20]
-      Memory[W1_addr] <= W1_data;	// @[cpu/src/unit/InstRom.scala:29:20]
+  reg [31:0] Memory[0:1023];	// @[cpu/src/unit/InstRom.scala:16:20]
+  always @(posedge W0_clk) begin	// @[cpu/src/unit/InstRom.scala:16:20]
+    if (W0_en)	// @[cpu/src/unit/InstRom.scala:16:20]
+      Memory[W0_addr] <= W0_data;	// @[cpu/src/unit/InstRom.scala:16:20]
+    if (W1_en)	// @[cpu/src/unit/InstRom.scala:16:20]
+      Memory[W1_addr] <= W1_data;	// @[cpu/src/unit/InstRom.scala:16:20]
   end // always @(posedge)
-  `ifdef ENABLE_INITIAL_MEM_	// @[cpu/src/unit/InstRom.scala:29:20]
-    reg [31:0] _RANDOM_MEM;	// @[cpu/src/unit/InstRom.scala:29:20]
-    initial begin	// @[cpu/src/unit/InstRom.scala:29:20]
-      `INIT_RANDOM_PROLOG_	// @[cpu/src/unit/InstRom.scala:29:20]
-      `ifdef RANDOMIZE_MEM_INIT	// @[cpu/src/unit/InstRom.scala:29:20]
+  `ifdef ENABLE_INITIAL_MEM_	// @[cpu/src/unit/InstRom.scala:16:20]
+    reg [31:0] _RANDOM_MEM;	// @[cpu/src/unit/InstRom.scala:16:20]
+    initial begin	// @[cpu/src/unit/InstRom.scala:16:20]
+      `INIT_RANDOM_PROLOG_	// @[cpu/src/unit/InstRom.scala:16:20]
+      `ifdef RANDOMIZE_MEM_INIT	// @[cpu/src/unit/InstRom.scala:16:20]
         for (logic [10:0] i = 11'h0; i < 11'h400; i += 11'h1) begin
-          _RANDOM_MEM = `RANDOM;	// @[cpu/src/unit/InstRom.scala:29:20]
-          Memory[i[9:0]] = _RANDOM_MEM;	// @[cpu/src/unit/InstRom.scala:29:20]
-        end	// @[cpu/src/unit/InstRom.scala:29:20]
+          _RANDOM_MEM = `RANDOM;	// @[cpu/src/unit/InstRom.scala:16:20]
+          Memory[i[9:0]] = _RANDOM_MEM;	// @[cpu/src/unit/InstRom.scala:16:20]
+        end	// @[cpu/src/unit/InstRom.scala:16:20]
       `endif // RANDOMIZE_MEM_INIT
     end // initial
   `endif // ENABLE_INITIAL_MEM_
-  assign R0_data = R0_en ? Memory[R0_addr] : 32'bx;	// @[cpu/src/unit/InstRom.scala:29:20]
+  assign R0_data = R0_en ? Memory[R0_addr] : 32'bx;	// @[cpu/src/unit/InstRom.scala:16:20]
 endmodule
 
 module PCRegister(	// @[<stdin>:3:10]
   input         clock,	// @[<stdin>:4:11]
                 reset,	// @[<stdin>:5:11]
-  output [31:0] io_pc	// @[cpu/src/unit/PCRegister.scala:33:14]
+  output [31:0] io_pc	// @[cpu/src/unit/PCRegister.scala:24:14]
 );
 
-  reg [31:0] pcReg;	// @[cpu/src/unit/PCRegister.scala:35:22]
+  reg [31:0] pcReg;	// @[cpu/src/unit/PCRegister.scala:26:22]
   always @(posedge clock) begin	// @[<stdin>:4:11]
     if (reset)	// @[<stdin>:4:11]
-      pcReg <= 32'h80000000;	// @[cpu/src/unit/PCRegister.scala:35:22]
+      pcReg <= 32'h80000000;	// @[cpu/src/unit/PCRegister.scala:26:22]
     else	// @[<stdin>:4:11]
-      pcReg <= pcReg + 32'h4;	// @[cpu/src/unit/PCRegister.scala:35:22, :40:20]
+      pcReg <= pcReg + 32'h4;	// @[cpu/src/unit/PCRegister.scala:26:22, :31:20]
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// @[<stdin>:3:10]
     `ifdef FIRRTL_BEFORE_INITIAL	// @[<stdin>:3:10]
@@ -126,34 +126,34 @@ module PCRegister(	// @[<stdin>:3:10]
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT	// @[<stdin>:3:10]
         _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// @[<stdin>:3:10]
-        pcReg = _RANDOM[/*Zero width*/ 1'b0];	// @[<stdin>:3:10, cpu/src/unit/PCRegister.scala:35:22]
+        pcReg = _RANDOM[/*Zero width*/ 1'b0];	// @[<stdin>:3:10, cpu/src/unit/PCRegister.scala:26:22]
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// @[<stdin>:3:10]
       `FIRRTL_AFTER_INITIAL	// @[<stdin>:3:10]
     `endif // FIRRTL_AFTER_INITIAL
   `endif // ENABLE_INITIAL_REG_
-  assign io_pc = pcReg;	// @[<stdin>:3:10, cpu/src/unit/PCRegister.scala:35:22]
+  assign io_pc = pcReg;	// @[<stdin>:3:10, cpu/src/unit/PCRegister.scala:26:22]
 endmodule
 
 module InstRom(	// @[<stdin>:20:10]
   input         clock,	// @[<stdin>:21:11]
-  input  [31:0] io_addr,	// @[cpu/src/unit/InstRom.scala:26:14]
-  output [31:0] io_inst	// @[cpu/src/unit/InstRom.scala:26:14]
+  input  [31:0] io_addr,	// @[cpu/src/unit/InstRom.scala:13:14]
+  output [31:0] io_inst	// @[cpu/src/unit/InstRom.scala:13:14]
 );
 
-  instMem_combMem instMem_ext (	// @[cpu/src/unit/InstRom.scala:29:20]
-    .R0_addr (io_addr[11:2]),	// @[cpu/src/unit/InstRom.scala:35:26]
+  instMem_combMem instMem_ext (	// @[cpu/src/unit/InstRom.scala:16:20]
+    .R0_addr (io_addr[11:2]),	// @[cpu/src/unit/InstRom.scala:22:26]
     .R0_en   (1'h1),	// @[<stdin>:20:10]
     .R0_clk  (clock),
-    .W0_addr (10'h1),	// @[cpu/src/unit/InstRom.scala:32:16]
+    .W0_addr (10'h1),	// @[cpu/src/unit/InstRom.scala:19:16]
     .W0_en   (1'h1),	// @[<stdin>:20:10]
     .W0_clk  (clock),
-    .W0_data (32'hFE0F8F93),	// @[cpu/src/unit/InstRom.scala:32:16]
-    .W1_addr (10'h2),	// @[cpu/src/unit/InstRom.scala:33:16]
+    .W0_data (32'hFE0F8F93),	// @[cpu/src/unit/InstRom.scala:19:16]
+    .W1_addr (10'h2),	// @[cpu/src/unit/InstRom.scala:20:16]
     .W1_en   (1'h1),	// @[<stdin>:20:10]
     .W1_clk  (clock),
-    .W1_data (32'h100073),	// @[cpu/src/unit/InstRom.scala:33:16]
+    .W1_data (32'h100073),	// @[cpu/src/unit/InstRom.scala:20:16]
     .R0_data (io_inst)
   );
 endmodule
@@ -161,68 +161,68 @@ endmodule
 module ID(	// @[<stdin>:35:10]
   input         clock,	// @[<stdin>:36:11]
                 reset,	// @[<stdin>:37:11]
-  input  [31:0] io_inst,	// @[cpu/src/stage/ID.scala:30:14]
-  output        io_BundleControl_isALUSrc,	// @[cpu/src/stage/ID.scala:30:14]
-  output [3:0]  io_BundleControl_exeType,	// @[cpu/src/stage/ID.scala:30:14]
-  output [31:0] io_imm	// @[cpu/src/stage/ID.scala:30:14]
+  input  [31:0] io_inst,	// @[cpu/src/stage/ID.scala:29:14]
+  output        io_BundleControl_isALUSrc,	// @[cpu/src/stage/ID.scala:29:14]
+  output [3:0]  io_BundleControl_exeType,	// @[cpu/src/stage/ID.scala:29:14]
+  output [31:0] io_imm	// @[cpu/src/stage/ID.scala:29:14]
 );
 
-  wire _GEN = io_inst[4:0] == 5'h1C;	// @[cpu/src/stage/ID.scala:46:{10,20}, :48:18]
-  wire _GEN_0 = io_inst[4:0] == 5'h4;	// @[cpu/src/stage/ID.scala:46:{10,20}, :48:18]
-  `ifndef SYNTHESIS	// @[cpu/src/stage/ID.scala:50:13]
-    always @(posedge clock) begin	// @[cpu/src/stage/ID.scala:50:13]
-      if ((`PRINTF_COND_) & _GEN & ~reset)	// @[cpu/src/stage/ID.scala:48:18, :50:13]
-        $fwrite(32'h80000002, "ebreak");	// @[cpu/src/stage/ID.scala:50:13]
-      if ((`PRINTF_COND_) & ~_GEN & _GEN_0 & ~reset)	// @[cpu/src/stage/ID.scala:48:18, :50:13, :53:13]
-        $fwrite(32'h80000002, "addi");	// @[cpu/src/stage/ID.scala:50:13, :53:13]
+  wire _GEN = io_inst[4:0] == 5'h1C;	// @[cpu/src/stage/ID.scala:45:{10,20}, :47:18]
+  wire _GEN_0 = io_inst[4:0] == 5'h4;	// @[cpu/src/stage/ID.scala:45:{10,20}, :47:18]
+  `ifndef SYNTHESIS	// @[cpu/src/stage/ID.scala:49:13]
+    always @(posedge clock) begin	// @[cpu/src/stage/ID.scala:49:13]
+      if ((`PRINTF_COND_) & _GEN & ~reset)	// @[cpu/src/stage/ID.scala:47:18, :49:13]
+        $fwrite(32'h80000002, "ebreak");	// @[cpu/src/stage/ID.scala:49:13]
+      if ((`PRINTF_COND_) & ~_GEN & _GEN_0 & ~reset)	// @[cpu/src/stage/ID.scala:47:18, :49:13, :52:13]
+        $fwrite(32'h80000002, "addi");	// @[cpu/src/stage/ID.scala:49:13, :52:13]
     end // always @(posedge)
   `endif // not def SYNTHESIS
-  assign io_BundleControl_isALUSrc = ~_GEN & _GEN_0;	// @[<stdin>:35:10, cpu/src/stage/ID.scala:39:94, :48:18]
-  assign io_BundleControl_exeType = _GEN ? 4'h0 : {3'h0, _GEN_0};	// @[<stdin>:35:10, cpu/src/stage/ID.scala:43:28, :48:18, :55:16]
-  assign io_imm = _GEN | ~_GEN_0 ? 32'h0 : {{20{io_inst[31]}}, io_inst[31:20]};	// @[<stdin>:35:10, cpu/src/stage/ID.scala:44:28, :48:18, cpu/src/utils/DecodeUtils.scala:11:{32,37,43,51}]
+  assign io_BundleControl_isALUSrc = ~_GEN & _GEN_0;	// @[<stdin>:35:10, cpu/src/stage/ID.scala:38:94, :47:18]
+  assign io_BundleControl_exeType = _GEN ? 4'h0 : {3'h0, _GEN_0};	// @[<stdin>:35:10, cpu/src/stage/ID.scala:42:28, :47:18, :54:16]
+  assign io_imm = _GEN | ~_GEN_0 ? 32'h0 : {{20{io_inst[31]}}, io_inst[31:20]};	// @[<stdin>:35:10, cpu/src/stage/ID.scala:43:28, :47:18, cpu/src/utils/DecodeUtils.scala:9:{32,37,43,51}]
 endmodule
 
 module GPRFile(	// @[<stdin>:105:10]
-  output [31:0] io_dataRead1,	// @[cpu/src/unit/GPRFile.scala:35:14]
-                io_dataRead2	// @[cpu/src/unit/GPRFile.scala:35:14]
+  output [31:0] io_dataRead1,	// @[cpu/src/unit/GPRFile.scala:19:14]
+                io_dataRead2	// @[cpu/src/unit/GPRFile.scala:19:14]
 );
 
-  assign io_dataRead1 = 32'h0;	// @[<stdin>:105:10, cpu/src/unit/GPRFile.scala:38:17]
-  assign io_dataRead2 = 32'h0;	// @[<stdin>:105:10, cpu/src/unit/GPRFile.scala:38:17]
+  assign io_dataRead1 = 32'h0;	// @[<stdin>:105:10, cpu/src/unit/GPRFile.scala:22:17]
+  assign io_dataRead2 = 32'h0;	// @[<stdin>:105:10, cpu/src/unit/GPRFile.scala:22:17]
 endmodule
 
 module EX(	// @[<stdin>:134:10]
-  input         io_bundleEXControl_isALUSrc,	// @[cpu/src/stage/EX.scala:31:16]
-  input  [4:0]  io_bundleEXControl_exeType,	// @[cpu/src/stage/EX.scala:31:16]
-  input  [31:0] io_dataRead1,	// @[cpu/src/stage/EX.scala:31:16]
-                io_dataRead2,	// @[cpu/src/stage/EX.scala:31:16]
-                io_imm,	// @[cpu/src/stage/EX.scala:31:16]
-  output [31:0] io_res	// @[cpu/src/stage/EX.scala:31:16]
+  input         io_bundleEXControl_isALUSrc,	// @[cpu/src/stage/EX.scala:30:16]
+  input  [4:0]  io_bundleEXControl_exeType,	// @[cpu/src/stage/EX.scala:30:16]
+  input  [31:0] io_dataRead1,	// @[cpu/src/stage/EX.scala:30:16]
+                io_dataRead2,	// @[cpu/src/stage/EX.scala:30:16]
+                io_imm,	// @[cpu/src/stage/EX.scala:30:16]
+  output [31:0] io_res	// @[cpu/src/stage/EX.scala:30:16]
 );
 
   assign io_res =
     io_bundleEXControl_exeType == 5'h1
       ? io_dataRead1 + (io_bundleEXControl_isALUSrc ? io_imm : io_dataRead2)
-      : 32'h0;	// @[<stdin>:134:10, cpu/src/stage/EX.scala:35:26, :40:16, :42:40, :44:{17,25}]
+      : 32'h0;	// @[<stdin>:134:10, cpu/src/stage/EX.scala:34:26, :39:16, :41:40, :43:{17,25}]
 endmodule
 
 module DataRam(	// @[<stdin>:158:10]
-  input  [31:0] io_resEX,	// @[cpu/src/unit/DataRam.scala:32:14]
-  output [31:0] io_res	// @[cpu/src/unit/DataRam.scala:32:14]
+  input  [31:0] io_resEX,	// @[cpu/src/unit/DataRam.scala:31:14]
+  output [31:0] io_res	// @[cpu/src/unit/DataRam.scala:31:14]
 );
 
   assign io_res = io_resEX;	// @[<stdin>:158:10]
 endmodule
 
 module Controller(	// @[<stdin>:233:10]
-  input        io_bundleControlIn_isALUSrc,	// @[cpu/src/Controller.scala:14:16]
-  input  [3:0] io_bundleControlIn_exeType,	// @[cpu/src/Controller.scala:14:16]
-  output       io_bundleEXControl_isALUSrc,	// @[cpu/src/Controller.scala:14:16]
-  output [4:0] io_bundleEXControl_exeType	// @[cpu/src/Controller.scala:14:16]
+  input        io_bundleControlIn_isALUSrc,	// @[cpu/src/Controller.scala:15:16]
+  input  [3:0] io_bundleControlIn_exeType,	// @[cpu/src/Controller.scala:15:16]
+  output       io_bundleEXControl_isALUSrc,	// @[cpu/src/Controller.scala:15:16]
+  output [4:0] io_bundleEXControl_exeType	// @[cpu/src/Controller.scala:15:16]
 );
 
   assign io_bundleEXControl_isALUSrc = io_bundleControlIn_isALUSrc;	// @[<stdin>:233:10]
-  assign io_bundleEXControl_exeType = {1'h0, io_bundleControlIn_exeType};	// @[<stdin>:233:10, cpu/src/Controller.scala:20:32]
+  assign io_bundleEXControl_exeType = {1'h0, io_bundleControlIn_exeType};	// @[<stdin>:233:10, cpu/src/Controller.scala:21:32]
 endmodule
 
 module TOP(	// @[<stdin>:249:10]

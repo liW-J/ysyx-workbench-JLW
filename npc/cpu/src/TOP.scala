@@ -1,14 +1,14 @@
 import chisel3._
 import chisel3.util._
 
-import config.Configs._
-import utils._
-import unit.PCRegister
-import unit.DataRam
-import unit.GPRFile
-import unit.InstRom
-import _root_.stage.ID
-import _root_.stage.EX
+import Configs._
+// import utils._
+// import unit.PCRegister
+// import unit.DataRam
+// import unit.GPRFile
+// import unit.InstRom
+// import _root_.stage.ID
+// import _root_.stage.EX
 
 class TopIO extends Bundle {
     val pc = Output(UInt(ADDR_WIDTH.W))

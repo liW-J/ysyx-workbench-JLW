@@ -38,6 +38,7 @@ VM_USER_CFLAGS = \
 	-O2 \
 	-DCFLAGS_CPU_TYPE=single \
 	-D__GUEST_ISA__=riscv32 \
+	-DITRACE_COND=true \
 	-Wno-unused-result \
 	-DCFLAGS_TOP_NAME="VTOP" \
 	-I/home/sends/local/share/ysyx-workbench/npc/include \

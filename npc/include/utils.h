@@ -16,7 +16,8 @@
 #ifndef __UTILS_H__
 #define __UTILS_H__
 
-#include "common.h"
+#include <common.h>
+#include <memory/vaddr.h>
 
 // ----------- state -----------
 

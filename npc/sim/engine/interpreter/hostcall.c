@@ -1,4 +1,6 @@
 #include <utils.h>
+#include <cpu/ifetch.h>
+#include <isa.h>
 
 void set_npc_state(int state, vaddr_t pc, int halt_ret) {
   // difftest_skip_ref();

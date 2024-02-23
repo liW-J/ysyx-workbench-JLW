@@ -22,8 +22,8 @@ void init_log(const char *log_file);
 void init_mem();
 // void init_difftest(char *ref_so_file, long img_size, int port);
 // void init_device();
+void init_disasm(const char *triple);
 void init_sdb();
-// void init_disasm(const char *triple);
 void init_expr();
 
 static void welcome() {
@@ -130,16 +130,17 @@ void init_monitor(int argc, char *argv[]) {
   /* Initialize the simple debugger. */
   init_sdb();
 
-// #ifndef CONFIG_ISA_loongarch32r
-//   IFDEF(CONFIG_ITRACE, init_disasm(
-//     MUXDEF(CONFIG_ISA_x86,     "i686",
-//     MUXDEF(CONFIG_ISA_mips32,  "mipsel",
-//     MUXDEF(CONFIG_ISA_riscv,
-//       MUXDEF(CONFIG_RV64,      "riscv64",
-//                                "riscv32"),
-//                                "bad"))) "-pc-linux-gnu"
-//   ));
-// #endif
+#ifndef CONFIG_ISA_loongarch32r
+  IFDEF(CONFIG_ITRACE, init_disasm(
+    MUXDEF(CONFIG_ISA_x86,     "i686",
+    MUXDEF(CONFIG_ISA_mips32,  "mipsel",
+    MUXDEF(CONFIG_ISA_riscv,
+      MUXDEF(CONFIG_RV64,      "riscv64",
+                               "riscv32"),
+                               "bad"))) "-pc-linux-gnu"
+  ));
+#endif
+
   init_expr();
   /* Display welcome message. */
   welcome();
@@ -162,3 +163,4 @@ void am_init_monitor() {
   welcome();
 }
 #endif
+

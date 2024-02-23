@@ -2,7 +2,7 @@
 import chisel3._
 import chisel3.util._
 
-import config.Configs._
+import Configs._
 
 class InstRomIO extends Bundle {
   val addr = Input(UInt(ADDR_WIDTH.W))

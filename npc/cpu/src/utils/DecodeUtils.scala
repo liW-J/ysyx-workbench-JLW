@@ -1,8 +1,8 @@
 import chisel3._
 import chisel3.util._
 
-import config.Configs._
-import config.OPtypes._
+import Configs._
+import OPtypes._
 
 trait DecodeUtils {
 

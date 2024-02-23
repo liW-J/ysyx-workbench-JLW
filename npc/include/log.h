@@ -1,6 +1,10 @@
 #ifndef _LOG_H_
 #define _LOG_H_
 
+#include <common.h>
+#include <stdio.h>
+#include <utils.h>
+
 #ifdef __cplusplus 
 extern "C" {
 #endif

@@ -1,4 +1,4 @@
-import unit.PCRegister
+// import unit.PCRegister
 import circt.stage._
 
 object Elaborate extends App {

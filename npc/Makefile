@@ -50,8 +50,9 @@ CFLAGS_BUILD += $(if $(CONFIG_CC_DEBUG), -Og -ggdb3,)
 CFLAGS_BUILD += $(if $(CONFIG_CC_ASAN), -fsanitize=address,)
 CFLAGS_BUILD += -DCFLAGS_CPU_TYPE=$(CPU)
 CFLAGS_BUILD += -D__GUEST_ISA__=$(CFG_GUEST_ISA)
-
+CFLAGS_TRACE += -DITRACE_COND=$(if $(CONFIG_ITRACE_COND),$(call remove_quote,$(CONFIG_ITRACE_COND)),true)
 CFLAGS       += $(CFLAGS_BUILD)                                 \
+								$(CFLAGS_TRACE)																	\
                 -Wno-unused-result                              \
                 -DCFLAGS_TOP_NAME="\"V$(CFG_CFLAGS_TOP_NAME)\"" \
                 $(INCFLAGS)                                     \

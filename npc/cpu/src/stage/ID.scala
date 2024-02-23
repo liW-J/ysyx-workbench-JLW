@@ -2,12 +2,12 @@
 import chisel3._
 import chisel3.util._
 
-import config.Configs._
-import config.OPcodes._
-import config.OPtypes._
-import utils._
-import config.EXEtypes._
-import config.LStypes._
+import Configs._
+import OPcodes._
+import OPtypes._
+// import utils._
+import EXEtypes._
+import LStypes._
 
 //-----------------------------------------------------------------------------
 // ID

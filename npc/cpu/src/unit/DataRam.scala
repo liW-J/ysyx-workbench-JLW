@@ -2,11 +2,11 @@
 import chisel3._
 import chisel3.util._
 
-import config.Configs._
-import config.OPtypes._
-import config.LStypes._
+import Configs._
+import OPtypes._
+import LStypes._
 
-import utils._
+// import utils._
 
 //-----------------------------------------------------------------------------
 // DataRam
