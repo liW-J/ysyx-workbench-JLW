@@ -16,7 +16,6 @@ int p_error = 0;
 bool is_full = false;
 
 void iringbuf_inst(word_t pc, uint32_t inst) {
-  LOG(DEBUG, "p_cur = %x\n",p_cur);
   iringbuf[p_cur].pc = pc;
   iringbuf[p_cur].inst = inst;
   p_cur = (p_cur + 1) % MAX_IRINGBUF;
@@ -42,4 +41,12 @@ void display_iringbuf() {
     } while ((i = (i+1)%MAX_IRINGBUF) != p_error);
     puts(ANSI_NONE);
 
+}
+
+void display_pread(paddr_t addr, int len){
+  LOG(DEBUG, "pread at " FMT_PADDR ", len=%d.\n", addr, len);
+}
+
+void display_pwrite(paddr_t addr, int len,  word_t data){
+  LOG(DEBUG, "pwrite at " FMT_PADDR ", len=%d, data=" FMT_WORD ".\n", addr, len, data);
 }
