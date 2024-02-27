@@ -27,6 +27,9 @@ enum {
   TYPE_N, TYPE_R, TYPE_B// none
 };
 
+void display_call_func(word_t pc, word_t func_addr);
+void display_ret_func(word_t pc);
+
 #define src1R() do { *src1 = R(rs1); } while (0)
 #define src2R() do { *src2 = R(rs2); } while (0)
 #define immI() do { *imm = SEXT(BITS(i, 31, 20), 12); } while(0)
@@ -40,7 +43,23 @@ enum {
                                  (BITS(i, 7, 7) << 10) | \
                                  (BITS(i, 30, 25) << 4) | \
                                   BITS(i, 11, 8)), 12) << 1; } while (0);
-                                 
+
+#define JAL_IS_FUNC(s) IFDEF(CONFIG_FTRACE, { \
+  if (rd == 1) { \
+    display_call_func(s->pc, s->dnpc); \
+  } else if (rd == 0) { \
+    display_call_func(s->pc, s->dnpc); \
+  } \
+})
+#define JALR_IS_FUNC(s) IFDEF(CONFIG_FTRACE, { \
+    if (s->isa.inst.val == 0x00008067) { \
+      display_ret_func(s->pc); \
+    } else if (rd == 1) { \
+      display_call_func(s->pc, s->dnpc); \
+    } else if (rd == 0 && imm == 0) { \
+      display_call_func(s->pc, s->dnpc); \
+    } \
+  })                     
 
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2, word_t *imm, int type) {
   uint32_t i = s->isa.inst.val;
@@ -72,8 +91,8 @@ static int decode_exec(Decode *s) {
 
   INSTPAT("??????? ????? ????? ??? ????? 01101 11", lui    , U, R(rd) = imm);
   INSTPAT("??????? ????? ????? ??? ????? 00101 11", auipc  , U, R(rd) = s->pc + imm);
-  INSTPAT("??????? ????? ????? ??? ????? 11011 11", jal    , J, R(rd) = s->pc + 4; s->dnpc = s->pc + imm);
-  INSTPAT("??????? ????? ????? 000 ????? 11001 11", jalr   , I, t = s->pc + 4; s->dnpc = (src1 + imm)&(~1); R(rd) = t);
+  INSTPAT("??????? ????? ????? ??? ????? 11011 11", jal    , J, R(rd) = s->pc + 4; s->dnpc = s->pc + imm; JAL_IS_FUNC(s));
+  INSTPAT("??????? ????? ????? 000 ????? 11001 11", jalr   , I, t = s->pc + 4; s->dnpc = (src1 + imm)&(~1); R(rd) = t; JALR_IS_FUNC(s));
 
   INSTPAT("??????? ????? ????? 000 ????? 11000 11", beq    , B, s->dnpc = (src1 == src2) ? (s->pc + imm) : s->dnpc);
   INSTPAT("??????? ????? ????? 001 ????? 11000 11", bne    , B, s->dnpc = (src1 != src2) ? (s->pc + imm) : s->dnpc);

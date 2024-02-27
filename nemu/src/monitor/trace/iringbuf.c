@@ -1,6 +1,5 @@
 #include <common.h>
 #include <memory/paddr.h>
-#include <cpu/ifetch.h>
 
 #define IRINGBUF_RANGE 5
 #define MAX_IRINGBUF 10
@@ -43,10 +42,4 @@ void display_iringbuf() {
 
 }
 
-void display_pread(paddr_t addr, int len){
-  LOG(DEBUG, "pread at " FMT_PADDR ", len=%d.\n", addr, len);
-}
 
-void display_pwrite(paddr_t addr, int len,  word_t data){
-  LOG(DEBUG, "pwrite at " FMT_PADDR ", len=%d, data=" FMT_WORD ".\n", addr, len, data);
-}
