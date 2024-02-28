@@ -92,21 +92,21 @@ void display_call_func(word_t pc, word_t func_addr)
   {
     if(func_addr >= symbol[i].addr && func_addr < (symbol[i].addr + symbol[i].size))break;
   }
-  printf("0x%08x:", pc);
-  for(int k = 0; k < rec_depth; k++) printf(" ");
+  ftrace_write("0x%08x:", pc);
+  for(int k = 0; k < rec_depth; k++) ftrace_write(" ");
   rec_depth++;
-  printf("call  [%s@0x%08x]\n", symbol[i].name, symbol[i].addr);
+  ftrace_write("call  [%s@0x%08x]\n", symbol[i].name, symbol[i].addr);
 }
 
 void display_ret_func(word_t pc)
 {
-    int i = 0;
-    for(; i < func_num; i++)
-    {
-      if(pc >= symbol[i].addr && pc < (symbol[i].addr + symbol[i].size))break;
-    }
-    printf("0x%08x:", pc);
-    rec_depth--;
-    for(int k = 0; k < rec_depth; k++) printf(" ");
-    printf("ret  [%s]\n", symbol[i].name);
+  int i = 0;
+  for(; i < func_num; i++)
+  {
+    if(pc >= symbol[i].addr && pc < (symbol[i].addr + symbol[i].size))break;
+  }
+  ftrace_write("0x%08x:", pc);
+  rec_depth--;
+  for(int k = 0; k < rec_depth; k++) ftrace_write(" ");
+  ftrace_write("ret  [%s]\n", symbol[i].name);
 }

@@ -98,8 +98,9 @@ extern uint64_t g_nr_guest_inst;
 
 #ifndef CONFIG_TARGET_AM
 FILE *log_fp = NULL;
+FILE *ftrace_fp = NULL;
 
-void init_log(const char *log_file) {
+void init_log(const char *log_file, const char *ftrace_file) {
   log_fp = stdout;
   if (log_file != NULL) {
     FILE *fp = fopen(log_file, "w");
@@ -107,6 +108,16 @@ void init_log(const char *log_file) {
     log_fp = fp;
   }
   Log("Log is written to %s", log_file ? log_file : "stdout");
+  
+  #ifdef CONFIG_FTRACE_COND
+  ftrace_fp = stdout;
+  if (ftrace_file != NULL) {
+    FILE *fp = fopen(ftrace_file, "w");
+    Assert(fp, "Can not open '%s'", ftrace_file);
+    ftrace_fp = fp;
+  }
+  Log("ftrace is written to %s", ftrace_file ? ftrace_file : "stdout");
+  #endif
 }
 
 bool log_enable() {
