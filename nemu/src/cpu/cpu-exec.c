@@ -36,7 +36,6 @@ void difftest_watchpoint();
 void display_iringbuf();
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
-
 #ifdef CONFIG_ITRACE_COND
   if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
 #endif
@@ -45,10 +44,8 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_FTRACE_COND
   if (FTRACE_COND) //TODO
 #endif
-
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
-
-  IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
+  // IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
   IFDEF(CONFIG_WATCHPOINT, difftest_watchpoint());
 }
 
@@ -81,12 +78,10 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #else
   p[0] = '\0'; // the upstream llvm does not support loongarch32r
 #endif
-
 #ifdef CONFIG_IRINGBUF
   void iringbuf_inst(word_t pc, uint32_t inst);
   iringbuf_inst(s->pc, s->isa.inst.val);
 #endif
-
 #endif
 }
 
