@@ -15,6 +15,9 @@
 
 // INCLUDE MODULE CLASSES
 #include "VTOP___024root.h"
+#include "VTOP___024unit.h"
+
+// DPI TYPES for DPI Export callbacks (Internal use)
 
 // SYMS CLASS (contains all model state)
 class VTOP__Syms final : public VerilatedSyms {
@@ -28,6 +31,10 @@ class VTOP__Syms final : public VerilatedSyms {
 
     // MODULE INSTANCE STATE
     VTOP___024root                 TOP;
+    VTOP___024unit                 TOP____024unit;
+
+    // SCOPE NAMES
+    VerilatedScope __Vscope_TOP__trap;
 
     // CONSTRUCTORS
     VTOP__Syms(VerilatedContext* contextp, const char* namep, VTOP* modelp);

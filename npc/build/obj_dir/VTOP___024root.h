@@ -8,12 +8,17 @@
 #include "verilated.h"
 
 class VTOP__Syms;
+class VTOP___024unit;
+
 
 class VTOP___024root final : public VerilatedModule {
   public:
+    // CELLS
+    VTOP___024unit* __PVT____024unit;
 
     // DESIGN SPECIFIC STATE
     VL_IN8(clock,0,0);
+    CData/*0:0*/ TOP__DOT__id__DOT__isEbreak;
     VL_IN8(reset,0,0);
     VL_OUT8(io_bundleControl_isALUSrc,0,0);
     VL_OUT8(io_bundleControl_isJump,0,0);
@@ -24,15 +29,13 @@ class VTOP___024root final : public VerilatedModule {
     VL_OUT8(io_bundleControl_isSigned,0,0);
     VL_OUT8(io_bundleControl_lsType,1,0);
     VL_OUT8(io_bundleControl_exeType,3,0);
-    VL_OUT8(io_bundleDataControl_isLoad,0,0);
-    VL_OUT8(io_bundleDataControl_isStore,0,0);
-    VL_OUT8(io_bundleDataControl_isSigned,0,0);
-    VL_OUT8(io_bundleDataControl_lsType,1,0);
     VL_OUT8(io_rs1,4,0);
     VL_OUT8(io_rs2,4,0);
     VL_OUT8(io_rd,4,0);
     VL_OUT8(io_resBranch,0,0);
     CData/*0:0*/ __Vtrigrprev__TOP__clock;
+    CData/*0:0*/ __Vtrigrprev__TOP__TOP__DOT__id__DOT__isEbreak;
+    CData/*0:0*/ __VactDidInit;
     CData/*0:0*/ __VactContinue;
     VL_IN(io_inst,31,0);
     VL_IN(io_res,31,0);
@@ -49,8 +52,8 @@ class VTOP___024root final : public VerilatedModule {
     VlUnpacked<CData/*0:0*/, 2> __Vm_traceActivity;
     VlTriggerVec<1> __VstlTriggered;
     VlTriggerVec<1> __VicoTriggered;
-    VlTriggerVec<1> __VactTriggered;
-    VlTriggerVec<1> __VnbaTriggered;
+    VlTriggerVec<2> __VactTriggered;
+    VlTriggerVec<2> __VnbaTriggered;
 
     // INTERNAL VARIABLES
     VTOP__Syms* const vlSymsp;

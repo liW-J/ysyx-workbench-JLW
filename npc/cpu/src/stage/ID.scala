@@ -24,7 +24,8 @@ class DecoderIO extends Bundle {
   val BundleControl = new BundleControl()
   val bundleReg     = new BundleReg()
   val imm           = Output(UInt(DATA_WIDTH.W))
-  val writeEnable = Output(Bool())
+  val writeEnable   = Output(Bool())
+  val isEbreak      = Output(Bool())
 }
 
 class ID extends Module with DecodeUtils {
@@ -36,19 +37,21 @@ class ID extends Module with DecodeUtils {
 
   // val funct3   = Reg(io.inst(14, 12))
   // val funct7   = Reg(io.inst(31, 27))
-
-  val isALUSrc, isJump, isBranch, isJAL, isLoad, isStore, isSigned, writeEnable = WireDefault(false.B)
+  
+  
+  val isEbreak, isALUSrc, isJump, isBranch, isJAL, isLoad, isStore, isSigned, writeEnable = WireDefault(false.B)
 
   val opcode  = WireDefault(0.U(OP_TYPES_WIDTH.W))
   val lsType  = WireDefault(0.U(LS_TYPE_WIDTH.W))
   val exeType = WireDefault(0.U(EXE_TYPES_WIDTH.W))
-  val imm     = WireDefault(0.U(32.W))
+  val imm     = WireDefault(0.U(DATA_WIDTH.W))
 
   opcode := io.inst(6, 2)
-
+  
   switch(opcode) {
     is(EBREAK_OP) {
-      printf("ebreak")
+      printf("ebreak\n")
+      isEbreak := true.B
     }
     is(ADDI_OP) {
       printf("addi\n")
@@ -77,5 +80,6 @@ class ID extends Module with DecodeUtils {
   io.BundleControl.lsType      := lsType
   io.BundleControl.exeType     := exeType
   io.writeEnable               := writeEnable
+  io.isEbreak                  := isEbreak
   io.imm                       := imm
 }

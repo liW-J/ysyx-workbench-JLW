@@ -5,6 +5,8 @@
 #include <verilated.h>   //访问验证程序例程的库
 #include <verilated_vcd_c.h>  //向VCD文件中写入波形
 #include "VTOP.h"
+#include "VTOP__Dpi.h"
+#include "svdpi.h"
 
 /* The assembly code of instructions executed is only output to the screen
  * when the number of instructions executed is less than this value.
@@ -28,7 +30,6 @@ VerilatedVcdC *tfp = NULL;
 // }
 
 #define MAX_INST_TO_PRINT 10
-
 CPU_state cpu = {};
 VTOP top ;
 uint64_t g_nr_guest_inst = 0;
@@ -37,6 +38,7 @@ static bool g_print_step = false;
 static bool g_print_iring = false;
 static bool g_print_mem = false;
 static bool g_print_func = false;
+bool is_ebreak = false;
 
 void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
@@ -58,29 +60,33 @@ static void single_cycle() {
     top.eval();
 }
 
-uint32_t isa_exec_once(Decode *s) {
-  s->isa.inst.val = inst_fetch(&s->snpc, 4);
-  return s->isa.inst.val;
+void check_ebreak(svBit flag){
+  is_ebreak = flag;
 }
 
 static void exec_once(Decode *s, vaddr_t pc) {
   s->pc = pc;
-  s->snpc = pc;
-  vaddr_t inst_todo = isa_exec_once(s);
-
-  Log(DEBUG, "inst=%08x", inst_todo);
-  top.io_inst = inst_todo;
+  s->snpc = pc+4;
+  top.io_inst = Mr(pc,4);
+  s->isa.inst.val = top.io_inst;
   top.eval();
+  Log(DEBUG, "inst=%08x", top.io_inst);
+  Log(DEBUG, "PC: %x", top.io_pc);
   Log(DEBUG, "reg1=%08x", top.io_rs1);
   Log(DEBUG, "reg2=%08x", top.io_rs2);
   Log(DEBUG, "rd=%08x", top.io_rd);
   Log(DEBUG, "src1=%x", top.io_src1);
   Log(DEBUG, "src2=%x", top.io_src2);
   Log(DEBUG, "resEX=%08x", top.io_resEX);
+  Log(DEBUG, "is_ebreak=%d", is_ebreak);
   Log(DEBUG, "isLoad=%08x", top.io_bundleControl_isLoad);
   Log(DEBUG, "isStore=%08x", top.io_bundleControl_isStore);
   Log(DEBUG, "imm=%x", top.io_imm);
+  if (is_ebreak == 1) NPCTRAP(top.io_pc, 0);
+  if (top.io_bundleControl_isLoad == 1) Mr(top.io_resEX, top.io_bundleControl_lsType);
+  if (top.io_bundleControl_isStore == 1) Mw(top.io_resEX, top.io_bundleControl_lsType, top.io_src2);
   single_cycle();
+  s->dnpc = top.io_pc;
   Log(DEBUG, "exce_once");
 #ifdef CONFIG_ITRACE
   char *p = s->logbuf;

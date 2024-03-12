@@ -4,6 +4,7 @@ import chisel3.util._
 import config.Configs._
 import utils._
 import unit._
+import blackbox._
 import _root_.stage.ID
 import _root_.stage.EX
 
@@ -13,7 +14,6 @@ class TopIO extends Bundle {
   val res          = Input(UInt(INST_WIDTH.W))
   val pc            = Output(UInt(ADDR_WIDTH.W))
   val bundleControl = new BundleControl()
-  val bundleDataControl = new BundleDataControl()
   val resEX         = Output(UInt(DATA_WIDTH.W))
   val src1           = Output(UInt(DATA_WIDTH.W))
   val src2           = Output(UInt(DATA_WIDTH.W))
@@ -32,6 +32,11 @@ class TOP extends Module {
   val gprFile    = Module(new GPRFile())
   val ex         = Module(new EX())
   val controller = Module(new Controller())
+  val trap       = Module(new Trap())
+
+  trap.io.isEbreak := id.io.isEbreak
+  trap.io.clock    := clock
+  trap.io.reset := reset
 
   // judge nextPC by control from frontPC
   pcReg.io.resBranch <> ex.io.resBranch
@@ -72,5 +77,4 @@ class TOP extends Module {
   io.resBranch <> ex.io.resBranch
   io.src1 <> ex.io.src1
   io.src2 <> ex.io.src2
-  io.bundleDataControl <> controller.io.bundleDataControl
 }

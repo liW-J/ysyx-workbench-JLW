@@ -9,10 +9,13 @@
 #define VERILATED_VTOP_H_  // guard
 
 #include "verilated.h"
+#include "svdpi.h"
 
 class VTOP__Syms;
 class VTOP___024root;
 class VerilatedVcdC;
+class VTOP___024unit;
+
 
 // This class is the main interface to the Verilated model
 class VTOP VL_NOT_FINAL : public VerilatedModel {
@@ -36,10 +39,6 @@ class VTOP VL_NOT_FINAL : public VerilatedModel {
     VL_OUT8(&io_bundleControl_isSigned,0,0);
     VL_OUT8(&io_bundleControl_lsType,1,0);
     VL_OUT8(&io_bundleControl_exeType,3,0);
-    VL_OUT8(&io_bundleDataControl_isLoad,0,0);
-    VL_OUT8(&io_bundleDataControl_isStore,0,0);
-    VL_OUT8(&io_bundleDataControl_isSigned,0,0);
-    VL_OUT8(&io_bundleDataControl_lsType,1,0);
     VL_OUT8(&io_rs1,4,0);
     VL_OUT8(&io_rs2,4,0);
     VL_OUT8(&io_rd,4,0);
@@ -55,6 +54,7 @@ class VTOP VL_NOT_FINAL : public VerilatedModel {
     // CELLS
     // Public to allow access to /* verilator public */ items.
     // Otherwise the application code can consider these internals.
+    VTOP___024unit* const __PVT____024unit;
 
     // Root instance pointer to allow access to model internals,
     // including inlined /* verilator public_flat_* */ items.

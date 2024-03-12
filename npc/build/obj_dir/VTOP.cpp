@@ -4,6 +4,7 @@
 #include "VTOP.h"
 #include "VTOP__Syms.h"
 #include "verilated_vcd_c.h"
+#include "verilated_dpi.h"
 
 //============================================================
 // Constructors
@@ -22,10 +23,6 @@ VTOP::VTOP(VerilatedContext* _vcontextp__, const char* _vcname__)
     , io_bundleControl_isSigned{vlSymsp->TOP.io_bundleControl_isSigned}
     , io_bundleControl_lsType{vlSymsp->TOP.io_bundleControl_lsType}
     , io_bundleControl_exeType{vlSymsp->TOP.io_bundleControl_exeType}
-    , io_bundleDataControl_isLoad{vlSymsp->TOP.io_bundleDataControl_isLoad}
-    , io_bundleDataControl_isStore{vlSymsp->TOP.io_bundleDataControl_isStore}
-    , io_bundleDataControl_isSigned{vlSymsp->TOP.io_bundleDataControl_isSigned}
-    , io_bundleDataControl_lsType{vlSymsp->TOP.io_bundleDataControl_lsType}
     , io_rs1{vlSymsp->TOP.io_rs1}
     , io_rs2{vlSymsp->TOP.io_rs2}
     , io_rd{vlSymsp->TOP.io_rd}
@@ -37,6 +34,7 @@ VTOP::VTOP(VerilatedContext* _vcontextp__, const char* _vcname__)
     , io_src1{vlSymsp->TOP.io_src1}
     , io_src2{vlSymsp->TOP.io_src2}
     , io_imm{vlSymsp->TOP.io_imm}
+    , __PVT____024unit{vlSymsp->TOP.__PVT____024unit}
     , rootp{&(vlSymsp->TOP)}
 {
     // Register model with the context

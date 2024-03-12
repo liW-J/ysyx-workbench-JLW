@@ -71,7 +71,8 @@ SRCSS_BLACKLIST     = $(SRCSS_SRC_BLACKLIST)                               \
 SRCSS_WHITELIST     = $(shell find $(SRCSS_DIR) -name "*.scala")
 SRCSS               = $(filter-out $(SRCSS_BLACKLIST), $(SRCSS_WHITELIST))
 
-SRCVS_GEN = $(BUILD_DIR)/$(CFG_CFLAGS_TOP_NAME).v
+SRCVS_GEN = $(BUILD_DIR)/$(CFG_CFLAGS_TOP_NAME).v 
+
 # SRCVS_DIR = $(abspath $(NPC_HOME)/cpu/srcv)
 # SRCVS     = $(shell find $(SRCVS_DIR) -name "*.v")
 
@@ -83,7 +84,8 @@ SRCCS_DIR += $(NPC_HOME)/sim             \
              $(NPC_HOME)/sim/monitor/sdb \
              $(NPC_HOME)/sim/utils			 \
 						 $(NPC_HOME)/sim/engine      \
-						 $(NPC_HOME)/sim/engine/interpreter
+						 $(NPC_HOME)/sim/engine/interpreter \
+						 $(NPC_HOME)/cpu/resources
 SRCCS_SRC_BLACKLIST =
 SRCCS_DIR_BLACKLIST =
 SRCCS_BLACKLIST     = $(SRCCS_SRC_BLACKLIST)                               \
