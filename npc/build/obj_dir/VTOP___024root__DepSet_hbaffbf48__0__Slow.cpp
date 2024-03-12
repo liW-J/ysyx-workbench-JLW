@@ -28,16 +28,16 @@ VL_ATTR_COLD void VTOP___024root___eval_initial__TOP(VTOP___024root* vlSelf) {
     VTOP__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    VTOP___024root___eval_initial__TOP\n"); );
     // Body
-    vlSelf->io_rs1 = 0U;
-    vlSelf->io_rs2 = 0U;
     vlSelf->io_bundleControl_isJump = 0U;
     vlSelf->io_bundleControl_isBranch = 0U;
-    vlSelf->io_bundleControl_isJAL = 0U;
     vlSelf->io_bundleControl_isLoad = 0U;
     vlSelf->io_bundleControl_isStore = 0U;
     vlSelf->io_bundleControl_isSigned = 0U;
-    vlSelf->io_bundleControl_writeEnable = 0U;
     vlSelf->io_bundleControl_lsType = 0U;
+    vlSelf->io_bundleDataControl_isLoad = 0U;
+    vlSelf->io_bundleDataControl_isStore = 0U;
+    vlSelf->io_bundleDataControl_isSigned = 0U;
+    vlSelf->io_bundleDataControl_lsType = 0U;
     vlSelf->io_resBranch = 0U;
 }
 
@@ -71,7 +71,7 @@ VL_ATTR_COLD void VTOP___024root___eval_settle(VTOP___024root* vlSelf) {
 #ifdef VL_DEBUG
                 VTOP___024root___dump_triggers__stl(vlSelf);
 #endif
-                VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 228, "", "Settle region did not converge.");
+                VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 257, "", "Settle region did not converge.");
             }
             vlSelf->__VstlIterCount = ((IData)(1U) 
                                        + vlSelf->__VstlIterCount);
@@ -99,32 +99,69 @@ VL_ATTR_COLD void VTOP___024root___stl_sequent__TOP__0(VTOP___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     VTOP__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    VTOP___024root___stl_sequent__TOP__0\n"); );
+    // Init
+    CData/*0:0*/ TOP__DOT__id__DOT____VdfgTmp_hfd5cca07__0;
+    TOP__DOT__id__DOT____VdfgTmp_hfd5cca07__0 = 0;
     // Body
     vlSelf->io_pc = vlSelf->TOP__DOT__pcReg__DOT__pcReg;
-    vlSelf->io_inst = vlSelf->TOP__DOT__instRom__DOT__instMem_ext__DOT__Memory
-        [(0x3ffU & (vlSelf->TOP__DOT__pcReg__DOT__pcReg 
-                    >> 2U))];
+    vlSelf->io_rd = (0x1fU & (vlSelf->io_inst >> 7U));
+    vlSelf->io_bundleControl_isJAL = (IData)(((0x14U 
+                                               == (0x7cU 
+                                                   & vlSelf->io_inst)) 
+                                              & (~ 
+                                                 ((0x1cU 
+                                                   == 
+                                                   (0x1fU 
+                                                    & (vlSelf->io_inst 
+                                                       >> 2U))) 
+                                                  | (4U 
+                                                     == 
+                                                     (0x1fU 
+                                                      & (vlSelf->io_inst 
+                                                         >> 2U)))))));
+    vlSelf->io_rs1 = (0x1fU & (vlSelf->io_inst >> 0xfU));
+    vlSelf->io_rs2 = (0x1fU & (vlSelf->io_inst >> 0x14U));
+    TOP__DOT__id__DOT____VdfgTmp_hfd5cca07__0 = ((4U 
+                                                  == 
+                                                  (0x1fU 
+                                                   & (vlSelf->io_inst 
+                                                      >> 2U))) 
+                                                 | (5U 
+                                                    == 
+                                                    (0x1fU 
+                                                     & (vlSelf->io_inst 
+                                                        >> 2U))));
+    if ((0x1cU == (0x1fU & (vlSelf->io_inst >> 2U)))) {
+        vlSelf->io_imm = 0U;
+        vlSelf->io_bundleControl_exeType = 0U;
+    } else {
+        vlSelf->io_imm = ((4U == (0x1fU & (vlSelf->io_inst 
+                                           >> 2U)))
+                           ? (((- (IData)((vlSelf->io_inst 
+                                           >> 0x1fU))) 
+                               << 0xcU) | (vlSelf->io_inst 
+                                           >> 0x14U))
+                           : ((5U == (0x1fU & (vlSelf->io_inst 
+                                               >> 2U)))
+                               ? (0xfffff000U & vlSelf->io_inst)
+                               : 0U));
+        vlSelf->io_bundleControl_exeType = TOP__DOT__id__DOT____VdfgTmp_hfd5cca07__0;
+    }
+    vlSelf->io_src1 = ((IData)(vlSelf->io_bundleControl_isJAL)
+                        ? vlSelf->TOP__DOT__pcReg__DOT__pcReg
+                        : vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory
+                       [vlSelf->io_rs1]);
     vlSelf->io_bundleControl_isALUSrc = ((0x1cU != 
-                                          (0x1fU & vlSelf->io_inst)) 
-                                         & (4U == (0x1fU 
-                                                   & vlSelf->io_inst)));
-    vlSelf->io_bundleControl_exeType = ((0x1cU == (0x1fU 
-                                                   & vlSelf->io_inst))
-                                         ? 0U : (4U 
-                                                 == 
-                                                 (0x1fU 
-                                                  & vlSelf->io_inst)));
-    vlSelf->io_imm = (((4U != (0x1fU & vlSelf->io_inst)) 
-                       | (0x1cU == (0x1fU & vlSelf->io_inst)))
-                       ? 0U : (((- (IData)((vlSelf->io_inst 
-                                            >> 0x1fU))) 
-                                << 0xcU) | (vlSelf->io_inst 
-                                            >> 0x14U)));
+                                          (0x1fU & 
+                                           (vlSelf->io_inst 
+                                            >> 2U))) 
+                                         & (IData)(TOP__DOT__id__DOT____VdfgTmp_hfd5cca07__0));
+    vlSelf->io_src2 = ((IData)(vlSelf->io_bundleControl_isALUSrc)
+                        ? vlSelf->io_imm : vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory
+                       [vlSelf->io_rs2]);
     vlSelf->io_resEX = ((1U == (IData)(vlSelf->io_bundleControl_exeType))
-                         ? ((IData)(vlSelf->io_bundleControl_isALUSrc)
-                             ? vlSelf->io_imm : 0U)
+                         ? (vlSelf->io_src1 + vlSelf->io_src2)
                          : 0U);
-    vlSelf->io_resLoad = vlSelf->io_resEX;
 }
 
 VL_ATTR_COLD void VTOP___024root___eval_stl(VTOP___024root* vlSelf) {
@@ -136,6 +173,21 @@ VL_ATTR_COLD void VTOP___024root___eval_stl(VTOP___024root* vlSelf) {
         VTOP___024root___stl_sequent__TOP__0(vlSelf);
     }
 }
+
+#ifdef VL_DEBUG
+VL_ATTR_COLD void VTOP___024root___dump_triggers__ico(VTOP___024root* vlSelf) {
+    if (false && vlSelf) {}  // Prevent unused
+    VTOP__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
+    VL_DEBUG_IF(VL_DBG_MSGF("+    VTOP___024root___dump_triggers__ico\n"); );
+    // Body
+    if ((1U & (~ (IData)(vlSelf->__VicoTriggered.any())))) {
+        VL_DBG_MSGF("         No triggers active\n");
+    }
+    if (vlSelf->__VicoTriggered.at(0U)) {
+        VL_DBG_MSGF("         'ico' region trigger index 0 is active: Internal 'ico' trigger - first iteration\n");
+    }
+}
+#endif  // VL_DEBUG
 
 #ifdef VL_DEBUG
 VL_ATTR_COLD void VTOP___024root___dump_triggers__act(VTOP___024root* vlSelf) {
@@ -174,8 +226,9 @@ VL_ATTR_COLD void VTOP___024root___ctor_var_reset(VTOP___024root* vlSelf) {
     // Body
     vlSelf->clock = 0;
     vlSelf->reset = 0;
-    vlSelf->io_pc = 0;
     vlSelf->io_inst = 0;
+    vlSelf->io_res = 0;
+    vlSelf->io_pc = 0;
     vlSelf->io_bundleControl_isALUSrc = 0;
     vlSelf->io_bundleControl_isJump = 0;
     vlSelf->io_bundleControl_isBranch = 0;
@@ -183,18 +236,26 @@ VL_ATTR_COLD void VTOP___024root___ctor_var_reset(VTOP___024root* vlSelf) {
     vlSelf->io_bundleControl_isLoad = 0;
     vlSelf->io_bundleControl_isStore = 0;
     vlSelf->io_bundleControl_isSigned = 0;
-    vlSelf->io_bundleControl_writeEnable = 0;
     vlSelf->io_bundleControl_lsType = 0;
     vlSelf->io_bundleControl_exeType = 0;
+    vlSelf->io_bundleDataControl_isLoad = 0;
+    vlSelf->io_bundleDataControl_isStore = 0;
+    vlSelf->io_bundleDataControl_isSigned = 0;
+    vlSelf->io_bundleDataControl_lsType = 0;
     vlSelf->io_resEX = 0;
+    vlSelf->io_src1 = 0;
+    vlSelf->io_src2 = 0;
     vlSelf->io_rs1 = 0;
     vlSelf->io_rs2 = 0;
+    vlSelf->io_rd = 0;
     vlSelf->io_imm = 0;
     vlSelf->io_resBranch = 0;
-    vlSelf->io_resLoad = 0;
     vlSelf->TOP__DOT__pcReg__DOT__pcReg = 0;
-    for (int __Vi0 = 0; __Vi0 < 1024; ++__Vi0) {
-        vlSelf->TOP__DOT__instRom__DOT__instMem_ext__DOT__Memory[__Vi0] = 0;
+    for (int __Vi0 = 0; __Vi0 < 32; ++__Vi0) {
+        vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory[__Vi0] = 0;
     }
     vlSelf->__Vtrigrprev__TOP__clock = 0;
+    for (int __Vi0 = 0; __Vi0 < 2; ++__Vi0) {
+        vlSelf->__Vm_traceActivity[__Vi0] = 0;
+    }
 }

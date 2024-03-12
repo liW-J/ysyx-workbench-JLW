@@ -7,7 +7,7 @@ import utils._
 class ControllerIO extends Bundle {
     val bundleControlIn = Flipped(new BundleControl()) // ID
     val bundleEXControl = Flipped(new BundleEXControl())  // EX
-    val bundleDataControl = Flipped(new BundleDataControl())  // DATA
+    val bundleDataControl = new BundleDataControl()  // DATA
     val bundleControlOut = new BundleControl() 
 }
 

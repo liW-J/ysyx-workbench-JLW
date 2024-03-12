@@ -24,6 +24,7 @@ class DecoderIO extends Bundle {
   val BundleControl = new BundleControl()
   val bundleReg     = new BundleReg()
   val imm           = Output(UInt(DATA_WIDTH.W))
+  val writeEnable = Output(Bool())
 }
 
 class ID extends Module with DecodeUtils {
@@ -43,17 +44,26 @@ class ID extends Module with DecodeUtils {
   val exeType = WireDefault(0.U(EXE_TYPES_WIDTH.W))
   val imm     = WireDefault(0.U(32.W))
 
-  opcode := io.inst(6, 0)
+  opcode := io.inst(6, 2)
 
   switch(opcode) {
     is(EBREAK_OP) {
       printf("ebreak")
     }
     is(ADDI_OP) {
-      printf("addi")
+      printf("addi\n")
       isALUSrc := true.B
       exeType  := EXE_ADD
+      writeEnable := true.B
       imm      := decodeImm(io.inst, typeI)
+    }
+    is(AUIPC_OP) {
+      printf("auipc\n")
+      isALUSrc := true.B
+      isJAL    := true.B
+      exeType  := EXE_ADD
+      writeEnable := true.B
+      imm      := decodeImm(io.inst, typeU)
     }
   }
 
@@ -64,8 +74,8 @@ class ID extends Module with DecodeUtils {
   io.BundleControl.isLoad      := isLoad
   io.BundleControl.isStore     := isStore
   io.BundleControl.isSigned    := isSigned
-  io.BundleControl.writeEnable := writeEnable
   io.BundleControl.lsType      := lsType
   io.BundleControl.exeType     := exeType
+  io.writeEnable               := writeEnable
   io.imm                       := imm
 }

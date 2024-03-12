@@ -12,6 +12,9 @@
  * You can modify this value as you want.
  */
 
+#define R(i) gpr(i)
+#define Mr vaddr_read
+#define Mw vaddr_write
 VerilatedContext *contextp = NULL;
 VerilatedVcdC *tfp = NULL;
 
@@ -63,8 +66,20 @@ uint32_t isa_exec_once(Decode *s) {
 static void exec_once(Decode *s, vaddr_t pc) {
   s->pc = pc;
   s->snpc = pc;
-  vaddr_t in = isa_exec_once(s);
-  // Log(DEBUG, "inst: %x", inst);
+  vaddr_t inst_todo = isa_exec_once(s);
+
+  Log(DEBUG, "inst=%08x", inst_todo);
+  top.io_inst = inst_todo;
+  top.eval();
+  Log(DEBUG, "reg1=%08x", top.io_rs1);
+  Log(DEBUG, "reg2=%08x", top.io_rs2);
+  Log(DEBUG, "rd=%08x", top.io_rd);
+  Log(DEBUG, "src1=%x", top.io_src1);
+  Log(DEBUG, "src2=%x", top.io_src2);
+  Log(DEBUG, "resEX=%08x", top.io_resEX);
+  Log(DEBUG, "isLoad=%08x", top.io_bundleControl_isLoad);
+  Log(DEBUG, "isStore=%08x", top.io_bundleControl_isStore);
+  Log(DEBUG, "imm=%x", top.io_imm);
   single_cycle();
   Log(DEBUG, "exce_once");
 #ifdef CONFIG_ITRACE
@@ -91,6 +106,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
 static void execute(uint64_t n) {
   Decode s;
   for (;n > 0; n --) {
+    Log(DEBUG, "inst_before=%08x", top.io_inst);
     Log(DEBUG, "PC: %x", top.io_pc);
     exec_once(&s, top.io_pc);
     g_nr_guest_inst ++;

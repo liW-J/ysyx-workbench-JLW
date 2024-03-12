@@ -20,17 +20,23 @@ VTOP::VTOP(VerilatedContext* _vcontextp__, const char* _vcname__)
     , io_bundleControl_isLoad{vlSymsp->TOP.io_bundleControl_isLoad}
     , io_bundleControl_isStore{vlSymsp->TOP.io_bundleControl_isStore}
     , io_bundleControl_isSigned{vlSymsp->TOP.io_bundleControl_isSigned}
-    , io_bundleControl_writeEnable{vlSymsp->TOP.io_bundleControl_writeEnable}
     , io_bundleControl_lsType{vlSymsp->TOP.io_bundleControl_lsType}
     , io_bundleControl_exeType{vlSymsp->TOP.io_bundleControl_exeType}
-    , io_resBranch{vlSymsp->TOP.io_resBranch}
-    , io_pc{vlSymsp->TOP.io_pc}
-    , io_inst{vlSymsp->TOP.io_inst}
-    , io_resEX{vlSymsp->TOP.io_resEX}
+    , io_bundleDataControl_isLoad{vlSymsp->TOP.io_bundleDataControl_isLoad}
+    , io_bundleDataControl_isStore{vlSymsp->TOP.io_bundleDataControl_isStore}
+    , io_bundleDataControl_isSigned{vlSymsp->TOP.io_bundleDataControl_isSigned}
+    , io_bundleDataControl_lsType{vlSymsp->TOP.io_bundleDataControl_lsType}
     , io_rs1{vlSymsp->TOP.io_rs1}
     , io_rs2{vlSymsp->TOP.io_rs2}
+    , io_rd{vlSymsp->TOP.io_rd}
+    , io_resBranch{vlSymsp->TOP.io_resBranch}
+    , io_inst{vlSymsp->TOP.io_inst}
+    , io_res{vlSymsp->TOP.io_res}
+    , io_pc{vlSymsp->TOP.io_pc}
+    , io_resEX{vlSymsp->TOP.io_resEX}
+    , io_src1{vlSymsp->TOP.io_src1}
+    , io_src2{vlSymsp->TOP.io_src2}
     , io_imm{vlSymsp->TOP.io_imm}
-    , io_resLoad{vlSymsp->TOP.io_resLoad}
     , rootp{&(vlSymsp->TOP)}
 {
     // Register model with the context

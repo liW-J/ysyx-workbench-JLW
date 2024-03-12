@@ -12,7 +12,7 @@
 !init.sh
 !/digital-LAB/*
 /nvboard
-/am-kernels
+!/am-kernels
 /fceux-am
 /npc-chisel
 git-count.sh

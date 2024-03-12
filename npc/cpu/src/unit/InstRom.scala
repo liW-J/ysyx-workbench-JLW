@@ -17,8 +17,8 @@ class InstRom extends Module {
   val instMem = Mem(MEM_INST_SIZE, UInt(INST_WIDTH.W))
 
   // a test num used for InstRomtest
-  instMem.write(1.U, 0xfe0f8f93L.U);
-  instMem.write(2.U, 0x00100073L.U)
+  // instMem.write(1.U, 0xfe0f8f93L.U);
+  // instMem.write(2.U, 0x00100073L.U)
 
   io.inst := instMem.read(io.addr >> INST_BYTE_WIDTH_LOG.U) // addr need offset right 2
 }

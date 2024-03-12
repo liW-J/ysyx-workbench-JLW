@@ -28,6 +28,7 @@ class GPRFile extends Module {
 
   io.dataRead1 := regs.read(io.bundleReg.rs1)
   io.dataRead2 := regs.read(io.bundleReg.rs2)
+  print("rd-data=%x\n",regs.read(io.bundleReg.rd))
 
   // if we is TRUE && not $zero , write
   when(io.writeEnable && io.bundleReg.rd =/= 0.U) {
