@@ -102,6 +102,7 @@ $(SRCVS_GEN): $(SRCSS)
 	$(call git_commit, "generate verilog")
 	mkdir -p $(BUILD_DIR)                           
 	mill -i __.test.runMain Elaborate --target-dir $(BUILD_DIR)
+	@sed -i '/\/\/ ----- 8< ----- FILE "firrtl_black_box_resource_files.f" ----- 8< -----/,$$d' $@
 
 $(NPC_BIN): $(INCS) $(SRCS) $(CONFIG)
 	@rm -rf $(DIR_OBJ)
