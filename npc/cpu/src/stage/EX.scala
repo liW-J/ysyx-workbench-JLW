@@ -27,6 +27,7 @@ class ExecIO extends Bundle {
     val res = Output(UInt(DATA_WIDTH.W))
     val src1 = Output(UInt(DATA_WIDTH.W))
     val src2 = Output(UInt(DATA_WIDTH.W))
+    val writeEnable   = Output(Bool())
 }
 
 class EX extends Module {
@@ -52,6 +53,7 @@ class EX extends Module {
     switch(io.bundleEXControl.exeType) {
         is(EXE_ADD) {
             res := src1 +& src2
+            writeEnable := true.B
         }
     }
 
@@ -60,4 +62,5 @@ class EX extends Module {
     io.src2 := src2
     io.res := res
     io.resBranch := resBranch
+    io.writeEnable := writeEnable
 }

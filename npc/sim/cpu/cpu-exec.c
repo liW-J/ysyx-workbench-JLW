@@ -38,7 +38,16 @@ static bool g_print_step = false;
 static bool g_print_iring = false;
 static bool g_print_mem = false;
 static bool g_print_func = false;
-bool is_ebreak = false;
+static bool is_ebreak = false;
+static vaddr_t g_pc = 0;
+
+void check_ebreak(svBit flag){
+  is_ebreak = flag;
+}
+
+void get_pc(int pc){
+  g_pc = pc;
+}
 
 void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
@@ -48,7 +57,8 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #endif
 
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
-
+  // IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
+  // IFDEF(CONFIG_WATCHPOINT, difftest_watchpoint());
 }
 // void device_update();
 void difftest_watchpoint();
@@ -60,10 +70,6 @@ static void single_cycle() {
     top.eval();
 }
 
-void check_ebreak(svBit flag){
-  is_ebreak = flag;
-}
-
 static void exec_once(Decode *s, vaddr_t pc) {
   s->pc = pc;
   s->snpc = pc+4;
@@ -71,22 +77,25 @@ static void exec_once(Decode *s, vaddr_t pc) {
   s->isa.inst.val = top.io_inst;
   top.eval();
   Log(DEBUG, "inst=%08x", top.io_inst);
-  Log(DEBUG, "PC: %x", top.io_pc);
+  Log(DEBUG, "PC: %x", pc);
   Log(DEBUG, "reg1=%08x", top.io_rs1);
   Log(DEBUG, "reg2=%08x", top.io_rs2);
   Log(DEBUG, "rd=%08x", top.io_rd);
   Log(DEBUG, "src1=%x", top.io_src1);
   Log(DEBUG, "src2=%x", top.io_src2);
   Log(DEBUG, "resEX=%08x", top.io_resEX);
-  Log(DEBUG, "is_ebreak=%d", is_ebreak);
-  Log(DEBUG, "isLoad=%08x", top.io_bundleControl_isLoad);
-  Log(DEBUG, "isStore=%08x", top.io_bundleControl_isStore);
+  // Log(DEBUG, "is_ebreak=%d", is_ebreak);
+  // Log(DEBUG, "isLoad=%08x", top.io_bundleControl_isLoad);
+  // Log(DEBUG, "isStore=%08x", top.io_bundleControl_isStore);
+  Log(DEBUG, "writeEnable=%08x", top.io_writeEnable);
+  Log(DEBUG, "test=%08x", top.io_test);
   Log(DEBUG, "imm=%x", top.io_imm);
-  if (is_ebreak == 1) NPCTRAP(top.io_pc, 0);
-  if (top.io_bundleControl_isLoad == 1) Mr(top.io_resEX, top.io_bundleControl_lsType);
-  if (top.io_bundleControl_isStore == 1) Mw(top.io_resEX, top.io_bundleControl_lsType, top.io_src2);
+
+  if (is_ebreak) NPCTRAP(pc, 0);
+  if (top.io_bundleControl_isLoad) Mr(top.io_resEX, top.io_bundleControl_lsType);
+  if (top.io_bundleControl_isStore) Mw(top.io_resEX, top.io_bundleControl_lsType, top.io_src2);
   single_cycle();
-  s->dnpc = top.io_pc;
+  s->dnpc = g_pc;
   Log(DEBUG, "exce_once");
 #ifdef CONFIG_ITRACE
   char *p = s->logbuf;
@@ -136,7 +145,7 @@ void cpu_exec(uint64_t n) {
   g_print_step = (n < MAX_INST_TO_PRINT);
   switch (npc_state.state) {
     case NPC_END: case NPC_ABORT:
-      printf("Program execution has ended. To restart the program, exit NPC and run again.\n");
+      Log(WARN, "Program execution has ended. To restart the program, exit NPC and run again.");
       return;
     default: npc_state.state = NPC_RUNNING;
   }

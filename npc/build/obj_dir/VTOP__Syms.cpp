@@ -28,6 +28,7 @@ VTOP__Syms::VTOP__Syms(VerilatedContext* contextp, const char* namep, VTOP* mode
     TOP.__Vconfigure(true);
     TOP____024unit.__Vconfigure(true);
     // Setup scopes
+    __Vscope_TOP__getPC.configure(this, name(), "getPC", "getPC", -12, VerilatedScope::SCOPE_OTHER);
     __Vscope_TOP__trap.configure(this, name(), "trap", "trap", -12, VerilatedScope::SCOPE_OTHER);
     // Setup export functions
     for (int __Vfinal = 0; __Vfinal < 2; ++__Vfinal) {

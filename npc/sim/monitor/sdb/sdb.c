@@ -80,9 +80,9 @@ static int cmd_info(char *args){
     /* no argument given */
     printf("Please add entern r/w to display its state.\n");
   }
-  // else if (strcmp(arg, "r") == 0){
-  //   isa_reg_display();
-  // }
+  else if (strcmp(arg, "r") == 0){
+    isa_reg_display();
+  }
   else if (strcmp(arg, "w") == 0){
     wp_display();
   }
@@ -162,7 +162,7 @@ static struct {
 } cmd_table [] = {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
-  { "q", "Exit NEMU", cmd_q },
+  { "q", "Exit NPC", cmd_q },
   { "si", "Exec [N] step of the program", cmd_si },
   { "info", "Display the state your input of the program", cmd_info },
   { "x", "Scan memory", cmd_x },

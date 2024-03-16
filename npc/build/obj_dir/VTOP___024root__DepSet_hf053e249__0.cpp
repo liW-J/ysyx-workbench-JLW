@@ -61,5 +61,68 @@ VL_INLINE_OPT void VTOP___024root___nba_sequent__TOP__0(VTOP___024root* vlSelf) 
     // Body
     VTOP___024unit____Vdpiimwrap_check_ebreak_TOP____024unit(
                                                              (&(vlSymsp->__Vscope_TOP__trap)), 
-                                                             "/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 0x184U, (IData)(vlSelf->TOP__DOT__id__DOT__isEbreak));
+                                                             "/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 0x199U, (IData)(vlSelf->TOP__DOT__id__DOT__isEbreak));
+}
+
+void VTOP___024unit____Vdpiimwrap_get_pc_TOP____024unit(const VerilatedScope* __Vscopep, const char* __Vfilenamep, IData/*31:0*/ __Vlineno, IData/*31:0*/ flag);
+
+VL_INLINE_OPT void VTOP___024root___nba_sequent__TOP__1(VTOP___024root* vlSelf) {
+    if (false && vlSelf) {}  // Prevent unused
+    VTOP__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
+    VL_DEBUG_IF(VL_DBG_MSGF("+    VTOP___024root___nba_sequent__TOP__1\n"); );
+    // Init
+    CData/*4:0*/ __Vdlyvdim0__TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory__v0;
+    __Vdlyvdim0__TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory__v0 = 0;
+    IData/*31:0*/ __Vdlyvval__TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory__v0;
+    __Vdlyvval__TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory__v0 = 0;
+    CData/*0:0*/ __Vdlyvset__TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory__v0;
+    __Vdlyvset__TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory__v0 = 0;
+    // Body
+    if (VL_UNLIKELY((1U & ((IData)(vlSelf->TOP__DOT__id__DOT__isEbreak) 
+                           & (~ (IData)(vlSelf->reset)))))) {
+        VL_FWRITEF(0x80000002U,"ebreak\n");
+    }
+    if (VL_UNLIKELY((1U & (((~ (IData)(vlSelf->TOP__DOT__id__DOT__isEbreak)) 
+                            & (4U == (0x1fU & (vlSelf->io_inst 
+                                               >> 2U)))) 
+                           & (~ (IData)(vlSelf->reset)))))) {
+        VL_FWRITEF(0x80000002U,"addi\n");
+    }
+    if (VL_UNLIKELY((1U & ((((~ (IData)(vlSelf->TOP__DOT__id__DOT__isEbreak)) 
+                             & (~ (4U == (0x1fU & (vlSelf->io_inst 
+                                                   >> 2U))))) 
+                            & (5U == (0x1fU & (vlSelf->io_inst 
+                                               >> 2U)))) 
+                           & (~ (IData)(vlSelf->reset)))))) {
+        VL_FWRITEF(0x80000002U,"auipc\n");
+    }
+    if (VL_UNLIKELY((1U & (~ (IData)(vlSelf->reset))))) {
+        VL_FWRITEF(0x80000002U,"jal=%1#\nALUsrc=%1#\nsrc111=%x\nsrc222=%x\npcccccc=%x\nres=%x\n",
+                   1,vlSelf->io_bundleControl_isJAL,
+                   1,(IData)(vlSelf->io_bundleControl_isALUSrc),
+                   32,vlSelf->io_src1,32,vlSelf->io_src2,
+                   32,vlSelf->io_pc,32,vlSelf->io_resEX);
+    }
+    __Vdlyvset__TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory__v0 = 0U;
+    vlSelf->TOP__DOT__pcReg__DOT__pcReg = ((IData)(vlSelf->reset)
+                                            ? 0x80000000U
+                                            : ((IData)(4U) 
+                                               + vlSelf->TOP__DOT__pcReg__DOT__pcReg));
+    if (((IData)(vlSelf->io_writeEnable) & (0U != (IData)(vlSelf->io_rd)))) {
+        __Vdlyvval__TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory__v0 
+            = vlSelf->io_resEX;
+        __Vdlyvset__TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory__v0 = 1U;
+        __Vdlyvdim0__TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory__v0 
+            = vlSelf->io_rd;
+    }
+    if (__Vdlyvset__TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory__v0) {
+        vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory[__Vdlyvdim0__TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory__v0] 
+            = __Vdlyvval__TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory__v0;
+    }
+    vlSelf->io_pc = vlSelf->TOP__DOT__pcReg__DOT__pcReg;
+    vlSelf->io_test = vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory
+        [2U];
+    VTOP___024unit____Vdpiimwrap_get_pc_TOP____024unit(
+                                                       (&(vlSymsp->__Vscope_TOP__getPC)), 
+                                                       "/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 0x1a9U, vlSelf->io_pc);
 }

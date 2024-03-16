@@ -14,6 +14,7 @@ class GPRFileIO extends Bundle {
   val bundleReg   = Flipped(new BundleReg)
   val dataRead1   = Output(UInt(DATA_WIDTH.W))
   val dataRead2   = Output(UInt(DATA_WIDTH.W))
+  val test        = Output(UInt(DATA_WIDTH.W))
 }
 
 class GPRFile extends Module {
@@ -35,4 +36,8 @@ class GPRFile extends Module {
       regs.write(io.bundleReg.rd, io.pc + INST_BYTE_WIDTH.U)
     }.otherwise { regs.write(io.bundleReg.rd, io.dataWrite) }
   } 
+
+  val testMem = regs.read(2.U)
+
+  io.test := testMem
 }

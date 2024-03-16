@@ -19,7 +19,6 @@
 // Located at src/isa/$(GUEST_ISA)/include/isa-def.h
 #include <isa-def.h>
 #include <verilated.h>   //访问验证程序例程的库
-#include <verilated_vcd_c.h>  //向VCD文件中写入波形
 #include "VTOP.h"
 
 // The macro `__GUEST_ISA__` is defined in $(CFLAGS).
@@ -31,7 +30,7 @@ typedef concat(__GUEST_ISA__, _ISADecodeInfo) ISADecodeInfo;
 // reg
 extern CPU_state cpu;
 extern VTOP top;
-// void isa_reg_display();
+void isa_reg_display();
 word_t isa_reg_str2val(const char *name, bool *success);
 
 

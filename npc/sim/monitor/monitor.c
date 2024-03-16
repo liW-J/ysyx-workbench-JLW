@@ -15,16 +15,14 @@
 
 #include <isa.h>
 #include <memory/paddr.h>
-#include <log.h>
-#include <debug.h>
 
 void init_rand();
-void init_log(const char *log_file);
+void init_log(const char *log_file, const char *ftrace_file);
 void init_mem();
-// void init_difftest(char *ref_so_file, long img_size, int port);
-// void init_device();
-void init_disasm(const char *triple);
+void init_difftest(char *ref_so_file, long img_size, int port);
+void init_device();
 void init_sdb();
+void init_disasm(const char *triple);
 void init_expr();
 
 static void welcome() {
@@ -35,7 +33,7 @@ static void welcome() {
   LOG("Build time: %s, %s", __TIME__, __DATE__);
   printf("Welcome to %s-NPC!\n", ANSI_FMT(str(__GUEST_ISA__), ANSI_FG_YELLOW ANSI_BG_RED));
   printf("For help, type \"help\"\n");
-  // Log(INFO, "Exercise: Please remove me in the source code and compile NEMU again.");
+  // LOG("Exercise: Please remove me in the source code and compile NPC again.");
   // assert(0);
 }
 
@@ -45,6 +43,8 @@ static void welcome() {
 void sdb_set_batch_mode();
 
 static char *log_file = NULL;
+static char *ftrace_file = NULL;
+static char *elf_file = NULL;
 static char *diff_so_file = NULL;
 static char *img_file = NULL;
 static int difftest_port = 1234;
@@ -61,7 +61,7 @@ static long load_img() {
   fseek(fp, 0, SEEK_END);
   long size = ftell(fp);
 
-  Log(INFO, "The image is %s, size = %ld", img_file, size);
+  LOG("The image is %s, size = %ld", img_file, size);
 
   fseek(fp, 0, SEEK_SET);
   int ret = fread(guest_to_host(RESET_VECTOR), size, 1, fp);
@@ -75,25 +75,31 @@ static int parse_args(int argc, char *argv[]) {
   const struct option table[] = {
     {"batch"    , no_argument      , NULL, 'b'},
     {"log"      , required_argument, NULL, 'l'},
+    {"ftrace"   , required_argument, NULL, 'f'},
     {"diff"     , required_argument, NULL, 'd'},
     {"port"     , required_argument, NULL, 'p'},
+    {"elf"      , required_argument, NULL, 'e'},
     {"help"     , no_argument      , NULL, 'h'},
     {0          , 0                , NULL,  0 },
   };
   int o;
-  while ( (o = getopt_long(argc, argv, "-bhl:d:p:", table, NULL)) != -1) {
+  while ( (o = getopt_long(argc, argv, "-bhl:d:p:e:f:", table, NULL)) != -1) {
     switch (o) {
       case 'b': sdb_set_batch_mode(); break;
       case 'p': sscanf(optarg, "%d", &difftest_port); break;
-      case 'l': log_file = optarg; break;
-      case 'd': diff_so_file = optarg; break;
+      case 'l': log_file = optarg; break;      
+      case 'f': ftrace_file = optarg; break;
+      case 'd': diff_so_file = optarg; break; 
+      case 'e': elf_file = optarg; break;
       case 1: img_file = optarg; return 0;
       default:
         printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
         printf("\t-b,--batch              run with batch mode\n");
         printf("\t-l,--log=FILE           output log to FILE\n");
+        printf("\t-f,--ftrace=FILE        output ftrace to FILE\n");    
         printf("\t-d,--diff=REF_SO        run DiffTest with reference REF_SO\n");
         printf("\t-p,--port=PORT          run DiffTest with port PORT\n");
+        printf("\t-e,--elf=FILE           output func-calls to FILE\n");
         printf("\n");
         exit(0);
     }
@@ -101,23 +107,25 @@ static int parse_args(int argc, char *argv[]) {
   return 0;
 }
 
+void parse_elf(const char *elf_file);
+
 void init_monitor(int argc, char *argv[]) {
   /* Perform some global initialization. */
 
   /* Parse arguments. */
   parse_args(argc, argv);
 
-  // /* Set random seed. */
+  /* Set random seed. */
   init_rand();
 
-  // /* Open the log file. */
-  init_log(log_file);
+  /* Open the log file. */
+  init_log(log_file, ftrace_file);
 
   /* Initialize memory. */
   init_mem();
 
   /* Initialize devices. */
-  // IFDEF(CONFIG_DEVICE, init_device());
+  IFDEF(CONFIG_DEVICE, init_device());
 
   /* Perform ISA dependent initialization. */
   init_isa();
@@ -126,7 +134,7 @@ void init_monitor(int argc, char *argv[]) {
   long img_size = load_img();
 
   /* Initialize differential testing. */
-  // init_difftest(diff_so_file, img_size, difftest_port);
+  init_difftest(diff_so_file, img_size, difftest_port);
 
   /* Initialize the simple debugger. */
   init_sdb();
@@ -141,8 +149,9 @@ void init_monitor(int argc, char *argv[]) {
                                "bad"))) "-pc-linux-gnu"
   ));
 #endif
-
   init_expr();
+
+  parse_elf(elf_file);
   /* Display welcome message. */
   welcome();
 }
@@ -150,7 +159,7 @@ void init_monitor(int argc, char *argv[]) {
 static long load_img() {
   extern char bin_start, bin_end;
   size_t size = &bin_end - &bin_start;
-  Log(INFO, "img size = %ld", size);
+  LOG("img size = %ld", size);
   memcpy(guest_to_host(RESET_VECTOR), &bin_start, size);
   return size;
 }
@@ -160,8 +169,7 @@ void am_init_monitor() {
   init_mem();
   init_isa();
   load_img();
-  // IFDEF(CONFIG_DEVICE, init_device());
-  welcome();
+  IFDEF(CONFIG_DEVICE, init_device());
+  welcome();i
 }
 #endif
-

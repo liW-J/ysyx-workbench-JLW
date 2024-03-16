@@ -80,14 +80,16 @@ void VTOP___024root__trace_chg_sub_0(VTOP___024root* vlSelf, VerilatedVcd::Buffe
     bufp->chgCData(oldp+52,(vlSelf->io_rd),5);
     bufp->chgIData(oldp+53,(vlSelf->io_imm),32);
     bufp->chgBit(oldp+54,(vlSelf->io_resBranch));
-    bufp->chgCData(oldp+55,(vlSelf->io_bundleControl_exeType),5);
-    bufp->chgIData(oldp+56,(vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory
+    bufp->chgBit(oldp+55,(vlSelf->io_writeEnable));
+    bufp->chgIData(oldp+56,(vlSelf->io_test),32);
+    bufp->chgCData(oldp+57,(vlSelf->io_bundleControl_exeType),5);
+    bufp->chgIData(oldp+58,(vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory
                             [vlSelf->io_rs1]),32);
-    bufp->chgIData(oldp+57,(vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory
+    bufp->chgIData(oldp+59,(vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory
                             [vlSelf->io_rs2]),32);
-    bufp->chgBit(oldp+58,(((IData)(vlSelf->io_bundleControl_isALUSrc) 
+    bufp->chgBit(oldp+60,(((IData)(vlSelf->io_writeEnable) 
                            & (0U != (IData)(vlSelf->io_rd)))));
-    bufp->chgBit(oldp+59,(vlSelf->TOP__DOT__id__DOT__isEbreak));
+    bufp->chgBit(oldp+61,(vlSelf->TOP__DOT__id__DOT__isEbreak));
 }
 
 void VTOP___024root__trace_cleanup(void* voidSelf, VerilatedVcd* /*unused*/) {

@@ -33,6 +33,8 @@ VL_ATTR_COLD void VTOP___024root__trace_init_sub__TOP__0(VTOP___024root* vlSelf,
     tracep->declBus(c+53,"io_rd", false,-1, 4,0);
     tracep->declBus(c+54,"io_imm", false,-1, 31,0);
     tracep->declBit(c+55,"io_resBranch", false,-1);
+    tracep->declBit(c+56,"io_writeEnable", false,-1);
+    tracep->declBus(c+57,"io_test", false,-1, 31,0);
     tracep->pushNamePrefix("TOP ");
     tracep->declBit(c+34,"clock", false,-1);
     tracep->declBit(c+35,"reset", false,-1);
@@ -56,53 +58,67 @@ VL_ATTR_COLD void VTOP___024root__trace_init_sub__TOP__0(VTOP___024root* vlSelf,
     tracep->declBus(c+53,"io_rd", false,-1, 4,0);
     tracep->declBus(c+54,"io_imm", false,-1, 31,0);
     tracep->declBit(c+55,"io_resBranch", false,-1);
+    tracep->declBit(c+56,"io_writeEnable", false,-1);
+    tracep->declBus(c+57,"io_test", false,-1, 31,0);
     tracep->pushNamePrefix("controller ");
     tracep->declBit(c+39,"io_bundleControlIn_isALUSrc", false,-1);
     tracep->declBit(c+42,"io_bundleControlIn_isJAL", false,-1);
     tracep->declBus(c+47,"io_bundleControlIn_exeType", false,-1, 3,0);
     tracep->declBit(c+39,"io_bundleEXControl_isALUSrc", false,-1);
     tracep->declBit(c+42,"io_bundleEXControl_isJAL", false,-1);
-    tracep->declBus(c+56,"io_bundleEXControl_exeType", false,-1, 4,0);
+    tracep->declBus(c+58,"io_bundleEXControl_exeType", false,-1, 4,0);
     tracep->popNamePrefix(1);
     tracep->pushNamePrefix("ex ");
     tracep->declBit(c+34,"clock", false,-1);
     tracep->declBit(c+35,"reset", false,-1);
     tracep->declBit(c+39,"io_bundleEXControl_isALUSrc", false,-1);
     tracep->declBit(c+42,"io_bundleEXControl_isJAL", false,-1);
-    tracep->declBus(c+56,"io_bundleEXControl_exeType", false,-1, 4,0);
-    tracep->declBus(c+57,"io_dataRead1", false,-1, 31,0);
-    tracep->declBus(c+58,"io_dataRead2", false,-1, 31,0);
+    tracep->declBus(c+58,"io_bundleEXControl_exeType", false,-1, 4,0);
+    tracep->declBus(c+59,"io_dataRead1", false,-1, 31,0);
+    tracep->declBus(c+60,"io_dataRead2", false,-1, 31,0);
     tracep->declBus(c+54,"io_imm", false,-1, 31,0);
     tracep->declBus(c+38,"io_pc", false,-1, 31,0);
     tracep->declBus(c+48,"io_res", false,-1, 31,0);
     tracep->declBus(c+49,"io_src1", false,-1, 31,0);
     tracep->declBus(c+50,"io_src2", false,-1, 31,0);
+    tracep->declBit(c+56,"io_writeEnable", false,-1);
     tracep->declBus(c+49,"src1", false,-1, 31,0);
     tracep->declBus(c+50,"src2", false,-1, 31,0);
+    tracep->declBit(c+56,"writeEnable", false,-1);
     tracep->declBus(c+48,"res", false,-1, 31,0);
+    tracep->popNamePrefix(1);
+    tracep->pushNamePrefix("getPC ");
+    tracep->declBit(c+34,"clock", false,-1);
+    tracep->declBit(c+35,"reset", false,-1);
+    tracep->declBus(c+38,"pc", false,-1, 31,0);
     tracep->popNamePrefix(1);
     tracep->pushNamePrefix("gprFile ");
     tracep->declBit(c+34,"clock", false,-1);
-    tracep->declBit(c+39,"io_writeEnable", false,-1);
-    tracep->declBus(c+37,"io_dataWrite", false,-1, 31,0);
+    tracep->declBit(c+56,"io_writeEnable", false,-1);
+    tracep->declBus(c+48,"io_dataWrite", false,-1, 31,0);
     tracep->declBus(c+51,"io_bundleReg_rs1", false,-1, 4,0);
     tracep->declBus(c+52,"io_bundleReg_rs2", false,-1, 4,0);
     tracep->declBus(c+53,"io_bundleReg_rd", false,-1, 4,0);
-    tracep->declBus(c+57,"io_dataRead1", false,-1, 31,0);
-    tracep->declBus(c+58,"io_dataRead2", false,-1, 31,0);
+    tracep->declBus(c+59,"io_dataRead1", false,-1, 31,0);
+    tracep->declBus(c+60,"io_dataRead2", false,-1, 31,0);
+    tracep->declBus(c+57,"io_test", false,-1, 31,0);
     tracep->pushNamePrefix("regs_ext ");
     tracep->declBus(c+51,"R0_addr", false,-1, 4,0);
-    tracep->declBit(c+61,"R0_en", false,-1);
+    tracep->declBit(c+63,"R0_en", false,-1);
     tracep->declBit(c+34,"R0_clk", false,-1);
     tracep->declBus(c+52,"R1_addr", false,-1, 4,0);
-    tracep->declBit(c+61,"R1_en", false,-1);
+    tracep->declBit(c+63,"R1_en", false,-1);
     tracep->declBit(c+34,"R1_clk", false,-1);
+    tracep->declBus(c+64,"R2_addr", false,-1, 4,0);
+    tracep->declBit(c+63,"R2_en", false,-1);
+    tracep->declBit(c+34,"R2_clk", false,-1);
     tracep->declBus(c+53,"W0_addr", false,-1, 4,0);
-    tracep->declBit(c+59,"W0_en", false,-1);
+    tracep->declBit(c+61,"W0_en", false,-1);
     tracep->declBit(c+34,"W0_clk", false,-1);
-    tracep->declBus(c+37,"W0_data", false,-1, 31,0);
-    tracep->declBus(c+57,"R0_data", false,-1, 31,0);
-    tracep->declBus(c+58,"R1_data", false,-1, 31,0);
+    tracep->declBus(c+48,"W0_data", false,-1, 31,0);
+    tracep->declBus(c+59,"R0_data", false,-1, 31,0);
+    tracep->declBus(c+60,"R1_data", false,-1, 31,0);
+    tracep->declBus(c+57,"R2_data", false,-1, 31,0);
     for (int i = 0; i < 32; ++i) {
         tracep->declBus(c+1+i*1,"Memory", true,(i+0), 31,0);
     }
@@ -118,10 +134,8 @@ VL_ATTR_COLD void VTOP___024root__trace_init_sub__TOP__0(VTOP___024root* vlSelf,
     tracep->declBus(c+52,"io_bundleReg_rs2", false,-1, 4,0);
     tracep->declBus(c+53,"io_bundleReg_rd", false,-1, 4,0);
     tracep->declBus(c+54,"io_imm", false,-1, 31,0);
-    tracep->declBit(c+39,"io_writeEnable", false,-1);
-    tracep->declBit(c+60,"io_isEbreak", false,-1);
-    tracep->declBit(c+60,"isEbreak", false,-1);
-    tracep->declBit(c+39,"writeEnable", false,-1);
+    tracep->declBit(c+62,"io_isEbreak", false,-1);
+    tracep->declBit(c+62,"isEbreak", false,-1);
     tracep->popNamePrefix(1);
     tracep->pushNamePrefix("pcReg ");
     tracep->declBit(c+34,"clock", false,-1);
@@ -132,7 +146,7 @@ VL_ATTR_COLD void VTOP___024root__trace_init_sub__TOP__0(VTOP___024root* vlSelf,
     tracep->pushNamePrefix("trap ");
     tracep->declBit(c+34,"clock", false,-1);
     tracep->declBit(c+35,"reset", false,-1);
-    tracep->declBit(c+60,"isEbreak", false,-1);
+    tracep->declBit(c+62,"isEbreak", false,-1);
     tracep->popNamePrefix(2);
 }
 
@@ -231,13 +245,16 @@ VL_ATTR_COLD void VTOP___024root__trace_full_sub_0(VTOP___024root* vlSelf, Veril
     bufp->fullCData(oldp+53,(vlSelf->io_rd),5);
     bufp->fullIData(oldp+54,(vlSelf->io_imm),32);
     bufp->fullBit(oldp+55,(vlSelf->io_resBranch));
-    bufp->fullCData(oldp+56,(vlSelf->io_bundleControl_exeType),5);
-    bufp->fullIData(oldp+57,(vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory
+    bufp->fullBit(oldp+56,(vlSelf->io_writeEnable));
+    bufp->fullIData(oldp+57,(vlSelf->io_test),32);
+    bufp->fullCData(oldp+58,(vlSelf->io_bundleControl_exeType),5);
+    bufp->fullIData(oldp+59,(vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory
                              [vlSelf->io_rs1]),32);
-    bufp->fullIData(oldp+58,(vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory
+    bufp->fullIData(oldp+60,(vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory
                              [vlSelf->io_rs2]),32);
-    bufp->fullBit(oldp+59,(((IData)(vlSelf->io_bundleControl_isALUSrc) 
+    bufp->fullBit(oldp+61,(((IData)(vlSelf->io_writeEnable) 
                             & (0U != (IData)(vlSelf->io_rd)))));
-    bufp->fullBit(oldp+60,(vlSelf->TOP__DOT__id__DOT__isEbreak));
-    bufp->fullBit(oldp+61,(1U));
+    bufp->fullBit(oldp+62,(vlSelf->TOP__DOT__id__DOT__isEbreak));
+    bufp->fullBit(oldp+63,(1U));
+    bufp->fullCData(oldp+64,(2U),5);
 }

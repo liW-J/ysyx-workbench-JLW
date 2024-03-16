@@ -1,5 +1,3 @@
-
-
 import "DPI-C" context function void check_ebreak(input bit flag);
 
 module Trap(

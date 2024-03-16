@@ -18,3 +18,14 @@ VL_INLINE_OPT void VTOP___024unit____Vdpiimwrap_check_ebreak_TOP____024unit(cons
     Verilated::dpiContext(__Vscopep, __Vfilenamep, __Vlineno);
     check_ebreak(flag__Vcvt);
 }
+
+extern "C" void get_pc(int flag);
+
+VL_INLINE_OPT void VTOP___024unit____Vdpiimwrap_get_pc_TOP____024unit(const VerilatedScope* __Vscopep, const char* __Vfilenamep, IData/*31:0*/ __Vlineno, IData/*31:0*/ flag) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+        VTOP___024unit____Vdpiimwrap_get_pc_TOP____024unit\n"); );
+    // Body
+    int flag__Vcvt;
+    for (size_t flag__Vidx = 0; flag__Vidx < 1; ++flag__Vidx) flag__Vcvt = flag;
+    Verilated::dpiContext(__Vscopep, __Vfilenamep, __Vlineno);
+    get_pc(flag__Vcvt);
+}

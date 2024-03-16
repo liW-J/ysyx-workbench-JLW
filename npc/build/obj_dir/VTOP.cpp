@@ -27,6 +27,7 @@ VTOP::VTOP(VerilatedContext* _vcontextp__, const char* _vcname__)
     , io_rs2{vlSymsp->TOP.io_rs2}
     , io_rd{vlSymsp->TOP.io_rd}
     , io_resBranch{vlSymsp->TOP.io_resBranch}
+    , io_writeEnable{vlSymsp->TOP.io_writeEnable}
     , io_inst{vlSymsp->TOP.io_inst}
     , io_res{vlSymsp->TOP.io_res}
     , io_pc{vlSymsp->TOP.io_pc}
@@ -34,6 +35,7 @@ VTOP::VTOP(VerilatedContext* _vcontextp__, const char* _vcname__)
     , io_src1{vlSymsp->TOP.io_src1}
     , io_src2{vlSymsp->TOP.io_src2}
     , io_imm{vlSymsp->TOP.io_imm}
+    , io_test{vlSymsp->TOP.io_test}
     , __PVT____024unit{vlSymsp->TOP.__PVT____024unit}
     , rootp{&(vlSymsp->TOP)}
 {

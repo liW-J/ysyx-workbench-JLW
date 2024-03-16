@@ -13,38 +13,28 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
-#ifndef __COMMON_H__
-#define __COMMON_H__
+#ifndef __DIFFTEST_DEF_H__
+#define __DIFFTEST_DEF_H__
 
 #include <stdint.h>
-#include <inttypes.h>
-#include <stdbool.h>
-#include <string.h>
-
-#include <generated/autoconf.h>
 #include <macro.h>
+#include <generated/autoconf.h>
 
-#ifdef CONFIG_TARGET_AM
-#include <klib.h>
+#define __EXPORT __attribute__((visibility("default")))
+enum { DIFFTEST_TO_DUT, DIFFTEST_TO_REF };
+
+#if defined(CONFIG_ISA_x86)
+# define DIFFTEST_REG_SIZE (sizeof(uint32_t) * 9) // GPRs + pc
+#elif defined(CONFIG_ISA_mips32)
+# define DIFFTEST_REG_SIZE (sizeof(uint32_t) * 38) // GPRs + status + lo + hi + badvaddr + cause + pc
+#elif defined(CONFIG_ISA_riscv)
+#define RISCV_GPR_TYPE MUXDEF(CONFIG_RV64, uint64_t, uint32_t)
+#define RISCV_GPR_NUM  MUXDEF(CONFIG_RVE , 16, 32)
+#define DIFFTEST_REG_SIZE (sizeof(RISCV_GPR_TYPE) * (RISCV_GPR_NUM + 1)) // GPRs + pc
+#elif defined(CONFIG_ISA_loongarch32r)
+# define DIFFTEST_REG_SIZE (sizeof(uint32_t) * 33) // GPRs + pc
 #else
-#include <assert.h>
-#include <stdlib.h>
+# error Unsupport ISA
 #endif
-
-#if CONFIG_MBASE + CONFIG_MSIZE > 0x100000000ul
-#define PMEM64 1
-#endif
-
-typedef uint32_t word_t;
-typedef int32_t  sword_t;
-#define FMT_WORD MUXDEF(CONFIG_ISA64, "0x%016" PRIx64, "0x%08" PRIx32)
-
-typedef word_t vaddr_t;
-typedef uint32_t paddr_t;
-#define FMT_PADDR MUXDEF(PMEM64, "0x%016" PRIx64, "0x%08" PRIx32)
-typedef uint16_t ioaddr_t;
-
-#include <debug.h>
-#include <log.h>
 
 #endif

@@ -22,6 +22,8 @@ class TopIO extends Bundle {
   val rd           = Output(UInt(REG_NUMS_LOG.W))
   val imm           = Output(UInt(DATA_WIDTH.W))
   val resBranch     = Output(Bool())
+  val writeEnable     = Output(Bool())
+  val test     = Output(UInt(DATA_WIDTH.W))
 }
 
 class TOP extends Module {
@@ -33,10 +35,15 @@ class TOP extends Module {
   val ex         = Module(new EX())
   val controller = Module(new Controller())
   val trap       = Module(new Trap())
+  val getPC      = Module(new GetPC())
 
   trap.io.isEbreak := id.io.isEbreak
   trap.io.clock    := clock
-  trap.io.reset := reset
+  trap.io.reset    := reset
+
+  getPC.io.pc       := pcReg.io.pc
+  getPC.io.clock    := clock
+  getPC.io.reset    := reset
 
   // judge nextPC by control from frontPC
   pcReg.io.resBranch <> ex.io.resBranch
@@ -53,9 +60,9 @@ class TOP extends Module {
   // read or write GPRs from IDres to $rs1/$rs2/$rd
   // if isJump, set nextPC to $rd temporarily
   gprFile.io.bundleReg <> id.io.bundleReg
-  gprFile.io.writeEnable <> id.io.writeEnable
+  gprFile.io.writeEnable <> ex.io.writeEnable
   gprFile.io.isJump <> controller.io.bundleControlOut.isJump
-  gprFile.io.dataWrite <> io.res
+  gprFile.io.dataWrite <> ex.io.res
   gprFile.io.pc <> pcReg.io.pc
 
   // exec ALU operate by control from thisInstDecode
@@ -77,4 +84,6 @@ class TOP extends Module {
   io.resBranch <> ex.io.resBranch
   io.src1 <> ex.io.src1
   io.src2 <> ex.io.src2
+  io.writeEnable <> ex.io.writeEnable
+  io.test <> gprFile.io.test
 }

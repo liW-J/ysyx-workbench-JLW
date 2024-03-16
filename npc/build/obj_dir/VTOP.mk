@@ -68,6 +68,8 @@ VM_USER_LDLIBS = \
 # User .cpp files (from .cpp's on Verilator command line)
 VM_USER_CLASSES = \
 	cpu-exec \
+	dut \
+	ref \
 	hostcall \
 	init \
 	main \
@@ -77,6 +79,9 @@ VM_USER_CLASSES = \
 	expr \
 	sdb \
 	watchpoint \
+	ftrace \
+	iringbuf \
+	mtrace \
 	init \
 	logo \
 	reg \
@@ -89,10 +94,12 @@ VM_USER_CLASSES = \
 VM_USER_DIR = \
 	/home/sends/local/share/ysyx-workbench/npc/sim \
 	/home/sends/local/share/ysyx-workbench/npc/sim/cpu \
+	/home/sends/local/share/ysyx-workbench/npc/sim/cpu/difftest \
 	/home/sends/local/share/ysyx-workbench/npc/sim/engine/interpreter \
 	/home/sends/local/share/ysyx-workbench/npc/sim/memory \
 	/home/sends/local/share/ysyx-workbench/npc/sim/monitor \
 	/home/sends/local/share/ysyx-workbench/npc/sim/monitor/sdb \
+	/home/sends/local/share/ysyx-workbench/npc/sim/monitor/trace \
 	/home/sends/local/share/ysyx-workbench/npc/sim/riscv32 \
 	/home/sends/local/share/ysyx-workbench/npc/sim/utils \
 
@@ -107,6 +114,10 @@ include $(VERILATOR_ROOT)/include/verilated.mk
 VPATH += $(VM_USER_DIR)
 
 cpu-exec.o: /home/sends/local/share/ysyx-workbench/npc/sim/cpu/cpu-exec.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+dut.o: /home/sends/local/share/ysyx-workbench/npc/sim/cpu/difftest/dut.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+ref.o: /home/sends/local/share/ysyx-workbench/npc/sim/cpu/difftest/ref.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 hostcall.o: /home/sends/local/share/ysyx-workbench/npc/sim/engine/interpreter/hostcall.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
@@ -125,6 +136,12 @@ expr.o: /home/sends/local/share/ysyx-workbench/npc/sim/monitor/sdb/expr.c
 sdb.o: /home/sends/local/share/ysyx-workbench/npc/sim/monitor/sdb/sdb.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 watchpoint.o: /home/sends/local/share/ysyx-workbench/npc/sim/monitor/sdb/watchpoint.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+ftrace.o: /home/sends/local/share/ysyx-workbench/npc/sim/monitor/trace/ftrace.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+iringbuf.o: /home/sends/local/share/ysyx-workbench/npc/sim/monitor/trace/iringbuf.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+mtrace.o: /home/sends/local/share/ysyx-workbench/npc/sim/monitor/trace/mtrace.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 init.o: /home/sends/local/share/ysyx-workbench/npc/sim/riscv32/init.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<

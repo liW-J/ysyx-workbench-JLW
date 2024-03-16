@@ -1,4 +1,5 @@
 -include ../Makefile
+include $(NPC_HOME)/tools/difftest.mk
 
 CPU      ?= single
 CPU_LIST := single pipeline multip
@@ -113,11 +114,12 @@ $(NPC_BIN): $(INCS) $(SRCS) $(CONFIG)
 	--Mdir $(DIR_OBJ) --exe -o                  \
 	$(abspath $(NPC_BIN))
 
-ifdef CONFIG_DIFFTEST
-    ARGS_EMBED_DIFF = --diff=$(Nsim_HOME)/build/riscv32-nsim-interpreter-so
-endif
+# ifdef CONFIG_DIFFTEST
+#     ARGS_EMBED_DIFF = --diff=$(Nsim_HOME)/build/riscv32-nsim-interpreter-so
+# endif
 
 override ARGS_EMBED ?= --log=$(BUILD_DIR)/npc-log.txt
+override ARGS_EMBED += --ftrace=$(BUILD_DIR)/npc-trace.txt
 override ARGS_EMBED += $(ARGS_EMBED_DIFF)
 
 IMG ?=

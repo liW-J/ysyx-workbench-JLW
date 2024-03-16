@@ -33,6 +33,8 @@ class VTOP___024root final : public VerilatedModule {
     VL_OUT8(io_rs2,4,0);
     VL_OUT8(io_rd,4,0);
     VL_OUT8(io_resBranch,0,0);
+    VL_OUT8(io_writeEnable,0,0);
+    CData/*0:0*/ TOP__DOT__id__DOT____VdfgTmp_hfd5cca07__0;
     CData/*0:0*/ __Vtrigrprev__TOP__clock;
     CData/*0:0*/ __Vtrigrprev__TOP__TOP__DOT__id__DOT__isEbreak;
     CData/*0:0*/ __VactDidInit;
@@ -44,6 +46,7 @@ class VTOP___024root final : public VerilatedModule {
     VL_OUT(io_src1,31,0);
     VL_OUT(io_src2,31,0);
     VL_OUT(io_imm,31,0);
+    VL_OUT(io_test,31,0);
     IData/*31:0*/ TOP__DOT__pcReg__DOT__pcReg;
     IData/*31:0*/ __VstlIterCount;
     IData/*31:0*/ __VicoIterCount;
