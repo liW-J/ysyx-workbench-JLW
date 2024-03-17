@@ -1,5 +1,4 @@
 -include ../Makefile
-include $(NPC_HOME)/tools/difftest.mk
 
 CPU      ?= single
 CPU_LIST := single pipeline multip
@@ -52,6 +51,8 @@ CFLAGS_BUILD += $(if $(CONFIG_CC_ASAN), -fsanitize=address,)
 CFLAGS_BUILD += -DCFLAGS_CPU_TYPE=$(CPU)
 CFLAGS_BUILD += -D__GUEST_ISA__=$(CFG_GUEST_ISA)
 CFLAGS_TRACE += -DITRACE_COND=$(if $(CONFIG_ITRACE_COND),$(call remove_quote,$(CONFIG_ITRACE_COND)),true)
+CFLAGS_TRACE += -DIRINGBUF_COND=$(if $(CONFIG_IRINGBUF_COND),$(call remove_quote,$(CONFIG_IRINGBUF_COND)),true)
+CFLAGS_TRACE += -DMTRACE_COND=$(if $(CONFIG_MTRACE_COND),$(call remove_quote,$(CONFIG_MTRACE_COND)),true)
 CFLAGS       += $(CFLAGS_BUILD)                                 \
 								$(CFLAGS_TRACE)																	\
                 -Wno-unused-result                              \
@@ -85,8 +86,9 @@ SRCCS_DIR += $(NPC_HOME)/sim             \
              $(NPC_HOME)/sim/monitor/sdb \
              $(NPC_HOME)/sim/utils			 \
 						 $(NPC_HOME)/sim/engine      \
-						 $(NPC_HOME)/sim/engine/interpreter \
-						 $(NPC_HOME)/cpu/resources
+						 $(NPC_HOME)/sim/engine/interpreter     
+	
+
 SRCCS_SRC_BLACKLIST =
 SRCCS_DIR_BLACKLIST =
 SRCCS_BLACKLIST     = $(SRCCS_SRC_BLACKLIST)                               \
@@ -114,13 +116,22 @@ $(NPC_BIN): $(INCS) $(SRCS) $(CONFIG)
 	--Mdir $(DIR_OBJ) --exe -o                  \
 	$(abspath $(NPC_BIN))
 
-# ifdef CONFIG_DIFFTEST
-#     ARGS_EMBED_DIFF = --diff=$(Nsim_HOME)/build/riscv32-nsim-interpreter-so
-# endif
+ifdef CONFIG_DIFFTEST
+  DIFF_REF_PATH = $(NPC_HOME)/$(call remove_quote,$(CONFIG_DIFFTEST_REF_PATH))
+	DIFF_REF_SO = $(DIFF_REF_PATH)/build/$(CFG_GUEST_ISA)-$(call remove_quote,$(CONFIG_DIFFTEST_REF_NAME))-so
+	DIFF_REF_SO = $(NEMU_HOME)/build/riscv32-nemu-interpreter-so
+	MKFLAGS = GUEST_ISA=$(GUEST_ISA) SHARE=1 ENGINE=interpreter
+	ARGS_DIFF = --diff=$(DIFF_REF_SO)
+
+	ifndef CONFIG_DIFFTEST_REF_NAME
+	$(DIFF_REF_SO):
+		$(MAKE) -s -C $(DIFF_REF_PATH) $(MKFLAGS)
+	endif
+endif
 
 override ARGS_EMBED ?= --log=$(BUILD_DIR)/npc-log.txt
 override ARGS_EMBED += --ftrace=$(BUILD_DIR)/npc-trace.txt
-override ARGS_EMBED += $(ARGS_EMBED_DIFF)
+override ARGS_EMBED += $(ARGS_DIFF)
 
 IMG ?=
 NPC_EXEC := $(NPC_BIN) $(ARGS_EMBED) $(ARGS) $(IMG)

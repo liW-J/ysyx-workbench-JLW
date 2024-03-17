@@ -1,5 +1,6 @@
 #include <cpu/cpu.h>
 #include <cpu/decode.h>
+#include <cpu/difftest.h>
 #include <locale.h>
 #include <cpu/ifetch.h>
 #include <verilated.h>   //访问验证程序例程的库
@@ -20,15 +21,6 @@
 VerilatedContext *contextp = NULL;
 VerilatedVcdC *tfp = NULL;
 
-// void sim_init() {
-//     contextp = new VerilatedContext;
-//     tfp = new VerilatedVcdC;
-//     top = new Vtop;
-//     contextp->traceEverOn(true);
-//     top->trace(tfp, 0);
-//     tfp->open("dump.vcd");
-// }
-
 #define MAX_INST_TO_PRINT 10
 CPU_state cpu = {};
 VTOP top ;
@@ -40,6 +32,9 @@ static bool g_print_mem = false;
 static bool g_print_func = false;
 static bool is_ebreak = false;
 static vaddr_t g_pc = 0;
+
+void device_update();
+void difftest_watchpoint();
 
 void check_ebreak(svBit flag){
   is_ebreak = flag;
@@ -57,11 +52,9 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #endif
 
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
-  // IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
-  // IFDEF(CONFIG_WATCHPOINT, difftest_watchpoint());
+  IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
+  IFDEF(CONFIG_WATCHPOINT, difftest_watchpoint());
 }
-// void device_update();
-void difftest_watchpoint();
 
 static void single_cycle() {
     top.clock = 0;

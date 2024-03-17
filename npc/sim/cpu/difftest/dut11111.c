@@ -21,10 +21,18 @@
 #include <utils.h>
 #include <difftest-def.h>
 
-void (*ref_difftest_memcpy)(paddr_t addr, void *buf, size_t n, bool direction) = NULL;
-void (*ref_difftest_regcpy)(void *dut, bool direction) = NULL;
-void (*ref_difftest_exec)(uint64_t n) = NULL;
-void (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
+typedef void (*ref_difftest_memcpy_T)(paddr_t addr, void *buf, size_t n, bool direction);
+typedef void (*ref_difftest_regcpy_T)(void *dut, bool direction);
+typedef void (*ref_difftest_exec_T)(uint64_t n);
+typedef void (*ref_difftest_raise_intr_T)(uint64_t NO);
+typedef void (*ref_difftest_init_T)(int);
+
+
+ref_difftest_memcpy_T ref_difftest_memcpy = NULL;
+ref_difftest_regcpy_T ref_difftest_regcpy = NULL;
+ref_difftest_exec_T ref_difftest_exec = NULL;
+ref_difftest_raise_intr_T ref_difftest_raise_intr = NULL;
+ref_difftest_init_T ref_difftest_init = NULL;
 
 #ifdef CONFIG_DIFFTEST
 
@@ -66,23 +74,23 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
   handle = dlopen(ref_so_file, RTLD_LAZY);
   assert(handle);
 
-  ref_difftest_memcpy = dlsym(handle, "difftest_memcpy");
+  ref_difftest_memcpy = (ref_difftest_memcpy_T)dlsym(handle, "difftest_memcpy");
   assert(ref_difftest_memcpy);
 
-  ref_difftest_regcpy = dlsym(handle, "difftest_regcpy");
+  ref_difftest_regcpy = (ref_difftest_regcpy_T)dlsym(handle, "difftest_regcpy");
   assert(ref_difftest_regcpy);
 
-  ref_difftest_exec = dlsym(handle, "difftest_exec");
+  ref_difftest_exec = (ref_difftest_exec_T)dlsym(handle, "difftest_exec");
   assert(ref_difftest_exec);
 
-  ref_difftest_raise_intr = dlsym(handle, "difftest_raise_intr");
+  ref_difftest_raise_intr = (ref_difftest_raise_intr_T)dlsym(handle, "difftest_raise_intr");
   assert(ref_difftest_raise_intr);
 
-  void (*ref_difftest_init)(int) = dlsym(handle, "difftest_init");
+  void (*ref_difftest_init)(int) = (ref_difftest_init_T)dlsym(handle, "difftest_init");
   assert(ref_difftest_init);
 
-  Log("Differential testing: %s", ANSI_FMT("ON", ANSI_FG_GREEN));
-  Log("The result of every instruction will be compared with %s. "
+  LOG("Differential testing: %s", ANSI_FMT("ON", ANSI_FG_GREEN));
+  LOG("The result of every instruction will be compared with %s. "
       "This will help you a lot for debugging, but also significantly reduce the performance. "
       "If it is not necessary, you can turn it off in menuconfig.", ref_so_file);
 
@@ -93,6 +101,7 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
 
 static void checkregs(CPU_state *ref, vaddr_t pc) {
   if (!isa_difftest_checkregs(ref, pc)) {
+    Log(ERROR, "!!!!!!!!");
     npc_state.state = NPC_ABORT;
     npc_state.halt_pc = pc;
     isa_reg_display();
@@ -101,7 +110,6 @@ static void checkregs(CPU_state *ref, vaddr_t pc) {
 
 void difftest_step(vaddr_t pc, vaddr_t npc) {
   CPU_state ref_r;
-
   if (skip_dut_nr_inst > 0) {
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
     if (ref_r.pc == npc) {
@@ -121,6 +129,7 @@ void difftest_step(vaddr_t pc, vaddr_t npc) {
     is_skip_ref = false;
     return;
   }
+
 
   ref_difftest_exec(1);
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);

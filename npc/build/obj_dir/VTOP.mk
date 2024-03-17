@@ -39,6 +39,8 @@ VM_USER_CFLAGS = \
 	-DCFLAGS_CPU_TYPE=single \
 	-D__GUEST_ISA__=riscv32 \
 	-DITRACE_COND=true \
+	-DIRINGBUF_COND=true \
+	-DMTRACE_COND=true \
 	-Wno-unused-result \
 	-DCFLAGS_TOP_NAME="VTOP" \
 	-I/home/sends/local/share/ysyx-workbench/npc/include \
@@ -68,7 +70,7 @@ VM_USER_LDLIBS = \
 # User .cpp files (from .cpp's on Verilator command line)
 VM_USER_CLASSES = \
 	cpu-exec \
-	dut \
+	dut11111 \
 	ref \
 	hostcall \
 	init \
@@ -82,6 +84,7 @@ VM_USER_CLASSES = \
 	ftrace \
 	iringbuf \
 	mtrace \
+	dut \
 	init \
 	logo \
 	reg \
@@ -101,6 +104,7 @@ VM_USER_DIR = \
 	/home/sends/local/share/ysyx-workbench/npc/sim/monitor/sdb \
 	/home/sends/local/share/ysyx-workbench/npc/sim/monitor/trace \
 	/home/sends/local/share/ysyx-workbench/npc/sim/riscv32 \
+	/home/sends/local/share/ysyx-workbench/npc/sim/riscv32/difftest \
 	/home/sends/local/share/ysyx-workbench/npc/sim/utils \
 
 
@@ -115,7 +119,7 @@ VPATH += $(VM_USER_DIR)
 
 cpu-exec.o: /home/sends/local/share/ysyx-workbench/npc/sim/cpu/cpu-exec.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
-dut.o: /home/sends/local/share/ysyx-workbench/npc/sim/cpu/difftest/dut.c
+dut11111.o: /home/sends/local/share/ysyx-workbench/npc/sim/cpu/difftest/dut11111.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 ref.o: /home/sends/local/share/ysyx-workbench/npc/sim/cpu/difftest/ref.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
@@ -142,6 +146,8 @@ ftrace.o: /home/sends/local/share/ysyx-workbench/npc/sim/monitor/trace/ftrace.c
 iringbuf.o: /home/sends/local/share/ysyx-workbench/npc/sim/monitor/trace/iringbuf.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 mtrace.o: /home/sends/local/share/ysyx-workbench/npc/sim/monitor/trace/mtrace.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+dut.o: /home/sends/local/share/ysyx-workbench/npc/sim/riscv32/difftest/dut.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 init.o: /home/sends/local/share/ysyx-workbench/npc/sim/riscv32/init.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
