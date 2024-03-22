@@ -41,9 +41,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #endif
 
 // no need to log mem at every step
-#ifdef CONFIG_FTRACE_COND
-  if (FTRACE_COND) //TODO
-#endif
+
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
   IFDEF(CONFIG_WATCHPOINT, difftest_watchpoint());
@@ -115,7 +113,7 @@ void cpu_exec(uint64_t n) {
   g_print_step = (n < MAX_INST_TO_PRINT);
   switch (nemu_state.state) {
     case NEMU_END: case NEMU_ABORT:
-      LOG(WARN, "Program execution has ended. To restart the program, exit NEMU and run again.\n");
+      LOG(WARN, "Program execution has ended. To restart the program, exit NEMU and run again.");
       return;
     default: nemu_state.state = NEMU_RUNNING;
   }

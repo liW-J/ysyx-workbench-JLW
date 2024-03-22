@@ -70,7 +70,7 @@ VM_USER_LDLIBS = \
 # User .cpp files (from .cpp's on Verilator command line)
 VM_USER_CLASSES = \
 	cpu-exec \
-	dut11111 \
+	dut \
 	ref \
 	hostcall \
 	init \
@@ -84,7 +84,7 @@ VM_USER_CLASSES = \
 	ftrace \
 	iringbuf \
 	mtrace \
-	dut \
+	isa-dut \
 	init \
 	logo \
 	reg \
@@ -119,7 +119,7 @@ VPATH += $(VM_USER_DIR)
 
 cpu-exec.o: /home/sends/local/share/ysyx-workbench/npc/sim/cpu/cpu-exec.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
-dut11111.o: /home/sends/local/share/ysyx-workbench/npc/sim/cpu/difftest/dut11111.c
+dut.o: /home/sends/local/share/ysyx-workbench/npc/sim/cpu/difftest/dut.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 ref.o: /home/sends/local/share/ysyx-workbench/npc/sim/cpu/difftest/ref.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
@@ -147,7 +147,7 @@ iringbuf.o: /home/sends/local/share/ysyx-workbench/npc/sim/monitor/trace/iringbu
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 mtrace.o: /home/sends/local/share/ysyx-workbench/npc/sim/monitor/trace/mtrace.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
-dut.o: /home/sends/local/share/ysyx-workbench/npc/sim/riscv32/difftest/dut.c
+isa-dut.o: /home/sends/local/share/ysyx-workbench/npc/sim/riscv32/difftest/isa-dut.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 init.o: /home/sends/local/share/ysyx-workbench/npc/sim/riscv32/init.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<

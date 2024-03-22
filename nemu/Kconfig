@@ -169,6 +169,7 @@ config MTRACE
 config MTRACE_COND
   depends on MTRACE
   string "Only output memory status when the condition is true"
+  default "true"
 
 config FTRACE
   depends on TRACE && TARGET_NATIVE_ELF && ENGINE_INTERPRETER

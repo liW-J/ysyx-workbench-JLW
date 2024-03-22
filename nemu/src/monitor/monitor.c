@@ -150,6 +150,7 @@ void init_monitor(int argc, char *argv[]) {
   ));
 #endif
   init_expr();
+  
   parse_elf(elf_file);
   /* Display welcome message. */
   welcome();

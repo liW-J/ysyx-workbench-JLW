@@ -11,6 +11,10 @@ AM_SRCS := riscv/npc/start.S \
 CFLAGS    += -fdata-sections -ffunction-sections
 LDFLAGS   += -T $(AM_HOME)/scripts/linker.ld \
 						 --defsym=_pmem_start=0x80000000 --defsym=_entry_offset=0x0
+NPCFLAGS += -l $(shell dirname $(IMAGE).elf)/npc-log.txt
+NPCFLAGS += -f $(shell dirname $(IMAGE).elf)/npc-ftrace.txt
+NPCFLAGS += -e $(IMAGE).elf # parse elf
+# NPCFLAGS += -b
 LDFLAGS   += --gc-sections -e _start
 CFLAGS += -DMAINARGS=\"$(mainargs)\"
 .PHONY: $(AM_HOME)/am/src/riscv/npc/trm.c
@@ -21,4 +25,4 @@ image: $(IMAGE).elf
 	@$(OBJCOPY) -S --set-section-flags .bss=alloc,contents -O binary $(IMAGE).elf $(IMAGE).bin
 
 run: image
-	$(MAKE) -C $(NPC_HOME) ISA=$(ISA) run ARGS="$(NEMUFLAGS)" IMG=$(IMAGE).bin
+	$(MAKE) -C $(NPC_HOME) ISA=$(ISA) run ARGS="$(NPCFLAGS)" IMG=$(IMAGE).bin
