@@ -62,23 +62,19 @@ void *memset(void *s, int c, size_t n) {
 }
 
 void *memmove(void *dst, const void *src, size_t n) {
-  char *dst_t = (char *)dst;
-  char *src_t = (char *)src;
-  if (((dst + n) < src) || ((src + n) < dst)) {
-    // 没有重叠，正向拷贝
-    while (n--) {
-      *dst_t++ = *src_t++;
+  const char *s = src;
+    char *d = dst;
+    if (s < d && s + n > d) {
+        s += n, d += n;
+        while (n -- > 0) {
+            *-- d = *-- s;
+        }
+    } else {
+        while (n -- > 0) {
+            *d ++ = *s ++;
+        }
     }
-  }
-  else {
-    // 存在重叠，逆向拷贝
-    dst_t += (n - 1);
-    src_t += (n - 1);
-    while (n--) {
-      *dst_t-- = *src_t--;
-    }
-  }
-  return dst;
+    return dst;
 }
 
 void *memcpy(void *out, const void *in, size_t n) {

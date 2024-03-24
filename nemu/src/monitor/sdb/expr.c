@@ -293,7 +293,7 @@ void init_expr(){
     e[index] = '\0';
     expr_result = expr(e,&success);
     if(correct_result == expr_result || success == true) pass_num++;
-    printf("test_num:%d pass_num:%d\n",test_num,pass_num);
+    // printf("test_num:%d pass_num:%d\n",test_num,pass_num);
   }
   fclose(fp);
   if (test_num == pass_num) Log("Finish init expr with %d test exprs passed!",pass_num);

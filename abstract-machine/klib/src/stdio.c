@@ -46,8 +46,7 @@ int snprintf(char *out, size_t n, const char *fmt, ...) {
 }
 
 int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
-    if (fmt == NULL)
-        return -1;
+    if (fmt == NULL) return -1;
     int ret_num = 0;
     char *pStr = (char *)fmt; // 指向str
     int ArgIntVal = 0;        // 接收整型
@@ -108,8 +107,7 @@ int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
                 break;
             case 'c':
                 ArgIntVal = va_arg(ap, int);
-                if (ret_num + 1 > n)
-                    return ret_num;
+                if (ret_num + 1 > n) return ret_num;
                 *str_out++ = (char)ArgIntVal;
                 ret_num++;
                 break;
