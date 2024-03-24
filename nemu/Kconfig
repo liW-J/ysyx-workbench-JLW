@@ -181,6 +181,16 @@ config FTRACE_COND
   string "Only output fuctions when the condition is true"
   default "true"
 
+config DTRACE
+  depends on TRACE && TARGET_NATIVE_ELF && ENGINE_INTERPRETER
+  bool "Enable device tracer"
+  default y
+
+config DTRACE_COND
+  depends on DTRACE
+  string "Only output device status when the condition is true"
+  default "true"
+
 config WATCHPOINT
   bool "Enable watchopint status"
   default y

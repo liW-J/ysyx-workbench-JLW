@@ -5,6 +5,18 @@
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
+unsigned long m_pow_n(unsigned long m, unsigned long n)
+{
+    unsigned long i = 0, ret = 1;
+    if (n < 0)
+        return 0;
+    for (i = 0; i < n; i++)
+    {
+        ret *= m;
+    }
+    return ret;
+}
+
 int printf(const char *fmt, ...) {
   va_list ap;
   va_start(ap, fmt);
@@ -34,107 +46,99 @@ int snprintf(char *out, size_t n, const char *fmt, ...) {
 }
 
 int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
-  int pos = 0, width = 0;
-
-  for (; *fmt != '\0'; fmt++) {
-    while (*fmt != '%' && *fmt != '\0') {
-      out[pos++] = *fmt++;
-      if (pos > n) {
-        return n;
-      }
+    if (fmt == NULL)
+        return -1;
+    int ret_num = 0;
+    char *pStr = (char *)fmt; // 指向str
+    int ArgIntVal = 0;        // 接收整型
+    // unsigned long ArgHexVal = 0;// 接十六进制
+    char *ArgStrVal = NULL; // 接收字符型
+    // double ArgFloVal = 0.0; // 接受浮点型
+    unsigned long val_seg = 0; // 数据切分
+    // unsigned long val_temp = 0;  // 临时保存数据
+    int cnt = 0; // 数据长度计数
+    char *str_out = out;
+    for (; *pStr != '\0'; pStr++)
+    {
+        switch (*pStr)
+        {
+        case '%':
+            pStr++;
+            switch (*pStr)
+            {
+            case '%':
+                if (ret_num + 1 > n)
+                    return ret_num;
+                *str_out++ = *pStr;
+                ret_num++;
+                break;
+            case 'd':
+                ArgIntVal = va_arg(ap, int);
+                if (ArgIntVal < 0) // 如果为负数打印，负号
+                {
+                    ArgIntVal = -ArgIntVal; // 取相反数
+                    if (ret_num + 1 > n)
+                        return ret_num;
+                    *str_out++ = '-';
+                    ret_num++;
+                }
+                val_seg = ArgIntVal; // 赋值给 val_seg处理数据
+                // 计算ArgIntVal长度
+                if (ArgIntVal)
+                {
+                    while (val_seg)
+                    {
+                        cnt++;
+                        val_seg /= 10;
+                    }
+                }
+                else
+                    cnt = 1; // 数字0的长度为1
+                // 将整数转为单个字符打印
+                while (cnt)
+                {
+                    val_seg = ArgIntVal / m_pow_n(10, cnt - 1);
+                    ArgIntVal %= m_pow_n(10, cnt - 1);
+                    if (ret_num + 1 > n)
+                        return ret_num;
+                    *str_out++ = (char)val_seg + '0';
+                    ret_num++;
+                    cnt--;
+                }
+                break;
+            case 'c':
+                ArgIntVal = va_arg(ap, int);
+                if (ret_num + 1 > n)
+                    return ret_num;
+                *str_out++ = (char)ArgIntVal;
+                ret_num++;
+                break;
+            case 's':
+                ArgStrVal = va_arg(ap, char *);
+                for (; *ArgStrVal != '\0'; ArgStrVal++)
+                {
+                    if (ret_num + 1 > n)
+                        return ret_num;
+                    *str_out++ = *ArgStrVal;
+                    ret_num++;
+                }
+                break;
+            default:
+                break;
+            }
+            break;
+        default:
+            if (ret_num + 1 > n)
+                return ret_num;
+            *str_out++ = *pStr;
+            ret_num++;
+            break;
+        }
     }
-
-    if (*fmt == '%') fmt++;
-    else if (*fmt == '\0') break;
-
-    char padding = ' ';
-    if (*fmt == '0') {
-      padding = '0';
-      fmt++;
-    }
-
-    while (*fmt >= '0' && *fmt <= '9') {
-      width = width * 10 + *fmt++ - '0';
-    }
-
-    switch (*fmt) {
-      case 's': {
-        char *s = va_arg(ap, char *);
-        while (*s != '\0') {
-          out[pos++] = *s++;
-          if (pos > n) return n;
-        }
-        break;
-      }
-      case 'd': {
-        int d = va_arg(ap, int);
-        if (d < 0) {
-            d = -d;
-            out[pos++] = '-';
-            if (pos > n) return n;
-        }
-        char num[20] = {0};
-        int rem = 0, length = 0;
-
-        do {
-          rem = d % 10;
-          d = d / 10;
-          num[length++] = rem + '0';
-        } while (d > 0);
-
-        while (length < width) {
-          out[pos++] = padding;
-          width--;
-          if (pos > n) return n;
-        }
-
-        length--;
-        for (; length >= 0; length--) {
-          out[pos++] = num[length];
-          if (pos > n) return n;
-        }
-        break;
-      }
-      case 'p':
-      case 'x': {
-          uint64_t d = va_arg(ap, uint64_t);
-          char num[20] = {0};
-          int rem = 0;
-          int length = 0;
-
-          do {
-            rem = d % 16;
-            d = d / 16;
-            if (rem <= 9) num[length++] = rem + '0';
-            else num[length++] = rem - 10 + 'a';
-          } while (d > 0);
-
-          while (length < width) {
-            out[pos++] = padding;
-            width--;
-            if (pos > n) return n;
-          }
-
-          out[pos++] = '0';
-          if (pos > n) return n;
-
-          out[pos++] = 'x';
-          if (pos > n) return n;
-
-          length--;
-          for (; length >= 0; length--) {
-            out[pos++] = num[length];
-            if (pos > n) return n;
-          }
-          break;
-        }
-      }
-    }
-
-  if (pos > n) return n;
-
-  out[pos] = '\0';
-  return pos;
+    *str_out = '\0';
+    assert(ret_num = strlen(out));
+    assert(ret_num <= n);
+    return ret_num;
 }
 
 #endif
