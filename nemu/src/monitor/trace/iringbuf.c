@@ -14,6 +14,8 @@ int p_cur = 0;
 int p_error = 0;
 bool is_full = false;
 
+#if defined(CONFIG_IRINGBUF_COND)
+
 void iringbuf_inst(word_t pc, uint32_t inst) {
   iringbuf[p_cur].pc = pc;
   iringbuf[p_cur].inst = inst;
@@ -42,4 +44,4 @@ void display_iringbuf() {
 
 }
 
-
+#endif
