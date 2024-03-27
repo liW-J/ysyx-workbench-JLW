@@ -4,9 +4,9 @@ import chisel3._
 import chisel3.util._
 
 import config.Configs._
-import config.OPtypes._
+import config.OpTypes._
 import utils._
-import config.EXEtypes._
+import config.ExeTypes._
 
 //-----------------------------------------------------------------------------
 // EX
@@ -51,7 +51,7 @@ class EX extends Module {
 
 
     switch(io.bundleEXControl.exeType) {
-        is(EXE_ADD) {
+        is(ALU_ADD) {
             res := src1 +& src2
             writeEnable := true.B
         }

@@ -41,6 +41,7 @@ VM_USER_CFLAGS = \
 	-DITRACE_COND=true \
 	-DIRINGBUF_COND=true \
 	-DMTRACE_COND=true \
+	-DDTRACE_COND=true \
 	-Wno-unused-result \
 	-DCFLAGS_TOP_NAME="VTOP" \
 	-I/home/sends/local/share/ysyx-workbench/npc/include \

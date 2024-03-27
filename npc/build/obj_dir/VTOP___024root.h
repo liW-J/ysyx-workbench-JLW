@@ -18,7 +18,7 @@ class VTOP___024root final : public VerilatedModule {
 
     // DESIGN SPECIFIC STATE
     VL_IN8(clock,0,0);
-    CData/*0:0*/ TOP__DOT__id__DOT__isEbreak;
+    CData/*0:0*/ TOP__DOT___id_io_isEbreak;
     VL_IN8(reset,0,0);
     VL_OUT8(io_bundleControl_isALUSrc,0,0);
     VL_OUT8(io_bundleControl_isJump,0,0);
@@ -27,16 +27,16 @@ class VTOP___024root final : public VerilatedModule {
     VL_OUT8(io_bundleControl_isLoad,0,0);
     VL_OUT8(io_bundleControl_isStore,0,0);
     VL_OUT8(io_bundleControl_isSigned,0,0);
-    VL_OUT8(io_bundleControl_lsType,1,0);
+    VL_OUT8(io_bundleControl_lsType,3,0);
     VL_OUT8(io_bundleControl_exeType,3,0);
     VL_OUT8(io_rs1,4,0);
     VL_OUT8(io_rs2,4,0);
     VL_OUT8(io_rd,4,0);
     VL_OUT8(io_resBranch,0,0);
     VL_OUT8(io_writeEnable,0,0);
-    CData/*0:0*/ TOP__DOT__id__DOT____VdfgTmp_hfd5cca07__0;
+    CData/*0:0*/ TOP__DOT__id__DOT___csignals_T_1;
     CData/*0:0*/ __Vtrigrprev__TOP__clock;
-    CData/*0:0*/ __Vtrigrprev__TOP__TOP__DOT__id__DOT__isEbreak;
+    CData/*0:0*/ __Vtrigrprev__TOP__TOP__DOT___id_io_isEbreak;
     CData/*0:0*/ __VactDidInit;
     CData/*0:0*/ __VactContinue;
     VL_IN(io_inst,31,0);
@@ -48,6 +48,7 @@ class VTOP___024root final : public VerilatedModule {
     VL_OUT(io_imm,31,0);
     VL_OUT(io_test,31,0);
     IData/*31:0*/ TOP__DOT__pcReg__DOT__pcReg;
+    IData/*31:0*/ TOP__DOT__id__DOT__casez_tmp;
     IData/*31:0*/ __VstlIterCount;
     IData/*31:0*/ __VicoIterCount;
     IData/*31:0*/ __VactIterCount;

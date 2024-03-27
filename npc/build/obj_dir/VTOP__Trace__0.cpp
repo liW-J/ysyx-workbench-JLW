@@ -70,7 +70,7 @@ void VTOP___024root__trace_chg_sub_0(VTOP___024root* vlSelf, VerilatedVcd::Buffe
     bufp->chgBit(oldp+42,(vlSelf->io_bundleControl_isLoad));
     bufp->chgBit(oldp+43,(vlSelf->io_bundleControl_isStore));
     bufp->chgBit(oldp+44,(vlSelf->io_bundleControl_isSigned));
-    bufp->chgCData(oldp+45,(vlSelf->io_bundleControl_lsType),2);
+    bufp->chgCData(oldp+45,(vlSelf->io_bundleControl_lsType),4);
     bufp->chgCData(oldp+46,(vlSelf->io_bundleControl_exeType),4);
     bufp->chgIData(oldp+47,(vlSelf->io_resEX),32);
     bufp->chgIData(oldp+48,(vlSelf->io_src1),32);
@@ -82,14 +82,13 @@ void VTOP___024root__trace_chg_sub_0(VTOP___024root* vlSelf, VerilatedVcd::Buffe
     bufp->chgBit(oldp+54,(vlSelf->io_resBranch));
     bufp->chgBit(oldp+55,(vlSelf->io_writeEnable));
     bufp->chgIData(oldp+56,(vlSelf->io_test),32);
-    bufp->chgCData(oldp+57,(vlSelf->io_bundleControl_exeType),5);
-    bufp->chgIData(oldp+58,(vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory
+    bufp->chgIData(oldp+57,(vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory
                             [vlSelf->io_rs1]),32);
-    bufp->chgIData(oldp+59,(vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory
+    bufp->chgIData(oldp+58,(vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory
                             [vlSelf->io_rs2]),32);
-    bufp->chgBit(oldp+60,(((IData)(vlSelf->io_writeEnable) 
-                           & (0U != (IData)(vlSelf->io_rd)))));
-    bufp->chgBit(oldp+61,(vlSelf->TOP__DOT__id__DOT__isEbreak));
+    bufp->chgBit(oldp+59,((0U != (IData)(vlSelf->io_rd))));
+    bufp->chgBit(oldp+60,(vlSelf->TOP__DOT___id_io_isEbreak));
+    bufp->chgIData(oldp+61,(vlSelf->TOP__DOT__id__DOT__casez_tmp),32);
 }
 
 void VTOP___024root__trace_cleanup(void* voidSelf, VerilatedVcd* /*unused*/) {

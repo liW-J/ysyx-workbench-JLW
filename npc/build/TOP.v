@@ -141,50 +141,51 @@ module PCRegister(	// @[<stdin>:3:10]
 endmodule
 
 module ID(	// @[<stdin>:20:10]
-  input         clock,	// @[<stdin>:21:11]
-                reset,	// @[<stdin>:22:11]
-  input  [31:0] io_inst,	// @[cpu/src/stage/ID.scala:31:14]
-  output        io_BundleControl_isALUSrc,	// @[cpu/src/stage/ID.scala:31:14]
-                io_BundleControl_isJAL,	// @[cpu/src/stage/ID.scala:31:14]
-  output [3:0]  io_BundleControl_exeType,	// @[cpu/src/stage/ID.scala:31:14]
-  output [4:0]  io_bundleReg_rs1,	// @[cpu/src/stage/ID.scala:31:14]
-                io_bundleReg_rs2,	// @[cpu/src/stage/ID.scala:31:14]
-                io_bundleReg_rd,	// @[cpu/src/stage/ID.scala:31:14]
-  output [31:0] io_imm,	// @[cpu/src/stage/ID.scala:31:14]
-  output        io_isEbreak	// @[cpu/src/stage/ID.scala:31:14]
+  input  [31:0] io_inst,	// @[cpu/src/stage/ID.scala:32:14]
+  output        io_BundleControl_isALUSrc,	// @[cpu/src/stage/ID.scala:32:14]
+                io_BundleControl_isJAL,	// @[cpu/src/stage/ID.scala:32:14]
+  output [4:0]  io_bundleReg_rs1,	// @[cpu/src/stage/ID.scala:32:14]
+                io_bundleReg_rs2,	// @[cpu/src/stage/ID.scala:32:14]
+                io_bundleReg_rd,	// @[cpu/src/stage/ID.scala:32:14]
+  output [31:0] io_imm,	// @[cpu/src/stage/ID.scala:32:14]
+  output        io_isEbreak	// @[cpu/src/stage/ID.scala:32:14]
 );
 
-  wire isEbreak = io_inst[6:2] == 5'h1C;	// @[cpu/src/stage/ID.scala:48:20, :50:18]
-  wire _GEN = io_inst[6:2] == 5'h4;	// @[cpu/src/stage/ID.scala:48:20, :50:18]
-  wire _GEN_0 = io_inst[6:2] == 5'h5;	// @[cpu/src/stage/ID.scala:48:20, :50:18]
-  `ifndef SYNTHESIS	// @[cpu/src/stage/ID.scala:52:13]
-    always @(posedge clock) begin	// @[cpu/src/stage/ID.scala:52:13]
-      if ((`PRINTF_COND_) & isEbreak & ~reset)	// @[cpu/src/stage/ID.scala:50:18, :52:13]
-        $fwrite(32'h80000002, "ebreak\n");	// @[cpu/src/stage/ID.scala:52:13]
-      if ((`PRINTF_COND_) & ~isEbreak & _GEN & ~reset)	// @[cpu/src/stage/ID.scala:50:18, :52:13, :56:13]
-        $fwrite(32'h80000002, "addi\n");	// @[cpu/src/stage/ID.scala:52:13, :56:13]
-      if ((`PRINTF_COND_) & ~isEbreak & ~_GEN & _GEN_0 & ~reset)	// @[cpu/src/stage/ID.scala:50:18, :52:13, :62:13]
-        $fwrite(32'h80000002, "auipc\n");	// @[cpu/src/stage/ID.scala:52:13, :62:13]
-    end // always @(posedge)
-  `endif // not def SYNTHESIS
-  assign io_BundleControl_isALUSrc = ~isEbreak & (_GEN | _GEN_0);	// @[<stdin>:20:10, cpu/src/stage/ID.scala:41:104, :50:18, :57:16]
-  assign io_BundleControl_isJAL = ~(isEbreak | _GEN) & _GEN_0;	// @[<stdin>:20:10, cpu/src/stage/ID.scala:41:104, :50:18]
-  assign io_BundleControl_exeType = isEbreak ? 4'h0 : {3'h0, _GEN | _GEN_0};	// @[<stdin>:20:10, cpu/src/stage/ID.scala:45:28, :50:18, :58:16, :65:16]
-  assign io_bundleReg_rs1 = io_inst[19:15];	// @[<stdin>:20:10, cpu/src/stage/ID.scala:33:30]
-  assign io_bundleReg_rs2 = io_inst[24:20];	// @[<stdin>:20:10, cpu/src/stage/ID.scala:34:30]
-  assign io_bundleReg_rd = io_inst[11:7];	// @[<stdin>:20:10, cpu/src/stage/ID.scala:35:30]
-  assign io_imm =
-    isEbreak
-      ? 32'h0
-      : _GEN
-          ? {{20{io_inst[31]}}, io_inst[31:20]}
-          : _GEN_0 ? {io_inst[31:12], 12'h0} : 32'h0;	// @[<stdin>:20:10, cpu/src/stage/ID.scala:46:28, :50:18, :59:16, :67:16, cpu/src/utils/DecodeUtils.scala:11:{32,37,43,51}, :12:{32,34,48}]
-  assign io_isEbreak = isEbreak;	// @[<stdin>:20:10, cpu/src/stage/ID.scala:50:18]
+  reg  [31:0] casez_tmp;	// @[cpu/src/stage/ID.scala:55:18, :56:20]
+  wire        _csignals_T_1 = {io_inst[14:12], io_inst[6:0]} == 10'h13;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
+  wire        _csignals_T_15 = io_inst[6:0] == 7'h17;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
+  always_comb begin	// @[cpu/src/stage/ID.scala:38:28, :55:18, :56:20, :57:20, :58:20, :59:20, :60:20]
+    casez (_csignals_T_1 ? 3'h0 : _csignals_T_15 ? 3'h1 : 3'h6)	// @[cpu/src/stage/ID.scala:38:28, :55:18, :56:20, :57:20, :58:20, :59:20, :60:20, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+      3'b000:
+        casez_tmp = {{20{io_inst[31]}}, io_inst[31:20]};	// @[cpu/src/stage/ID.scala:38:28, :55:18, :56:20, :57:20, :58:20, :59:20, :60:20, cpu/src/utils/DecodeUtils.scala:11:{32,37,43,51}]
+      3'b001:
+        casez_tmp = {io_inst[31:12], 12'h0};	// @[cpu/src/stage/ID.scala:38:28, :55:18, :56:20, :57:20, :58:20, :59:20, :60:20, cpu/src/utils/DecodeUtils.scala:12:{32,34,48}]
+      3'b010:
+        casez_tmp = {{20{io_inst[31]}}, io_inst[31:25], io_inst[11:7]};	// @[cpu/src/stage/ID.scala:38:28, :55:18, :56:20, :57:20, :58:20, :59:20, :60:20, cpu/src/utils/DecodeUtils.scala:13:{32,37,43,51,62}]
+      3'b011:
+        casez_tmp =
+          {{12{io_inst[31]}}, io_inst[19:12], io_inst[20], io_inst[30:21], 1'h0};	// @[cpu/src/stage/ID.scala:38:28, :55:18, :56:20, :57:20, :58:20, :59:20, :60:20, cpu/src/utils/DecodeUtils.scala:14:{43,58,69,76}, src/main/scala/chisel3/util/Lookup.scala:34:39]
+      3'b100:
+        casez_tmp = {{20{io_inst[31]}}, io_inst[7], io_inst[30:25], io_inst[11:8], 1'h0};	// @[cpu/src/stage/ID.scala:38:28, :55:18, :56:20, :57:20, :58:20, :59:20, :60:20, cpu/src/utils/DecodeUtils.scala:15:{32,37,43,51,57,68}, src/main/scala/chisel3/util/Lookup.scala:34:39]
+      3'b101:
+        casez_tmp = 32'h0;	// @[cpu/src/stage/ID.scala:38:28, :55:18, :56:20, :57:20, :58:20, :59:20, :60:20]
+      3'b110:
+        casez_tmp = 32'h0;	// @[cpu/src/stage/ID.scala:38:28, :55:18, :56:20, :57:20, :58:20, :59:20, :60:20]
+      default:
+        casez_tmp = 32'h0;	// @[cpu/src/stage/ID.scala:38:28, :55:18, :56:20, :57:20, :58:20, :59:20, :60:20]
+    endcase	// @[cpu/src/stage/ID.scala:38:28, :55:18, :56:20, :57:20, :58:20, :59:20, :60:20, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  end // always_comb
+  assign io_BundleControl_isALUSrc = _csignals_T_1 | _csignals_T_15;	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  assign io_BundleControl_isJAL = ~_csignals_T_1 & _csignals_T_15;	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  assign io_bundleReg_rs1 = io_inst[19:15];	// @[<stdin>:20:10, cpu/src/stage/ID.scala:34:30]
+  assign io_bundleReg_rs2 = io_inst[24:20];	// @[<stdin>:20:10, cpu/src/stage/ID.scala:35:30]
+  assign io_bundleReg_rd = io_inst[11:7];	// @[<stdin>:20:10, cpu/src/stage/ID.scala:36:30]
+  assign io_imm = casez_tmp;	// @[<stdin>:20:10, cpu/src/stage/ID.scala:55:18, :56:20]
+  assign io_isEbreak = ~_csignals_T_1 & ~_csignals_T_15;	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
 endmodule
 
-module GPRFile(	// @[<stdin>:108:10]
-  input         clock,	// @[<stdin>:109:11]
-                io_writeEnable,	// @[cpu/src/unit/GPRFile.scala:21:14]
+module GPRFile(	// @[<stdin>:140:10]
+  input         clock,	// @[<stdin>:141:11]
   input  [31:0] io_dataWrite,	// @[cpu/src/unit/GPRFile.scala:21:14]
   input  [4:0]  io_bundleReg_rs1,	// @[cpu/src/unit/GPRFile.scala:21:14]
                 io_bundleReg_rs2,	// @[cpu/src/unit/GPRFile.scala:21:14]
@@ -196,16 +197,16 @@ module GPRFile(	// @[<stdin>:108:10]
 
   regs_combMem regs_ext (	// @[cpu/src/unit/GPRFile.scala:24:17]
     .R0_addr (io_bundleReg_rs1),
-    .R0_en   (1'h1),	// @[<stdin>:108:10, cpu/src/unit/GPRFile.scala:24:17, :35:22, :37:29]
+    .R0_en   (1'h1),	// @[<stdin>:140:10, cpu/src/unit/GPRFile.scala:21:14, :24:17, :35:22, :37:29]
     .R0_clk  (clock),
     .R1_addr (io_bundleReg_rs2),
-    .R1_en   (1'h1),	// @[<stdin>:108:10, cpu/src/unit/GPRFile.scala:24:17, :35:22, :37:29]
+    .R1_en   (1'h1),	// @[<stdin>:140:10, cpu/src/unit/GPRFile.scala:21:14, :24:17, :35:22, :37:29]
     .R1_clk  (clock),
     .R2_addr (5'h2),	// @[cpu/src/unit/GPRFile.scala:40:26]
-    .R2_en   (1'h1),	// @[<stdin>:108:10, cpu/src/unit/GPRFile.scala:24:17, :35:22, :37:29]
+    .R2_en   (1'h1),	// @[<stdin>:140:10, cpu/src/unit/GPRFile.scala:21:14, :24:17, :35:22, :37:29]
     .R2_clk  (clock),
     .W0_addr (io_bundleReg_rd),
-    .W0_en   (io_writeEnable & (|io_bundleReg_rd)),	// @[cpu/src/unit/GPRFile.scala:34:{23,42}]
+    .W0_en   (|io_bundleReg_rd),	// @[cpu/src/unit/GPRFile.scala:34:42]
     .W0_clk  (clock),
     .W0_data (io_dataWrite),
     .R0_data (io_dataRead1),
@@ -214,26 +215,23 @@ module GPRFile(	// @[<stdin>:108:10]
   );
 endmodule
 
-module EX(	// @[<stdin>:138:10]
-  input         clock,	// @[<stdin>:139:11]
-                reset,	// @[<stdin>:140:11]
+module EX(	// @[<stdin>:170:10]
+  input         clock,	// @[<stdin>:171:11]
+                reset,	// @[<stdin>:172:11]
                 io_bundleEXControl_isALUSrc,	// @[cpu/src/stage/EX.scala:34:16]
                 io_bundleEXControl_isJAL,	// @[cpu/src/stage/EX.scala:34:16]
-  input  [4:0]  io_bundleEXControl_exeType,	// @[cpu/src/stage/EX.scala:34:16]
   input  [31:0] io_dataRead1,	// @[cpu/src/stage/EX.scala:34:16]
                 io_dataRead2,	// @[cpu/src/stage/EX.scala:34:16]
                 io_imm,	// @[cpu/src/stage/EX.scala:34:16]
                 io_pc,	// @[cpu/src/stage/EX.scala:34:16]
   output [31:0] io_res,	// @[cpu/src/stage/EX.scala:34:16]
                 io_src1,	// @[cpu/src/stage/EX.scala:34:16]
-                io_src2,	// @[cpu/src/stage/EX.scala:34:16]
-  output        io_writeEnable	// @[cpu/src/stage/EX.scala:34:16]
+                io_src2	// @[cpu/src/stage/EX.scala:34:16]
 );
 
   wire [31:0] src1 = io_bundleEXControl_isJAL ? io_pc : io_dataRead1;	// @[cpu/src/stage/EX.scala:42:16]
   wire [31:0] src2 = io_bundleEXControl_isALUSrc ? io_imm : io_dataRead2;	// @[cpu/src/stage/EX.scala:43:16]
-  wire        writeEnable = io_bundleEXControl_exeType == 5'h1;	// @[cpu/src/stage/EX.scala:53:40]
-  wire [31:0] res = writeEnable ? src1 + src2 : 32'h0;	// @[cpu/src/stage/EX.scala:38:26, :42:16, :43:16, :53:40, :55:{17,25}]
+  wire [31:0] res = src1 + src2;	// @[cpu/src/stage/EX.scala:42:16, :43:16, :55:25]
   `ifndef SYNTHESIS	// @[cpu/src/stage/EX.scala:46:11]
     always @(posedge clock) begin	// @[cpu/src/stage/EX.scala:46:11]
       if ((`PRINTF_COND_) & ~reset) begin	// @[cpu/src/stage/EX.scala:46:11, :60:11]
@@ -242,37 +240,33 @@ module EX(	// @[<stdin>:138:10]
         $fwrite(32'h80000002, "src111=%x\n", src1);	// @[cpu/src/stage/EX.scala:42:16, :46:11, :48:11]
         $fwrite(32'h80000002, "src222=%x\n", src2);	// @[cpu/src/stage/EX.scala:43:16, :46:11, :49:11]
         $fwrite(32'h80000002, "pcccccc=%x\n", io_pc);	// @[cpu/src/stage/EX.scala:46:11, :50:11]
-        $fwrite(32'h80000002, "res=%x\n", res);	// @[cpu/src/stage/EX.scala:38:26, :46:11, :53:40, :55:17, :60:11]
+        $fwrite(32'h80000002, "res=%x\n", res);	// @[cpu/src/stage/EX.scala:46:11, :55:25, :60:11]
       end
     end // always @(posedge)
   `endif // not def SYNTHESIS
-  assign io_res = res;	// @[<stdin>:138:10, cpu/src/stage/EX.scala:38:26, :53:40, :55:17]
-  assign io_src1 = src1;	// @[<stdin>:138:10, cpu/src/stage/EX.scala:42:16]
-  assign io_src2 = src2;	// @[<stdin>:138:10, cpu/src/stage/EX.scala:43:16]
-  assign io_writeEnable = writeEnable;	// @[<stdin>:138:10, cpu/src/stage/EX.scala:53:40]
+  assign io_res = res;	// @[<stdin>:170:10, cpu/src/stage/EX.scala:55:25]
+  assign io_src1 = src1;	// @[<stdin>:170:10, cpu/src/stage/EX.scala:42:16]
+  assign io_src2 = src2;	// @[<stdin>:170:10, cpu/src/stage/EX.scala:43:16]
 endmodule
 
-module Controller(	// @[<stdin>:192:10]
-  input        io_bundleControlIn_isALUSrc,	// @[cpu/src/Controller.scala:14:16]
-               io_bundleControlIn_isJAL,	// @[cpu/src/Controller.scala:14:16]
-  input  [3:0] io_bundleControlIn_exeType,	// @[cpu/src/Controller.scala:14:16]
-  output       io_bundleEXControl_isALUSrc,	// @[cpu/src/Controller.scala:14:16]
-               io_bundleEXControl_isJAL,	// @[cpu/src/Controller.scala:14:16]
-  output [4:0] io_bundleEXControl_exeType	// @[cpu/src/Controller.scala:14:16]
+module Controller(	// @[<stdin>:224:10]
+  input  io_bundleControlIn_isALUSrc,	// @[cpu/src/Controller.scala:14:16]
+         io_bundleControlIn_isJAL,	// @[cpu/src/Controller.scala:14:16]
+  output io_bundleEXControl_isALUSrc,	// @[cpu/src/Controller.scala:14:16]
+         io_bundleEXControl_isJAL	// @[cpu/src/Controller.scala:14:16]
 );
 
-  assign io_bundleEXControl_isALUSrc = io_bundleControlIn_isALUSrc;	// @[<stdin>:192:10]
-  assign io_bundleEXControl_isJAL = io_bundleControlIn_isJAL;	// @[<stdin>:192:10]
-  assign io_bundleEXControl_exeType = {1'h0, io_bundleControlIn_exeType};	// @[<stdin>:192:10, cpu/src/Controller.scala:20:32]
+  assign io_bundleEXControl_isALUSrc = io_bundleControlIn_isALUSrc;	// @[<stdin>:224:10]
+  assign io_bundleEXControl_isJAL = io_bundleControlIn_isJAL;	// @[<stdin>:224:10]
 endmodule
 
 // external module Trap
 
 // external module GetPC
 
-module TOP(	// @[<stdin>:216:10]
-  input         clock,	// @[<stdin>:217:11]
-                reset,	// @[<stdin>:218:11]
+module TOP(	// @[<stdin>:248:10]
+  input         clock,	// @[<stdin>:249:11]
+                reset,	// @[<stdin>:250:11]
   input  [31:0] io_inst,	// @[cpu/src/TOP.scala:30:14]
                 io_res,	// @[cpu/src/TOP.scala:30:14]
   output [31:0] io_pc,	// @[cpu/src/TOP.scala:30:14]
@@ -283,8 +277,8 @@ module TOP(	// @[<stdin>:216:10]
                 io_bundleControl_isLoad,	// @[cpu/src/TOP.scala:30:14]
                 io_bundleControl_isStore,	// @[cpu/src/TOP.scala:30:14]
                 io_bundleControl_isSigned,	// @[cpu/src/TOP.scala:30:14]
-  output [1:0]  io_bundleControl_lsType,	// @[cpu/src/TOP.scala:30:14]
-  output [3:0]  io_bundleControl_exeType,	// @[cpu/src/TOP.scala:30:14]
+  output [3:0]  io_bundleControl_lsType,	// @[cpu/src/TOP.scala:30:14]
+                io_bundleControl_exeType,	// @[cpu/src/TOP.scala:30:14]
   output [31:0] io_resEX,	// @[cpu/src/TOP.scala:30:14]
                 io_src1,	// @[cpu/src/TOP.scala:30:14]
                 io_src2,	// @[cpu/src/TOP.scala:30:14]
@@ -299,14 +293,11 @@ module TOP(	// @[<stdin>:216:10]
 
   wire        _controller_io_bundleEXControl_isALUSrc;	// @[cpu/src/TOP.scala:36:26]
   wire        _controller_io_bundleEXControl_isJAL;	// @[cpu/src/TOP.scala:36:26]
-  wire [4:0]  _controller_io_bundleEXControl_exeType;	// @[cpu/src/TOP.scala:36:26]
   wire [31:0] _ex_io_res;	// @[cpu/src/TOP.scala:35:26]
-  wire        _ex_io_writeEnable;	// @[cpu/src/TOP.scala:35:26]
   wire [31:0] _gprFile_io_dataRead1;	// @[cpu/src/TOP.scala:34:26]
   wire [31:0] _gprFile_io_dataRead2;	// @[cpu/src/TOP.scala:34:26]
   wire        _id_io_BundleControl_isALUSrc;	// @[cpu/src/TOP.scala:33:26]
   wire        _id_io_BundleControl_isJAL;	// @[cpu/src/TOP.scala:33:26]
-  wire [3:0]  _id_io_BundleControl_exeType;	// @[cpu/src/TOP.scala:33:26]
   wire [4:0]  _id_io_bundleReg_rs1;	// @[cpu/src/TOP.scala:33:26]
   wire [4:0]  _id_io_bundleReg_rs2;	// @[cpu/src/TOP.scala:33:26]
   wire [4:0]  _id_io_bundleReg_rd;	// @[cpu/src/TOP.scala:33:26]
@@ -319,12 +310,9 @@ module TOP(	// @[<stdin>:216:10]
     .io_pc (_pcReg_io_pc)
   );
   ID id (	// @[cpu/src/TOP.scala:33:26]
-    .clock                     (clock),
-    .reset                     (reset),
     .io_inst                   (io_inst),
     .io_BundleControl_isALUSrc (_id_io_BundleControl_isALUSrc),
     .io_BundleControl_isJAL    (_id_io_BundleControl_isJAL),
-    .io_BundleControl_exeType  (_id_io_BundleControl_exeType),
     .io_bundleReg_rs1          (_id_io_bundleReg_rs1),
     .io_bundleReg_rs2          (_id_io_bundleReg_rs2),
     .io_bundleReg_rd           (_id_io_bundleReg_rd),
@@ -333,7 +321,6 @@ module TOP(	// @[<stdin>:216:10]
   );
   GPRFile gprFile (	// @[cpu/src/TOP.scala:34:26]
     .clock            (clock),
-    .io_writeEnable   (_ex_io_writeEnable),	// @[cpu/src/TOP.scala:35:26]
     .io_dataWrite     (_ex_io_res),	// @[cpu/src/TOP.scala:35:26]
     .io_bundleReg_rs1 (_id_io_bundleReg_rs1),	// @[cpu/src/TOP.scala:33:26]
     .io_bundleReg_rs2 (_id_io_bundleReg_rs2),	// @[cpu/src/TOP.scala:33:26]
@@ -347,23 +334,19 @@ module TOP(	// @[<stdin>:216:10]
     .reset                       (reset),
     .io_bundleEXControl_isALUSrc (_controller_io_bundleEXControl_isALUSrc),	// @[cpu/src/TOP.scala:36:26]
     .io_bundleEXControl_isJAL    (_controller_io_bundleEXControl_isJAL),	// @[cpu/src/TOP.scala:36:26]
-    .io_bundleEXControl_exeType  (_controller_io_bundleEXControl_exeType),	// @[cpu/src/TOP.scala:36:26]
     .io_dataRead1                (_gprFile_io_dataRead1),	// @[cpu/src/TOP.scala:34:26]
     .io_dataRead2                (_gprFile_io_dataRead2),	// @[cpu/src/TOP.scala:34:26]
     .io_imm                      (_id_io_imm),	// @[cpu/src/TOP.scala:33:26]
     .io_pc                       (_pcReg_io_pc),	// @[cpu/src/TOP.scala:32:26]
     .io_res                      (_ex_io_res),
     .io_src1                     (io_src1),
-    .io_src2                     (io_src2),
-    .io_writeEnable              (_ex_io_writeEnable)
+    .io_src2                     (io_src2)
   );
   Controller controller (	// @[cpu/src/TOP.scala:36:26]
     .io_bundleControlIn_isALUSrc (_id_io_BundleControl_isALUSrc),	// @[cpu/src/TOP.scala:33:26]
     .io_bundleControlIn_isJAL    (_id_io_BundleControl_isJAL),	// @[cpu/src/TOP.scala:33:26]
-    .io_bundleControlIn_exeType  (_id_io_BundleControl_exeType),	// @[cpu/src/TOP.scala:33:26]
     .io_bundleEXControl_isALUSrc (_controller_io_bundleEXControl_isALUSrc),
-    .io_bundleEXControl_isJAL    (_controller_io_bundleEXControl_isJAL),
-    .io_bundleEXControl_exeType  (_controller_io_bundleEXControl_exeType)
+    .io_bundleEXControl_isJAL    (_controller_io_bundleEXControl_isJAL)
   );
   Trap trap (	// @[cpu/src/TOP.scala:37:26]
     .clock    (clock),
@@ -375,23 +358,23 @@ module TOP(	// @[<stdin>:216:10]
     .reset (reset),
     .pc    (_pcReg_io_pc)	// @[cpu/src/TOP.scala:32:26]
   );
-  assign io_pc = _pcReg_io_pc;	// @[<stdin>:216:10, cpu/src/TOP.scala:32:26]
-  assign io_bundleControl_isALUSrc = _id_io_BundleControl_isALUSrc;	// @[<stdin>:216:10, cpu/src/TOP.scala:33:26]
-  assign io_bundleControl_isJump = 1'h0;	// @[<stdin>:216:10, cpu/src/TOP.scala:32:26, :33:26, :34:26, :35:26, :36:26]
-  assign io_bundleControl_isBranch = 1'h0;	// @[<stdin>:216:10, cpu/src/TOP.scala:32:26, :33:26, :34:26, :35:26, :36:26]
-  assign io_bundleControl_isJAL = _id_io_BundleControl_isJAL;	// @[<stdin>:216:10, cpu/src/TOP.scala:33:26]
-  assign io_bundleControl_isLoad = 1'h0;	// @[<stdin>:216:10, cpu/src/TOP.scala:32:26, :33:26, :34:26, :35:26, :36:26]
-  assign io_bundleControl_isStore = 1'h0;	// @[<stdin>:216:10, cpu/src/TOP.scala:32:26, :33:26, :34:26, :35:26, :36:26]
-  assign io_bundleControl_isSigned = 1'h0;	// @[<stdin>:216:10, cpu/src/TOP.scala:32:26, :33:26, :34:26, :35:26, :36:26]
-  assign io_bundleControl_lsType = 2'h0;	// @[<stdin>:216:10, cpu/src/TOP.scala:33:26, :36:26]
-  assign io_bundleControl_exeType = _id_io_BundleControl_exeType;	// @[<stdin>:216:10, cpu/src/TOP.scala:33:26]
-  assign io_resEX = _ex_io_res;	// @[<stdin>:216:10, cpu/src/TOP.scala:35:26]
-  assign io_rs1 = _id_io_bundleReg_rs1;	// @[<stdin>:216:10, cpu/src/TOP.scala:33:26]
-  assign io_rs2 = _id_io_bundleReg_rs2;	// @[<stdin>:216:10, cpu/src/TOP.scala:33:26]
-  assign io_rd = _id_io_bundleReg_rd;	// @[<stdin>:216:10, cpu/src/TOP.scala:33:26]
-  assign io_imm = _id_io_imm;	// @[<stdin>:216:10, cpu/src/TOP.scala:33:26]
-  assign io_resBranch = 1'h0;	// @[<stdin>:216:10, cpu/src/TOP.scala:32:26, :33:26, :34:26, :35:26, :36:26]
-  assign io_writeEnable = _ex_io_writeEnable;	// @[<stdin>:216:10, cpu/src/TOP.scala:35:26]
+  assign io_pc = _pcReg_io_pc;	// @[<stdin>:248:10, cpu/src/TOP.scala:32:26]
+  assign io_bundleControl_isALUSrc = _id_io_BundleControl_isALUSrc;	// @[<stdin>:248:10, cpu/src/TOP.scala:33:26]
+  assign io_bundleControl_isJump = 1'h0;	// @[<stdin>:248:10, cpu/src/TOP.scala:32:26, :33:26, :34:26, :35:26, :36:26]
+  assign io_bundleControl_isBranch = 1'h0;	// @[<stdin>:248:10, cpu/src/TOP.scala:32:26, :33:26, :34:26, :35:26, :36:26]
+  assign io_bundleControl_isJAL = _id_io_BundleControl_isJAL;	// @[<stdin>:248:10, cpu/src/TOP.scala:33:26]
+  assign io_bundleControl_isLoad = 1'h0;	// @[<stdin>:248:10, cpu/src/TOP.scala:32:26, :33:26, :34:26, :35:26, :36:26]
+  assign io_bundleControl_isStore = 1'h0;	// @[<stdin>:248:10, cpu/src/TOP.scala:32:26, :33:26, :34:26, :35:26, :36:26]
+  assign io_bundleControl_isSigned = 1'h0;	// @[<stdin>:248:10, cpu/src/TOP.scala:32:26, :33:26, :34:26, :35:26, :36:26]
+  assign io_bundleControl_lsType = 4'h1;	// @[<stdin>:248:10, cpu/src/TOP.scala:33:26, :35:26, :36:26]
+  assign io_bundleControl_exeType = 4'h1;	// @[<stdin>:248:10, cpu/src/TOP.scala:33:26, :35:26, :36:26]
+  assign io_resEX = _ex_io_res;	// @[<stdin>:248:10, cpu/src/TOP.scala:35:26]
+  assign io_rs1 = _id_io_bundleReg_rs1;	// @[<stdin>:248:10, cpu/src/TOP.scala:33:26]
+  assign io_rs2 = _id_io_bundleReg_rs2;	// @[<stdin>:248:10, cpu/src/TOP.scala:33:26]
+  assign io_rd = _id_io_bundleReg_rd;	// @[<stdin>:248:10, cpu/src/TOP.scala:33:26]
+  assign io_imm = _id_io_imm;	// @[<stdin>:248:10, cpu/src/TOP.scala:33:26]
+  assign io_resBranch = 1'h0;	// @[<stdin>:248:10, cpu/src/TOP.scala:32:26, :33:26, :34:26, :35:26, :36:26]
+  assign io_writeEnable = 1'h1;	// @[<stdin>:248:10, cpu/src/TOP.scala:34:26, :35:26]
 endmodule
 
 

@@ -4,11 +4,12 @@ import chisel3._
 import chisel3.util._
 
 import config.Configs._
-import config.OPcodes._
-import config.OPtypes._
 import utils._
-import config.EXEtypes._
-import config.LStypes._
+import config.ExeTypes._
+import config.OpTypes._
+import config.RV32EInstr._
+
+
 
 //-----------------------------------------------------------------------------
 // ID
@@ -34,38 +35,29 @@ class ID extends Module with DecodeUtils {
   io.bundleReg.rs2 := io.inst(24, 20)
   io.bundleReg.rd  := io.inst(11, 7)
 
-  // val funct3   = Reg(io.inst(14, 12))
-  // val funct7   = Reg(io.inst(31, 27))
-  
-  
-  val isEbreak, isALUSrc, isJump, isBranch, isJAL, isLoad, isStore, isSigned, writeEnable = WireDefault(false.B)
-
-  val opcode  = WireDefault(0.U(OP_TYPES_WIDTH.W))
-  val lsType  = WireDefault(0.U(LS_TYPE_WIDTH.W))
-  val exeType = WireDefault(0.U(EXE_TYPES_WIDTH.W))
   val imm     = WireDefault(0.U(DATA_WIDTH.W))
+  val inst    = WireDefault(0.U(INST_WIDTH.W))
 
-  opcode := io.inst(6, 2)
-  
-  switch(opcode) {
-    is(EBREAK_OP) {
-      printf("ebreak\n")
-      isEbreak := true.B
-    }
-    is(ADDI_OP) {
-      printf("addi\n")
-      isALUSrc := true.B
-      exeType  := EXE_ADD
-      imm      := decodeImm(io.inst, typeI)
-    }
-    is(AUIPC_OP) {
-      printf("auipc\n")
-      isALUSrc := true.B
-      isJAL    := true.B
-      exeType  := EXE_ADD
-      writeEnable := true.B
-      imm      := decodeImm(io.inst, typeU)
-    }
+  inst := io.inst
+
+  val csignals = ListLookup(inst,
+    List(noTYPE, false.B, false.B, false.B, false.B, false.B, false.B, false.B, ALU_ADD, true.B),
+    Array(
+      ADDI   -> List(typeI, true.B, false.B, false.B, false.B, false.B, false.B, false.B, ALU_ADD, false.B),
+      AUIPC  -> List(typeU, true.B, false.B, false.B, true.B, false.B, false.B, false.B, ALU_ADD, false.B),
+      EBREAK -> List(noTYPE, false.B, false.B, false.B, false.B, false.B, false.B, false.B, ALU_ADD, true.B)  
+    )
+  )
+
+  val opType::isALUSrc::isJump::isBranch::isJAL::isLoad::isStore::isSigned::exeType::isEbreak::Nil = csignals
+
+
+  switch(opType) {
+    is(typeI) {imm := decodeImm(inst, typeI)}
+    is(typeU) {imm := decodeImm(inst, typeU)}
+    is(typeS) {imm := decodeImm(inst, typeS)}
+    is(typeJ) {imm := decodeImm(inst, typeJ)}
+    is(typeR) {imm := decodeImm(inst, typeR)}
   }
 
   io.BundleControl.isALUSrc    := isALUSrc
@@ -75,7 +67,7 @@ class ID extends Module with DecodeUtils {
   io.BundleControl.isLoad      := isLoad
   io.BundleControl.isStore     := isStore
   io.BundleControl.isSigned    := isSigned
-  io.BundleControl.lsType      := lsType
+  io.BundleControl.lsType      := exeType
   io.BundleControl.exeType     := exeType
   io.isEbreak                  := isEbreak
   io.imm                       := imm

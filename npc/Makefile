@@ -14,6 +14,9 @@ endif
 -include $(NPC_HOME)/include/config/auto.conf
 -include $(NPC_HOME)/include/config/auto.conf.cmd
 
+# Include rules for menuconfig
+include $(NPC_HOME)/scripts/config.mk
+
 export PATH := $(PATH):$(abspath ./utils)
 
 remove_quote = $(patsubst "%",%,$(1))
@@ -53,6 +56,8 @@ CFLAGS_BUILD += -D__GUEST_ISA__=$(CFG_GUEST_ISA)
 CFLAGS_TRACE += -DITRACE_COND=$(if $(CONFIG_ITRACE_COND),$(call remove_quote,$(CONFIG_ITRACE_COND)),true)
 CFLAGS_TRACE += -DIRINGBUF_COND=$(if $(CONFIG_IRINGBUF_COND),$(call remove_quote,$(CONFIG_IRINGBUF_COND)),true)
 CFLAGS_TRACE += -DMTRACE_COND=$(if $(CONFIG_MTRACE_COND),$(call remove_quote,$(CONFIG_MTRACE_COND)),true)
+CFLAGS_TRACE += -DDTRACE_COND=$(if $(CONFIG_DTRACE_COND),$(call remove_quote,$(CONFIG_DTRACE_COND)),true)
+
 CFLAGS       += $(CFLAGS_BUILD)                                 \
 								$(CFLAGS_TRACE)																	\
                 -Wno-unused-result                              \
@@ -102,6 +107,23 @@ SRCS = $(SRCVS_GEN) $(SRCCS)
 
 CONFIG = $(NPC_HOME)/.config
 
+ifdef CONFIG_DIFFTEST
+	DIFF_REF_PATH = $(call remove_quote,$(NEMU_HOME))
+	DIFF_REF_SO = $(call remove_quote,$(NEMU_HOME))/build/riscv32-nemu-interpreter-so
+	MKFLAGS = GUEST_ISA=$(GUEST_ISA) SHARE=1 ENGINE=interpreter
+	ARGS_DIFF = --diff=$(DIFF_REF_SO)
+
+	ifndef CONFIG_DIFFTEST_REF_NEMU
+	$(DIFF_REF_SO):
+		$(MAKE) -s -C $(DIFF_REF_PATH) $(MKFLAGS)
+	endif
+endif
+
+override ARGS_EMBED ?= --log=$(BUILD_DIR)/npc-log.txt
+override ARGS_EMBED += --ftrace=$(BUILD_DIR)/npc-trace.txt
+override ARGS_EMBED += $(ARGS_DIFF)
+
+
 $(SRCVS_GEN): $(SRCSS)
 	$(call git_commit, "generate verilog")
 	mkdir -p $(BUILD_DIR)                           
@@ -117,22 +139,6 @@ $(NPC_BIN): $(INCS) $(SRCS) $(CONFIG)
 	--Mdir $(DIR_OBJ) --exe -o                  \
 	$(abspath $(NPC_BIN))
 
-ifdef CONFIG_DIFFTEST
-  DIFF_REF_PATH = $(NPC_HOME)/$(call remove_quote,$(CONFIG_DIFFTEST_REF_PATH))
-	DIFF_REF_SO = $(DIFF_REF_PATH)/build/$(CFG_GUEST_ISA)-$(call remove_quote,$(CONFIG_DIFFTEST_REF_NAME))-so
-	DIFF_REF_SO = $(NEMU_HOME)/build/riscv32-nemu-interpreter-so
-	MKFLAGS = GUEST_ISA=$(GUEST_ISA) SHARE=1 ENGINE=interpreter
-	ARGS_DIFF = --diff=$(DIFF_REF_SO)
-
-	ifndef CONFIG_DIFFTEST_REF_NAME
-	$(DIFF_REF_SO):
-		$(MAKE) -s -C $(DIFF_REF_PATH) $(MKFLAGS)
-	endif
-endif
-
-override ARGS_EMBED ?= --log=$(BUILD_DIR)/npc-log.txt
-override ARGS_EMBED += --ftrace=$(BUILD_DIR)/npc-trace.txt
-override ARGS_EMBED += $(ARGS_DIFF)
 
 IMG ?=
 NPC_EXEC := $(NPC_BIN) $(ARGS_EMBED) $(ARGS) $(IMG)

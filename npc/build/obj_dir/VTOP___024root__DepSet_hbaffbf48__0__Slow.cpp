@@ -22,8 +22,8 @@ VL_ATTR_COLD void VTOP___024root___eval_initial(VTOP___024root* vlSelf) {
     // Body
     VTOP___024root___eval_initial__TOP(vlSelf);
     vlSelf->__Vtrigrprev__TOP__clock = vlSelf->clock;
-    vlSelf->__Vtrigrprev__TOP__TOP__DOT__id__DOT__isEbreak 
-        = vlSelf->TOP__DOT__id__DOT__isEbreak;
+    vlSelf->__Vtrigrprev__TOP__TOP__DOT___id_io_isEbreak 
+        = vlSelf->TOP__DOT___id_io_isEbreak;
 }
 
 VL_ATTR_COLD void VTOP___024root___eval_initial__TOP(VTOP___024root* vlSelf) {
@@ -36,8 +36,10 @@ VL_ATTR_COLD void VTOP___024root___eval_initial__TOP(VTOP___024root* vlSelf) {
     vlSelf->io_bundleControl_isLoad = 0U;
     vlSelf->io_bundleControl_isStore = 0U;
     vlSelf->io_bundleControl_isSigned = 0U;
-    vlSelf->io_bundleControl_lsType = 0U;
+    vlSelf->io_bundleControl_lsType = 1U;
+    vlSelf->io_bundleControl_exeType = 1U;
     vlSelf->io_resBranch = 0U;
+    vlSelf->io_writeEnable = 1U;
 }
 
 VL_ATTR_COLD void VTOP___024root___eval_final(VTOP___024root* vlSelf) {
@@ -70,7 +72,7 @@ VL_ATTR_COLD void VTOP___024root___eval_settle(VTOP___024root* vlSelf) {
 #ifdef VL_DEBUG
                 VTOP___024root___dump_triggers__stl(vlSelf);
 #endif
-                VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 273, "", "Settle region did not converge.");
+                VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 267, "", "Settle region did not converge.");
             }
             vlSelf->__VstlIterCount = ((IData)(1U) 
                                        + vlSelf->__VstlIterCount);
@@ -134,7 +136,7 @@ VL_ATTR_COLD void VTOP___024root___dump_triggers__act(VTOP___024root* vlSelf) {
         VL_DBG_MSGF("         'act' region trigger index 0 is active: @(posedge clock)\n");
     }
     if (vlSelf->__VactTriggered.at(1U)) {
-        VL_DBG_MSGF("         'act' region trigger index 1 is active: @([changed] TOP.id.isEbreak)\n");
+        VL_DBG_MSGF("         'act' region trigger index 1 is active: @([changed] TOP._id_io_isEbreak)\n");
     }
 }
 #endif  // VL_DEBUG
@@ -152,7 +154,7 @@ VL_ATTR_COLD void VTOP___024root___dump_triggers__nba(VTOP___024root* vlSelf) {
         VL_DBG_MSGF("         'nba' region trigger index 0 is active: @(posedge clock)\n");
     }
     if (vlSelf->__VnbaTriggered.at(1U)) {
-        VL_DBG_MSGF("         'nba' region trigger index 1 is active: @([changed] TOP.id.isEbreak)\n");
+        VL_DBG_MSGF("         'nba' region trigger index 1 is active: @([changed] TOP._id_io_isEbreak)\n");
     }
 }
 #endif  // VL_DEBUG
@@ -186,14 +188,15 @@ VL_ATTR_COLD void VTOP___024root___ctor_var_reset(VTOP___024root* vlSelf) {
     vlSelf->io_resBranch = 0;
     vlSelf->io_writeEnable = 0;
     vlSelf->io_test = 0;
+    vlSelf->TOP__DOT___id_io_isEbreak = 0;
     vlSelf->TOP__DOT__pcReg__DOT__pcReg = 0;
-    vlSelf->TOP__DOT__id__DOT__isEbreak = 0;
-    vlSelf->TOP__DOT__id__DOT____VdfgTmp_hfd5cca07__0 = 0;
+    vlSelf->TOP__DOT__id__DOT__casez_tmp = 0;
+    vlSelf->TOP__DOT__id__DOT___csignals_T_1 = 0;
     for (int __Vi0 = 0; __Vi0 < 32; ++__Vi0) {
         vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory[__Vi0] = 0;
     }
     vlSelf->__Vtrigrprev__TOP__clock = 0;
-    vlSelf->__Vtrigrprev__TOP__TOP__DOT__id__DOT__isEbreak = 0;
+    vlSelf->__Vtrigrprev__TOP__TOP__DOT___id_io_isEbreak = 0;
     vlSelf->__VactDidInit = 0;
     for (int __Vi0 = 0; __Vi0 < 2; ++__Vi0) {
         vlSelf->__Vm_traceActivity[__Vi0] = 0;

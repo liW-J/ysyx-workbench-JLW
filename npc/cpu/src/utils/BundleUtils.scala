@@ -3,8 +3,7 @@ package utils
 import chisel3._
 import config.Configs._
 import config.OPcodes._
-import config.LStypes._
-import config.EXEtypes._
+import config.ExeTypes._
 
 
 class BundleControl extends Bundle {
@@ -15,7 +14,7 @@ class BundleControl extends Bundle {
   val isLoad = Output(Bool())
   val isStore = Output(Bool())
   val isSigned = Output(Bool()) // unsignNum or signNum
-  val lsType = Output(UInt(LS_TYPE_WIDTH.W))
+  val lsType = Output(UInt(EXE_TYPES_WIDTH.W))
   val exeType = Output(UInt(EXE_TYPES_WIDTH.W))
 }
 
@@ -30,12 +29,12 @@ class BundleEXControl extends Bundle {
     val isJAL = Input(Bool())
     val isBranch = Input(Bool())
     val isSigned = Input(Bool())
-    val exeType = Input(UInt(OP_TYPES_WIDTH.W))    
+    val exeType = Input(UInt(EXE_TYPES_WIDTH.W))    
 }
 
 class BundleDataControl extends Bundle {
     val isLoad = Output(Bool())
     val isStore = Output(Bool())
     val isSigned = Output(Bool())
-    val lsType = Output(UInt(LS_TYPE_WIDTH.W))
+    val lsType = Output(UInt(EXE_TYPES_WIDTH.W))
 }
