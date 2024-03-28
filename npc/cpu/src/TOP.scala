@@ -23,7 +23,7 @@ class TopIO extends Bundle {
   val imm           = Output(UInt(DATA_WIDTH.W))
   val resBranch     = Output(Bool())
   val writeEnable     = Output(Bool())
-  val test     = Output(UInt(DATA_WIDTH.W))
+  // val test     = Output(UInt(DATA_WIDTH.W))
 }
 
 class TOP extends Module {
@@ -52,7 +52,7 @@ class TOP extends Module {
   pcReg.io.isJump <> controller.io.bundleControlOut.isJump
 
   // get inst from pcAddr
-//   instRom.io.addr <> pcReg.iolpc
+//   instRom.io.add
 
   // get inst to Decoder
   id.io.inst <> io.inst
@@ -60,7 +60,7 @@ class TOP extends Module {
   // read or write GPRs from IDres to $rs1/$rs2/$rd
   // if isJump, set nextPC to $rd temporarily
   gprFile.io.bundleReg <> id.io.bundleReg
-  gprFile.io.writeEnable <> ex.io.writeEnable
+  gprFile.io.writeEnable <> controller.io.bundleControlOut.writeEnable
   gprFile.io.isJump <> controller.io.bundleControlOut.isJump
   gprFile.io.dataWrite <> ex.io.res
   gprFile.io.pc <> pcReg.io.pc
@@ -84,6 +84,5 @@ class TOP extends Module {
   io.resBranch <> ex.io.resBranch
   io.src1 <> ex.io.src1
   io.src2 <> ex.io.src2
-  io.writeEnable <> ex.io.writeEnable
-  io.test <> gprFile.io.test
+  io.writeEnable <> controller.io.bundleControlOut.writeEnable
 }

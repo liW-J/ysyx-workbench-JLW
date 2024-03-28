@@ -8,13 +8,13 @@ import utils._
 
 class GPRFileIO extends Bundle {
   val writeEnable = Input(Bool())
-  val isJump    = Input(Bool())
+  val isJump      = Input(Bool())
   val pc          = Input(UInt(ADDR_WIDTH.W))
   val dataWrite   = Input(UInt(DATA_WIDTH.W))
   val bundleReg   = Flipped(new BundleReg)
   val dataRead1   = Output(UInt(DATA_WIDTH.W))
   val dataRead2   = Output(UInt(DATA_WIDTH.W))
-  val test        = Output(UInt(DATA_WIDTH.W))
+  // val test        = Output(UInt(DATA_WIDTH.W))
 }
 
 class GPRFile extends Module {
@@ -37,7 +37,7 @@ class GPRFile extends Module {
     }.otherwise { regs.write(io.bundleReg.rd, io.dataWrite) }
   } 
 
-  val testMem = regs.read(2.U)
+  // val testMem = regs.read(2.U)
 
-  io.test := testMem
+  // io.test := testMem
 }

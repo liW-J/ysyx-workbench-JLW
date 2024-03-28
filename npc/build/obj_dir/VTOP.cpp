@@ -18,6 +18,7 @@ VTOP::VTOP(VerilatedContext* _vcontextp__, const char* _vcname__)
     , io_bundleControl_isJump{vlSymsp->TOP.io_bundleControl_isJump}
     , io_bundleControl_isBranch{vlSymsp->TOP.io_bundleControl_isBranch}
     , io_bundleControl_isJAL{vlSymsp->TOP.io_bundleControl_isJAL}
+    , io_bundleControl_writeEnable{vlSymsp->TOP.io_bundleControl_writeEnable}
     , io_bundleControl_isLoad{vlSymsp->TOP.io_bundleControl_isLoad}
     , io_bundleControl_isStore{vlSymsp->TOP.io_bundleControl_isStore}
     , io_bundleControl_isSigned{vlSymsp->TOP.io_bundleControl_isSigned}
@@ -35,7 +36,6 @@ VTOP::VTOP(VerilatedContext* _vcontextp__, const char* _vcname__)
     , io_src1{vlSymsp->TOP.io_src1}
     , io_src2{vlSymsp->TOP.io_src2}
     , io_imm{vlSymsp->TOP.io_imm}
-    , io_test{vlSymsp->TOP.io_test}
     , __PVT____024unit{vlSymsp->TOP.__PVT____024unit}
     , rootp{&(vlSymsp->TOP)}
 {

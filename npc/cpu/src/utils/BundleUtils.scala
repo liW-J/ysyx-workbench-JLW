@@ -2,7 +2,6 @@ package utils
 
 import chisel3._
 import config.Configs._
-import config.OPcodes._
 import config.ExeTypes._
 
 
@@ -11,6 +10,7 @@ class BundleControl extends Bundle {
   val isJump = Output(Bool())
   val isBranch = Output(Bool())
   val isJAL = Output(Bool())
+  val writeEnable = Output(Bool())
   val isLoad = Output(Bool())
   val isStore = Output(Bool())
   val isSigned = Output(Bool()) // unsignNum or signNum

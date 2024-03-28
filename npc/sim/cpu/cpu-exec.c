@@ -52,7 +52,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #endif
 
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
-  IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
+  IFDEF(CONFIG_DIFFTEST, difftest_step(g_pc, dnpc));
   IFDEF(CONFIG_WATCHPOINT, difftest_watchpoint());
 }
 
@@ -78,15 +78,16 @@ static void exec_once(Decode *s, vaddr_t pc) {
   Log(DEBUG, "src2=%x", top.io_src2);
   Log(DEBUG, "resEX=%08x", top.io_resEX);
   // Log(DEBUG, "is_ebreak=%d", is_ebreak);
-  // Log(DEBUG, "isLoad=%08x", top.io_bundleControl_isLoad);
-  // Log(DEBUG, "isStore=%08x", top.io_bundleControl_isStore);
+  Log(DEBUG, "isLoad=%08x", top.io_bundleControl_isLoad);
+  Log(DEBUG, "isStore=%08x", top.io_bundleControl_isStore);
   Log(DEBUG, "writeEnable=%08x", top.io_writeEnable);
-  Log(DEBUG, "test=%08x", top.io_test);
+  // Log(DEBUG, "test=%08x", top.io_test);
   Log(DEBUG, "imm=%x", top.io_imm);
 
   if (is_ebreak) NPCTRAP(pc, 0);
-  if (top.io_bundleControl_isLoad) Mr(top.io_resEX, top.io_bundleControl_lsType);
+  top.io_res = ((top.io_bundleControl_isLoad) ? Mr(top.io_resEX, top.io_bundleControl_lsType) : top.io_resEX);
   if (top.io_bundleControl_isStore) Mw(top.io_resEX, top.io_bundleControl_lsType, top.io_src2);
+  
   single_cycle();
   s->dnpc = g_pc;
   Log(DEBUG, "exce_once");

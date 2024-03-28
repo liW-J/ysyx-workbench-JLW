@@ -31,15 +31,12 @@ VL_ATTR_COLD void VTOP___024root___eval_initial__TOP(VTOP___024root* vlSelf) {
     VTOP__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    VTOP___024root___eval_initial__TOP\n"); );
     // Body
-    vlSelf->io_bundleControl_isJump = 0U;
     vlSelf->io_bundleControl_isBranch = 0U;
     vlSelf->io_bundleControl_isLoad = 0U;
-    vlSelf->io_bundleControl_isStore = 0U;
     vlSelf->io_bundleControl_isSigned = 0U;
     vlSelf->io_bundleControl_lsType = 1U;
     vlSelf->io_bundleControl_exeType = 1U;
     vlSelf->io_resBranch = 0U;
-    vlSelf->io_writeEnable = 1U;
 }
 
 VL_ATTR_COLD void VTOP___024root___eval_final(VTOP___024root* vlSelf) {
@@ -72,7 +69,7 @@ VL_ATTR_COLD void VTOP___024root___eval_settle(VTOP___024root* vlSelf) {
 #ifdef VL_DEBUG
                 VTOP___024root___dump_triggers__stl(vlSelf);
 #endif
-                VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 267, "", "Settle region did not converge.");
+                VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 302, "", "Settle region did not converge.");
             }
             vlSelf->__VstlIterCount = ((IData)(1U) 
                                        + vlSelf->__VstlIterCount);
@@ -173,6 +170,7 @@ VL_ATTR_COLD void VTOP___024root___ctor_var_reset(VTOP___024root* vlSelf) {
     vlSelf->io_bundleControl_isJump = 0;
     vlSelf->io_bundleControl_isBranch = 0;
     vlSelf->io_bundleControl_isJAL = 0;
+    vlSelf->io_bundleControl_writeEnable = 0;
     vlSelf->io_bundleControl_isLoad = 0;
     vlSelf->io_bundleControl_isStore = 0;
     vlSelf->io_bundleControl_isSigned = 0;
@@ -187,11 +185,13 @@ VL_ATTR_COLD void VTOP___024root___ctor_var_reset(VTOP___024root* vlSelf) {
     vlSelf->io_imm = 0;
     vlSelf->io_resBranch = 0;
     vlSelf->io_writeEnable = 0;
-    vlSelf->io_test = 0;
     vlSelf->TOP__DOT___id_io_isEbreak = 0;
     vlSelf->TOP__DOT__pcReg__DOT__pcReg = 0;
     vlSelf->TOP__DOT__id__DOT__casez_tmp = 0;
-    vlSelf->TOP__DOT__id__DOT___csignals_T_1 = 0;
+    vlSelf->TOP__DOT__id__DOT___GEN = 0;
+    vlSelf->TOP__DOT__id__DOT____VdfgTmp_h166f560e__0 = 0;
+    vlSelf->TOP__DOT__id__DOT____VdfgTmp_h5d4f4c30__0 = 0;
+    vlSelf->TOP__DOT__gprFile__DOT___GEN = 0;
     for (int __Vi0 = 0; __Vi0 < 32; ++__Vi0) {
         vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory[__Vi0] = 0;
     }

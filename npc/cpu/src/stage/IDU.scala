@@ -41,15 +41,18 @@ class ID extends Module with DecodeUtils {
   inst := io.inst
 
   val csignals = ListLookup(inst,
-    List(noTYPE, false.B, false.B, false.B, false.B, false.B, false.B, false.B, ALU_ADD, true.B),
+    List(noTYPE, false.B, false.B, false.B, false.B, false.B, false.B, false.B, false.B, ALU_ADD, false.B),
     Array(
-      ADDI   -> List(typeI, true.B, false.B, false.B, false.B, false.B, false.B, false.B, ALU_ADD, false.B),
-      AUIPC  -> List(typeU, true.B, false.B, false.B, true.B, false.B, false.B, false.B, ALU_ADD, false.B),
-      EBREAK -> List(noTYPE, false.B, false.B, false.B, false.B, false.B, false.B, false.B, ALU_ADD, true.B)  
+      ADDI   -> List(typeI, true.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, ALU_ADD, false.B),
+      AUIPC  -> List(typeU, true.B, false.B, false.B, true.B, true.B, false.B, false.B, false.B, ALU_ADD, false.B),
+      JAL    -> List(typeJ, true.B, true.B, false.B, true.B, true.B, false.B, false.B, false.B, ALU_ADD, false.B),
+      JALR   -> List(typeI, true.B, true.B, false.B, false.B, true.B, false.B, false.B, false.B, ALU_ADD, false.B),
+      SW     -> List(typeS, true.B, false.B, false.B, false.B, false.B, false.B, true.B, false.B, ALU_ADD, false.B),
+      EBREAK -> List(noTYPE, false.B, false.B, false.B, false.B, false.B, false.B, false.B, false.B, ALU_ADD, true.B)  
     )
   )
 
-  val opType::isALUSrc::isJump::isBranch::isJAL::isLoad::isStore::isSigned::exeType::isEbreak::Nil = csignals
+  val opType::isALUSrc::isJump::isBranch::isJAL::writeEnable::isLoad::isStore::isSigned::exeType::isEbreak::Nil = csignals
 
 
   switch(opType) {
@@ -64,11 +67,13 @@ class ID extends Module with DecodeUtils {
   io.BundleControl.isJump      := isJump
   io.BundleControl.isBranch    := isBranch
   io.BundleControl.isJAL       := isJAL
+  io.BundleControl.writeEnable := writeEnable
   io.BundleControl.isLoad      := isLoad
   io.BundleControl.isStore     := isStore
   io.BundleControl.isSigned    := isSigned
   io.BundleControl.lsType      := exeType
   io.BundleControl.exeType     := exeType
+
   io.isEbreak                  := isEbreak
   io.imm                       := imm
 }

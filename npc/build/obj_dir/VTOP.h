@@ -34,6 +34,7 @@ class VTOP VL_NOT_FINAL : public VerilatedModel {
     VL_OUT8(&io_bundleControl_isJump,0,0);
     VL_OUT8(&io_bundleControl_isBranch,0,0);
     VL_OUT8(&io_bundleControl_isJAL,0,0);
+    VL_OUT8(&io_bundleControl_writeEnable,0,0);
     VL_OUT8(&io_bundleControl_isLoad,0,0);
     VL_OUT8(&io_bundleControl_isStore,0,0);
     VL_OUT8(&io_bundleControl_isSigned,0,0);
@@ -51,7 +52,6 @@ class VTOP VL_NOT_FINAL : public VerilatedModel {
     VL_OUT(&io_src1,31,0);
     VL_OUT(&io_src2,31,0);
     VL_OUT(&io_imm,31,0);
-    VL_OUT(&io_test,31,0);
 
     // CELLS
     // Public to allow access to /* verilator public */ items.

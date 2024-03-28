@@ -24,6 +24,7 @@ class VTOP___024root final : public VerilatedModule {
     VL_OUT8(io_bundleControl_isJump,0,0);
     VL_OUT8(io_bundleControl_isBranch,0,0);
     VL_OUT8(io_bundleControl_isJAL,0,0);
+    VL_OUT8(io_bundleControl_writeEnable,0,0);
     VL_OUT8(io_bundleControl_isLoad,0,0);
     VL_OUT8(io_bundleControl_isStore,0,0);
     VL_OUT8(io_bundleControl_isSigned,0,0);
@@ -34,11 +35,14 @@ class VTOP___024root final : public VerilatedModule {
     VL_OUT8(io_rd,4,0);
     VL_OUT8(io_resBranch,0,0);
     VL_OUT8(io_writeEnable,0,0);
-    CData/*0:0*/ TOP__DOT__id__DOT___csignals_T_1;
+    CData/*0:0*/ TOP__DOT__id__DOT____VdfgTmp_h166f560e__0;
+    CData/*0:0*/ TOP__DOT__id__DOT____VdfgTmp_h5d4f4c30__0;
+    CData/*0:0*/ TOP__DOT__gprFile__DOT___GEN;
     CData/*0:0*/ __Vtrigrprev__TOP__clock;
     CData/*0:0*/ __Vtrigrprev__TOP__TOP__DOT___id_io_isEbreak;
     CData/*0:0*/ __VactDidInit;
     CData/*0:0*/ __VactContinue;
+    SData/*9:0*/ TOP__DOT__id__DOT___GEN;
     VL_IN(io_inst,31,0);
     VL_IN(io_res,31,0);
     VL_OUT(io_pc,31,0);
@@ -46,7 +50,6 @@ class VTOP___024root final : public VerilatedModule {
     VL_OUT(io_src1,31,0);
     VL_OUT(io_src2,31,0);
     VL_OUT(io_imm,31,0);
-    VL_OUT(io_test,31,0);
     IData/*31:0*/ TOP__DOT__pcReg__DOT__pcReg;
     IData/*31:0*/ TOP__DOT__id__DOT__casez_tmp;
     IData/*31:0*/ __VstlIterCount;
