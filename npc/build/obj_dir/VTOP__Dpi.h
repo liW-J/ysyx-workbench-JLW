@@ -16,9 +16,9 @@ extern "C" {
 
 
     // DPI IMPORTS
-    // DPI import at /home/sends/local/share/ysyx-workbench/npc/build/TOP.v:433:38
+    // DPI import at /home/sends/local/share/ysyx-workbench/npc/build/TOP.v:714:38
     extern void check_ebreak(svBit flag);
-    // DPI import at /home/sends/local/share/ysyx-workbench/npc/build/TOP.v:449:38
+    // DPI import at /home/sends/local/share/ysyx-workbench/npc/build/TOP.v:730:38
     extern void get_pc(int flag);
 
 #ifdef __cplusplus

@@ -71,9 +71,9 @@ void VTOP___024root__trace_chg_sub_0(VTOP___024root* vlSelf, VerilatedVcd::Buffe
     bufp->chgBit(oldp+43,(vlSelf->io_bundleControl_writeEnable));
     bufp->chgBit(oldp+44,(vlSelf->io_bundleControl_isLoad));
     bufp->chgBit(oldp+45,(vlSelf->io_bundleControl_isStore));
-    bufp->chgBit(oldp+46,(vlSelf->io_bundleControl_isSigned));
-    bufp->chgCData(oldp+47,(vlSelf->io_bundleControl_lsType),4);
-    bufp->chgCData(oldp+48,(vlSelf->io_bundleControl_exeType),4);
+    bufp->chgBit(oldp+46,(vlSelf->io_bundleControl_isUnsigned));
+    bufp->chgCData(oldp+47,(vlSelf->io_bundleControl_lsuType),4);
+    bufp->chgCData(oldp+48,(vlSelf->io_bundleControl_aluType),4);
     bufp->chgIData(oldp+49,(vlSelf->io_resEX),32);
     bufp->chgIData(oldp+50,(vlSelf->io_src1),32);
     bufp->chgIData(oldp+51,(vlSelf->io_src2),32);
@@ -83,12 +83,34 @@ void VTOP___024root__trace_chg_sub_0(VTOP___024root* vlSelf, VerilatedVcd::Buffe
     bufp->chgIData(oldp+55,(vlSelf->io_imm),32);
     bufp->chgBit(oldp+56,(vlSelf->io_resBranch));
     bufp->chgBit(oldp+57,(vlSelf->io_writeEnable));
-    bufp->chgBit(oldp+58,(((IData)(vlSelf->TOP__DOT__gprFile__DOT___GEN) 
+    bufp->chgIData(oldp+58,(vlSelf->TOP__DOT__ex__DOT__casez_tmp),32);
+    bufp->chgIData(oldp+59,(vlSelf->TOP__DOT__ex__DOT__operand1),32);
+    bufp->chgIData(oldp+60,(vlSelf->TOP__DOT__ex__DOT__operand2),32);
+    bufp->chgBit(oldp+61,(((IData)(vlSelf->TOP__DOT__gprFile__DOT___GEN) 
                            & (IData)(vlSelf->io_bundleControl_isJump))));
-    bufp->chgBit(oldp+59,(((~ (IData)(vlSelf->io_bundleControl_isJump)) 
+    bufp->chgBit(oldp+62,(((~ (IData)(vlSelf->io_bundleControl_isJump)) 
                            & (IData)(vlSelf->TOP__DOT__gprFile__DOT___GEN))));
-    bufp->chgBit(oldp+60,(vlSelf->TOP__DOT___id_io_isEbreak));
-    bufp->chgIData(oldp+61,(vlSelf->TOP__DOT__id__DOT__casez_tmp),32);
+    bufp->chgIData(oldp+63,((((~ (IData)(vlSelf->io_bundleControl_isUnsigned)) 
+                              & (IData)(vlSelf->io_bundleControl_isLoad))
+                              ? ((1U == (IData)(vlSelf->io_bundleControl_lsuType))
+                                  ? (((- (IData)((1U 
+                                                  & (vlSelf->io_res 
+                                                     >> 7U)))) 
+                                      << 8U) | (0xffU 
+                                                & vlSelf->io_res))
+                                  : ((2U == (IData)(vlSelf->io_bundleControl_lsuType))
+                                      ? (((- (IData)(
+                                                     (1U 
+                                                      & (vlSelf->io_res 
+                                                         >> 0xfU)))) 
+                                          << 0x10U) 
+                                         | (0xffffU 
+                                            & vlSelf->io_res))
+                                      : ((4U == (IData)(vlSelf->io_bundleControl_lsuType))
+                                          ? vlSelf->io_res
+                                          : 0U))) : vlSelf->io_res)),32);
+    bufp->chgBit(oldp+64,(vlSelf->TOP__DOT___id_io_isEbreak));
+    bufp->chgIData(oldp+65,(vlSelf->TOP__DOT__id__DOT__casez_tmp),32);
 }
 
 void VTOP___024root__trace_cleanup(void* voidSelf, VerilatedVcd* /*unused*/) {

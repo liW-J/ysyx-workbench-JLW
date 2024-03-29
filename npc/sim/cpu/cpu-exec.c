@@ -69,28 +69,28 @@ static void exec_once(Decode *s, vaddr_t pc) {
   top.io_inst = Mr(pc,4);
   s->isa.inst.val = top.io_inst;
   top.eval();
-  Log(DEBUG, "inst=%08x", top.io_inst);
-  Log(DEBUG, "PC: %x", pc);
-  Log(DEBUG, "reg1=%08x", top.io_rs1);
-  Log(DEBUG, "reg2=%08x", top.io_rs2);
-  Log(DEBUG, "rd=%08x", top.io_rd);
-  Log(DEBUG, "src1=%x", top.io_src1);
-  Log(DEBUG, "src2=%x", top.io_src2);
-  Log(DEBUG, "resEX=%08x", top.io_resEX);
-  // Log(DEBUG, "is_ebreak=%d", is_ebreak);
-  Log(DEBUG, "isLoad=%08x", top.io_bundleControl_isLoad);
-  Log(DEBUG, "isStore=%08x", top.io_bundleControl_isStore);
-  Log(DEBUG, "writeEnable=%08x", top.io_writeEnable);
-  // Log(DEBUG, "test=%08x", top.io_test);
-  Log(DEBUG, "imm=%x", top.io_imm);
+  // Log(DEBUG, "inst=%08x", top.io_inst);
+  // Log(DEBUG, "PC: %x", pc);
+  // Log(DEBUG, "reg1=%08x", top.io_rs1);
+  // Log(DEBUG, "reg2=%08x", top.io_rs2);
+  // Log(DEBUG, "rd=%08x", top.io_rd);
+  // Log(DEBUG, "src1=%x", top.io_src1);
+  // Log(DEBUG, "src2=%x", top.io_src2);
+  // Log(DEBUG, "resEX=%08x", top.io_resEX);
+  // Log(DEBUG, "isLoad=%08x", top.io_bundleControl_isLoad);
+  // Log(DEBUG, "isStore=%08x", top.io_bundleControl_isStore);
+  // Log(DEBUG, "imm=%x", top.io_imm);
 
   if (is_ebreak) NPCTRAP(pc, 0);
-  top.io_res = ((top.io_bundleControl_isLoad) ? Mr(top.io_resEX, top.io_bundleControl_lsType) : top.io_resEX);
-  if (top.io_bundleControl_isStore) Mw(top.io_resEX, top.io_bundleControl_lsType, top.io_src2);
+
+  int lsuType = top.io_bundleControl_lsuType;
+  top.io_res = ((top.io_bundleControl_isLoad) ? Mr(top.io_resEX, lsuType) : top.io_resEX);
+  top.eval();
+  if (top.io_bundleControl_isStore) Mw(top.io_resEX, top.io_bundleControl_lsuType, top.io_src2);
   
   single_cycle();
   s->dnpc = g_pc;
-  Log(DEBUG, "exce_once");
+  Log(WARN, "exce_once");
 #ifdef CONFIG_ITRACE
   char *p = s->logbuf;
   p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);
@@ -115,13 +115,13 @@ static void exec_once(Decode *s, vaddr_t pc) {
 static void execute(uint64_t n) {
   Decode s;
   for (;n > 0; n --) {
-    Log(DEBUG, "inst_before=%08x", top.io_inst);
-    Log(DEBUG, "PC: %x", top.io_pc);
+    // Log(DEBUG, "inst_before=%08x", top.io_inst);
+    // Log(DEBUG, "PC: %x", top.io_pc);
     exec_once(&s, top.io_pc);
     g_nr_guest_inst ++;
     trace_and_difftest(&s, top.io_pc);
     if (npc_state.state != NPC_RUNNING) break;
-    // IFDEF(CONFIG_DEVICE, device_update());
+    IFDEF(CONFIG_DEVICE, device_update());
   }
 }
 

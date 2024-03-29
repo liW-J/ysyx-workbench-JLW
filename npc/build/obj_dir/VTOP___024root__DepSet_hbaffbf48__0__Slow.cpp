@@ -13,30 +13,14 @@ VL_ATTR_COLD void VTOP___024root___eval_static(VTOP___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    VTOP___024root___eval_static\n"); );
 }
 
-VL_ATTR_COLD void VTOP___024root___eval_initial__TOP(VTOP___024root* vlSelf);
-
 VL_ATTR_COLD void VTOP___024root___eval_initial(VTOP___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     VTOP__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    VTOP___024root___eval_initial\n"); );
     // Body
-    VTOP___024root___eval_initial__TOP(vlSelf);
     vlSelf->__Vtrigrprev__TOP__clock = vlSelf->clock;
     vlSelf->__Vtrigrprev__TOP__TOP__DOT___id_io_isEbreak 
         = vlSelf->TOP__DOT___id_io_isEbreak;
-}
-
-VL_ATTR_COLD void VTOP___024root___eval_initial__TOP(VTOP___024root* vlSelf) {
-    if (false && vlSelf) {}  // Prevent unused
-    VTOP__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    VL_DEBUG_IF(VL_DBG_MSGF("+    VTOP___024root___eval_initial__TOP\n"); );
-    // Body
-    vlSelf->io_bundleControl_isBranch = 0U;
-    vlSelf->io_bundleControl_isLoad = 0U;
-    vlSelf->io_bundleControl_isSigned = 0U;
-    vlSelf->io_bundleControl_lsType = 1U;
-    vlSelf->io_bundleControl_exeType = 1U;
-    vlSelf->io_resBranch = 0U;
 }
 
 VL_ATTR_COLD void VTOP___024root___eval_final(VTOP___024root* vlSelf) {
@@ -69,7 +53,7 @@ VL_ATTR_COLD void VTOP___024root___eval_settle(VTOP___024root* vlSelf) {
 #ifdef VL_DEBUG
                 VTOP___024root___dump_triggers__stl(vlSelf);
 #endif
-                VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 302, "", "Settle region did not converge.");
+                VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 548, "", "Settle region did not converge.");
             }
             vlSelf->__VstlIterCount = ((IData)(1U) 
                                        + vlSelf->__VstlIterCount);
@@ -173,9 +157,9 @@ VL_ATTR_COLD void VTOP___024root___ctor_var_reset(VTOP___024root* vlSelf) {
     vlSelf->io_bundleControl_writeEnable = 0;
     vlSelf->io_bundleControl_isLoad = 0;
     vlSelf->io_bundleControl_isStore = 0;
-    vlSelf->io_bundleControl_isSigned = 0;
-    vlSelf->io_bundleControl_lsType = 0;
-    vlSelf->io_bundleControl_exeType = 0;
+    vlSelf->io_bundleControl_isUnsigned = 0;
+    vlSelf->io_bundleControl_lsuType = 0;
+    vlSelf->io_bundleControl_aluType = 0;
     vlSelf->io_resEX = 0;
     vlSelf->io_src1 = 0;
     vlSelf->io_src2 = 0;
@@ -189,12 +173,34 @@ VL_ATTR_COLD void VTOP___024root___ctor_var_reset(VTOP___024root* vlSelf) {
     vlSelf->TOP__DOT__pcReg__DOT__pcReg = 0;
     vlSelf->TOP__DOT__id__DOT__casez_tmp = 0;
     vlSelf->TOP__DOT__id__DOT___GEN = 0;
-    vlSelf->TOP__DOT__id__DOT____VdfgTmp_h166f560e__0 = 0;
+    vlSelf->TOP__DOT__id__DOT___GEN_0 = 0;
+    vlSelf->TOP__DOT__id__DOT___GEN_1 = 0;
+    vlSelf->TOP__DOT__id__DOT___GEN_2 = 0;
+    vlSelf->TOP__DOT__id__DOT___GEN_3 = 0;
+    vlSelf->TOP__DOT__id__DOT___GEN_4 = 0;
+    vlSelf->TOP__DOT__id__DOT___GEN_5 = 0;
+    vlSelf->TOP__DOT__id__DOT___GEN_6 = 0;
+    vlSelf->TOP__DOT__id__DOT___GEN_8 = 0;
+    vlSelf->TOP__DOT__id__DOT___GEN_9 = 0;
+    vlSelf->TOP__DOT__id__DOT___GEN_11 = 0;
+    vlSelf->TOP__DOT__id__DOT____VdfgTmp_hbd1d6ada__0 = 0;
     vlSelf->TOP__DOT__id__DOT____VdfgTmp_h5d4f4c30__0 = 0;
+    vlSelf->TOP__DOT__id__DOT____VdfgTmp_h5eaebdb1__0 = 0;
+    vlSelf->TOP__DOT__id__DOT____VdfgTmp_h87db9210__0 = 0;
+    vlSelf->TOP__DOT__id__DOT____VdfgTmp_hc285b89a__0 = 0;
+    vlSelf->TOP__DOT__id__DOT____VdfgTmp_hcd9142c5__0 = 0;
+    vlSelf->TOP__DOT__id__DOT____VdfgTmp_h98976784__0 = 0;
+    vlSelf->TOP__DOT__id__DOT____VdfgTmp_he0211b27__0 = 0;
+    vlSelf->TOP__DOT__id__DOT____VdfgTmp_h86568975__0 = 0;
     vlSelf->TOP__DOT__gprFile__DOT___GEN = 0;
     for (int __Vi0 = 0; __Vi0 < 32; ++__Vi0) {
         vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory[__Vi0] = 0;
     }
+    vlSelf->TOP__DOT__ex__DOT__casez_tmp = 0;
+    vlSelf->TOP__DOT__ex__DOT__operand1 = 0;
+    vlSelf->TOP__DOT__ex__DOT__operand2 = 0;
+    vlSelf->TOP__DOT__ex__DOT___GEN = 0;
+    vlSelf->__VdfgTmp_h83fc06f1__0 = 0;
     vlSelf->__Vtrigrprev__TOP__clock = 0;
     vlSelf->__Vtrigrprev__TOP__TOP__DOT___id_io_isEbreak = 0;
     vlSelf->__VactDidInit = 0;

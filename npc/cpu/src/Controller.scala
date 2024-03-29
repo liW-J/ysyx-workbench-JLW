@@ -16,8 +16,8 @@ class Controller extends Module {
     io.bundleEXControl.isALUSrc := io.bundleControlIn.isALUSrc
     io.bundleEXControl.isBranch := io.bundleControlIn.isBranch
     io.bundleEXControl.isJAL := io.bundleControlIn.isJAL
-    io.bundleEXControl.isSigned := io.bundleControlIn.isSigned
-    io.bundleEXControl.exeType := io.bundleControlIn.exeType
+    io.bundleEXControl.isUnsigned := io.bundleControlIn.isUnsigned
+    io.bundleEXControl.aluType := io.bundleControlIn.aluType
     
     io.bundleControlOut <> io.bundleControlIn
 }

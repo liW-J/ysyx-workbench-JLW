@@ -13,9 +13,9 @@ class BundleControl extends Bundle {
   val writeEnable = Output(Bool())
   val isLoad = Output(Bool())
   val isStore = Output(Bool())
-  val isSigned = Output(Bool()) // unsignNum or signNum
-  val lsType = Output(UInt(EXE_TYPES_WIDTH.W))
-  val exeType = Output(UInt(EXE_TYPES_WIDTH.W))
+  val isUnsigned = Output(Bool()) // unsignNum or signNum
+  val lsuType = Output(UInt(EXE_TYPES_WIDTH.W))
+  val aluType = Output(UInt(EXE_TYPES_WIDTH.W))
 }
 
 class BundleReg extends Bundle {
@@ -28,13 +28,13 @@ class BundleEXControl extends Bundle {
     val isALUSrc = Input(Bool())
     val isJAL = Input(Bool())
     val isBranch = Input(Bool())
-    val isSigned = Input(Bool())
-    val exeType = Input(UInt(EXE_TYPES_WIDTH.W))    
+    val isUnsigned = Input(Bool())
+    val aluType = Input(UInt(EXE_TYPES_WIDTH.W))    
 }
 
 class BundleDataControl extends Bundle {
     val isLoad = Output(Bool())
     val isStore = Output(Bool())
-    val isSigned = Output(Bool())
-    val lsType = Output(UInt(EXE_TYPES_WIDTH.W))
+    val isUnsigned = Output(Bool())
+    val lsuType = Output(UInt(EXE_TYPES_WIDTH.W))
 }

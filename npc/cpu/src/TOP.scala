@@ -23,7 +23,6 @@ class TopIO extends Bundle {
   val imm           = Output(UInt(DATA_WIDTH.W))
   val resBranch     = Output(Bool())
   val writeEnable     = Output(Bool())
-  // val test     = Output(UInt(DATA_WIDTH.W))
 }
 
 class TOP extends Module {
@@ -61,8 +60,11 @@ class TOP extends Module {
   // if isJump, set nextPC to $rd temporarily
   gprFile.io.bundleReg <> id.io.bundleReg
   gprFile.io.writeEnable <> controller.io.bundleControlOut.writeEnable
+  gprFile.io.lsuType <> controller.io.bundleControlOut.lsuType
   gprFile.io.isJump <> controller.io.bundleControlOut.isJump
-  gprFile.io.dataWrite <> ex.io.res
+  gprFile.io.isLoad <> controller.io.bundleControlOut.isLoad
+  gprFile.io.isUnsigned <> controller.io.bundleControlOut.isUnsigned
+  gprFile.io.dataWrite <> io.res
   gprFile.io.pc <> pcReg.io.pc
 
   // exec ALU operate by control from thisInstDecode

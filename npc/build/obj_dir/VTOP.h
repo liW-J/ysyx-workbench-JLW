@@ -37,9 +37,9 @@ class VTOP VL_NOT_FINAL : public VerilatedModel {
     VL_OUT8(&io_bundleControl_writeEnable,0,0);
     VL_OUT8(&io_bundleControl_isLoad,0,0);
     VL_OUT8(&io_bundleControl_isStore,0,0);
-    VL_OUT8(&io_bundleControl_isSigned,0,0);
-    VL_OUT8(&io_bundleControl_lsType,3,0);
-    VL_OUT8(&io_bundleControl_exeType,3,0);
+    VL_OUT8(&io_bundleControl_isUnsigned,0,0);
+    VL_OUT8(&io_bundleControl_lsuType,3,0);
+    VL_OUT8(&io_bundleControl_aluType,3,0);
     VL_OUT8(&io_rs1,4,0);
     VL_OUT8(&io_rs2,4,0);
     VL_OUT8(&io_rd,4,0);

@@ -61,7 +61,7 @@ VL_INLINE_OPT void VTOP___024root___nba_sequent__TOP__0(VTOP___024root* vlSelf) 
     // Body
     VTOP___024unit____Vdpiimwrap_check_ebreak_TOP____024unit(
                                                              (&(vlSymsp->__Vscope_TOP__trap)), 
-                                                             "/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 0x1baU, (IData)(vlSelf->TOP__DOT___id_io_isEbreak));
+                                                             "/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 0x2d3U, (IData)(vlSelf->TOP__DOT___id_io_isEbreak));
 }
 
 void VTOP___024unit____Vdpiimwrap_get_pc_TOP____024unit(const VerilatedScope* __Vscopep, const char* __Vfilenamep, IData/*31:0*/ __Vlineno, IData/*31:0*/ flag);
@@ -86,19 +86,14 @@ VL_INLINE_OPT void VTOP___024root___nba_sequent__TOP__1(VTOP___024root* vlSelf) 
     CData/*0:0*/ __Vdlyvset__TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory__v1;
     __Vdlyvset__TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory__v1 = 0;
     // Body
-    if (VL_UNLIKELY((1U & (~ (IData)(vlSelf->reset))))) {
-        VL_FWRITEF(0x80000002U,"jal=%1#\nALUsrc=%1#\nsrc111=%x\nsrc222=%x\npcccccc=%x\nres=%x\n",
-                   1,vlSelf->io_bundleControl_isJAL,
-                   1,(IData)(vlSelf->io_bundleControl_isALUSrc),
-                   32,vlSelf->io_src1,32,vlSelf->io_src2,
-                   32,vlSelf->io_pc,32,vlSelf->io_resEX);
-    }
     __Vdly__TOP__DOT__pcReg__DOT__pcReg = vlSelf->TOP__DOT__pcReg__DOT__pcReg;
     __Vdlyvset__TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory__v0 = 0U;
     __Vdlyvset__TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory__v1 = 0U;
     __Vdly__TOP__DOT__pcReg__DOT__pcReg = ((IData)(vlSelf->reset)
                                             ? 0x80000000U
-                                            : ((IData)(vlSelf->io_bundleControl_isJump)
+                                            : (((IData)(vlSelf->io_bundleControl_isJump) 
+                                                | ((IData)(vlSelf->io_bundleControl_isBranch) 
+                                                   & (IData)(vlSelf->io_resBranch)))
                                                 ? vlSelf->io_res
                                                 : ((IData)(4U) 
                                                    + vlSelf->TOP__DOT__pcReg__DOT__pcReg)));
@@ -113,7 +108,19 @@ VL_INLINE_OPT void VTOP___024root___nba_sequent__TOP__1(VTOP___024root* vlSelf) 
     if (((~ (IData)(vlSelf->io_bundleControl_isJump)) 
          & (IData)(vlSelf->TOP__DOT__gprFile__DOT___GEN))) {
         __Vdlyvval__TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory__v1 
-            = vlSelf->io_resEX;
+            = (((~ (IData)(vlSelf->io_bundleControl_isUnsigned)) 
+                & (IData)(vlSelf->io_bundleControl_isLoad))
+                ? ((1U == (IData)(vlSelf->io_bundleControl_lsuType))
+                    ? (((- (IData)((1U & (vlSelf->io_res 
+                                          >> 7U)))) 
+                        << 8U) | (0xffU & vlSelf->io_res))
+                    : ((2U == (IData)(vlSelf->io_bundleControl_lsuType))
+                        ? (((- (IData)((1U & (vlSelf->io_res 
+                                              >> 0xfU)))) 
+                            << 0x10U) | (0xffffU & vlSelf->io_res))
+                        : ((4U == (IData)(vlSelf->io_bundleControl_lsuType))
+                            ? vlSelf->io_res : 0U)))
+                : vlSelf->io_res);
         __Vdlyvset__TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory__v1 = 1U;
         __Vdlyvdim0__TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory__v1 
             = vlSelf->io_rd;
@@ -130,5 +137,5 @@ VL_INLINE_OPT void VTOP___024root___nba_sequent__TOP__1(VTOP___024root* vlSelf) 
     vlSelf->io_pc = vlSelf->TOP__DOT__pcReg__DOT__pcReg;
     VTOP___024unit____Vdpiimwrap_get_pc_TOP____024unit(
                                                        (&(vlSymsp->__Vscope_TOP__getPC)), 
-                                                       "/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 0x1caU, vlSelf->io_pc);
+                                                       "/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 0x2e3U, vlSelf->io_pc);
 }

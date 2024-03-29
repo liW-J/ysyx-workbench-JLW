@@ -38,29 +38,54 @@ class EX extends Module {
     val src2 = WireDefault(0.U(DATA_WIDTH.W))
     val isJAL, isALUSrc = WireDefault(false.B)
 
-    // src1 := Mux(io.bundleEXControl.isJAL, io.pc, io.dataRead1)
-    // src2 := Mux(io.bundleEXControl.isALUSrc, io.imm, io.dataRead2)
-
     src1 := io.dataRead1
     src2 := io.dataRead2
     isJAL := io.bundleEXControl.isJAL
     isALUSrc := io.bundleEXControl.isALUSrc
-    
- 
-    printf("jal=%d\n",io.bundleEXControl.isJAL)
-    printf("ALUsrc=%d\n",io.bundleEXControl.isALUSrc)
-    printf("src111=%x\n",src1)
-    printf("src222=%x\n",src2)
-    printf("pcccccc=%x\n",io.pc)
 
+    val operand1 = Mux(isJAL, io.pc, src1)
+    val operand2 = Mux(isALUSrc, io.imm, src2)
 
-    switch(io.bundleEXControl.exeType) {
-        is(ALU_ADD) {
-            res := Mux(isJAL, io.pc, io.dataRead1) +& Mux(isALUSrc, io.imm, io.dataRead2)
+    switch(io.bundleEXControl.aluType) {
+        is(ALU_LUI) { res := operand2}
+        is(ALU_ADD) { res := operand1 +& operand2}
+        is(ALU_SUB) { res := operand1 -& operand2}
+        is(ALU_AND) { res := operand1  & operand2}
+        is(ALU_OR) { res := operand1  | operand2}
+        is(ALU_XOR) { res := operand1  ^ operand2}
+        is(ALU_LT) {
+            when(io.bundleEXControl.isBranch){
+                when(io.bundleEXControl.isUnsigned){
+                    resBranch := src1 < src2
+                }.otherwise{ resBranch := src1.asSInt < src2.asSInt }
+                res := operand1 +& operand2 
+            }.otherwise{
+                when(io.bundleEXControl.isUnsigned){
+                    res := operand1 < operand2
+                }.otherwise{ res:= operand1.asSInt < operand2.asSInt }
+            }
         }
+        is(ALU_EQ) {
+            resBranch := (src1 === src2)
+            res := operand1 +& operand2
+        }
+        is(ALU_NEQ) {
+            resBranch := (src1 =/= src2)
+            res := operand1 +& operand2
+        }
+        is(ALU_GE) {
+            when(io.bundleEXControl.isUnsigned){
+                resBranch := src1 >= src2
+            }.otherwise{ resBranch:= src1.asSInt >= src2.asSInt }
+            res := operand1 +& operand2
+        }
+        is(ALU_SRA) { res := (operand1.asSInt >> operand2(4, 0)).asUInt }
+        is(ALU_SRL) { res := (operand1 >> operand2(4, 0))}
+        is(ALU_SLL) { res := (operand1 << operand2(4, 0))}
+
+
     }
 
-    printf("res=%x\n",res)   
     io.src1 := src1
     io.src2 := src2
     io.res := res

@@ -132,7 +132,7 @@ void difftest_step(vaddr_t pc, vaddr_t npc) {
   ref_difftest_exec(1);
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
 
-  Log(DEBUG, "next_pc=%x", ref_r.pc);
+  // Log(WARN, "next_pc=%x", ref_r.pc);
 
   checkregs(&ref_r, pc);
  
