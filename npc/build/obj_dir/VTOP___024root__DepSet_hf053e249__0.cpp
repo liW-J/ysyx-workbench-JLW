@@ -67,27 +67,27 @@ VL_INLINE_OPT void VTOP___024root___nba_sequent__TOP__0(VTOP___024root* vlSelf) 
                                                              "/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 0x2ecU, (IData)(vlSelf->TOP__DOT___id_io_isEbreak));
 }
 
-void VTOP___024unit____Vdpiimwrap_pmem_write_TOP____024unit(const VerilatedScope* __Vscopep, const char* __Vfilenamep, IData/*31:0*/ __Vlineno, IData/*31:0*/ addr, IData/*31:0*/ len, IData/*31:0*/ data);
-void VTOP___024unit____Vdpiimwrap_pmem_read_TOP____024unit(const VerilatedScope* __Vscopep, const char* __Vfilenamep, IData/*31:0*/ __Vlineno, IData/*31:0*/ addr, IData/*31:0*/ len, IData/*31:0*/ &pmem_read__Vfuncrtn);
+void VTOP___024unit____Vdpiimwrap_paddr_write_TOP____024unit(const VerilatedScope* __Vscopep, const char* __Vfilenamep, IData/*31:0*/ __Vlineno, IData/*31:0*/ addr, IData/*31:0*/ len, IData/*31:0*/ data);
+void VTOP___024unit____Vdpiimwrap_paddr_read_TOP____024unit(const VerilatedScope* __Vscopep, const char* __Vfilenamep, IData/*31:0*/ __Vlineno, IData/*31:0*/ addr, IData/*31:0*/ len, IData/*31:0*/ &paddr_read__Vfuncrtn);
 
 VL_INLINE_OPT void VTOP___024root___nba_sequent__TOP__1(VTOP___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     VTOP__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    VTOP___024root___nba_sequent__TOP__1\n"); );
     // Init
-    IData/*31:0*/ __Vfunc_pmem_read__2__Vfuncout;
-    __Vfunc_pmem_read__2__Vfuncout = 0;
+    IData/*31:0*/ __Vfunc_paddr_read__2__Vfuncout;
+    __Vfunc_paddr_read__2__Vfuncout = 0;
     // Body
     if (vlSelf->io_bundleControl_isStore) {
-        VTOP___024unit____Vdpiimwrap_pmem_write_TOP____024unit(
-                                                               (&(vlSymsp->__Vscope_TOP__memRam)), 
-                                                               "/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 0x31cU, vlSelf->io_resEX, (IData)(vlSelf->io_bundleControl_lsuType), vlSelf->io_src2);
+        VTOP___024unit____Vdpiimwrap_paddr_write_TOP____024unit(
+                                                                (&(vlSymsp->__Vscope_TOP__memRam)), 
+                                                                "/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 0x31cU, vlSelf->io_resEX, (IData)(vlSelf->io_bundleControl_lsuType), vlSelf->io_src2);
     }
     if (vlSelf->io_bundleControl_isLoad) {
-        VTOP___024unit____Vdpiimwrap_pmem_read_TOP____024unit(
-                                                              (&(vlSymsp->__Vscope_TOP__memRam)), 
-                                                              "/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 0x313U, vlSelf->io_resEX, (IData)(vlSelf->io_bundleControl_lsuType), __Vfunc_pmem_read__2__Vfuncout);
-        vlSelf->TOP__DOT___memRam_rdata = __Vfunc_pmem_read__2__Vfuncout;
+        VTOP___024unit____Vdpiimwrap_paddr_read_TOP____024unit(
+                                                               (&(vlSymsp->__Vscope_TOP__memRam)), 
+                                                               "/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 0x313U, vlSelf->io_resEX, (IData)(vlSelf->io_bundleControl_lsuType), __Vfunc_paddr_read__2__Vfuncout);
+        vlSelf->TOP__DOT___memRam_rdata = __Vfunc_paddr_read__2__Vfuncout;
     } else {
         vlSelf->TOP__DOT___memRam_rdata = vlSelf->io_resEX;
     }

@@ -32,14 +32,12 @@ void display_pwrite(paddr_t addr, int len,  word_t data);
 uint8_t* guest_to_host(paddr_t paddr) { return pmem + paddr - CONFIG_MBASE; }
 paddr_t host_to_guest(uint8_t *haddr) { return haddr - pmem + CONFIG_MBASE; }
 
-int pmem_read(int addr, int len) {
-  display_pread(addr, len);
+static word_t pmem_read(paddr_t addr, int len) {
   word_t ret = host_read(guest_to_host(addr), len);
   return ret;
 }
 
-void pmem_write(int addr, int len, int data) {
-  display_pwrite(addr, len, data);
+static void pmem_write(paddr_t addr, int len, word_t data) {
   host_write(guest_to_host(addr), len, data);
 }
 
@@ -57,7 +55,7 @@ void init_mem() {
   LOG("physical memory area [" FMT_PADDR ", " FMT_PADDR "]", PMEM_LEFT, PMEM_RIGHT);
 }
 
-word_t paddr_read(paddr_t addr, int len) {
+int paddr_read(int addr, int len) {
   #ifdef CONFIG_MTRACE_COND
     if (MTRACE_COND) { display_pread(addr, len); }
   #endif
@@ -67,7 +65,7 @@ word_t paddr_read(paddr_t addr, int len) {
   return 0;
 }
 
-void paddr_write(paddr_t addr, int len, word_t data) {
+void paddr_write(int addr, int len, int data) {
   #ifdef CONFIG_MTRACE_COND
     if (MTRACE_COND) { display_pwrite(addr, len, data); }
   #endif

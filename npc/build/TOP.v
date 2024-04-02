@@ -768,8 +768,8 @@ endmodule
 
 // ----- 8< ----- FILE "./memRam.v" ----- 8< -----
 
-import "DPI-C" context function int pmem_read(input int addr, input int len);
-import "DPI-C" context function void pmem_write(input int addr, input int len, input int data);
+import "DPI-C" context function int paddr_read(input int addr, input int len);
+import "DPI-C" context function void paddr_write(input int addr, input int len, input int data);
 
 module MemRam(
   input  wire        clock,
@@ -784,7 +784,7 @@ module MemRam(
 
   always @(clock) begin
     if (isLoad) begin
-      rdata = pmem_read(addr, len);
+      rdata = paddr_read(addr, len);
     end
     else begin
       rdata = addr;
@@ -793,7 +793,7 @@ module MemRam(
 
   always @(clock) begin
     if (isStore) begin
-      pmem_write(addr, len, wdata);
+      paddr_write(addr, len, wdata);
     end
   end
 

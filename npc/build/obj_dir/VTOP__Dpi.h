@@ -21,9 +21,9 @@ extern "C" {
     // DPI import at /home/sends/local/share/ysyx-workbench/npc/build/TOP.v:755:38
     extern void get_pc(int flag);
     // DPI import at /home/sends/local/share/ysyx-workbench/npc/build/TOP.v:771:37
-    extern int pmem_read(int addr, int len);
+    extern int paddr_read(int addr, int len);
     // DPI import at /home/sends/local/share/ysyx-workbench/npc/build/TOP.v:772:38
-    extern void pmem_write(int addr, int len, int data);
+    extern void paddr_write(int addr, int len, int data);
 
 #ifdef __cplusplus
 }

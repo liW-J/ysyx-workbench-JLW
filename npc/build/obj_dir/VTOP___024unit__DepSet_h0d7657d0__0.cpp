@@ -30,25 +30,25 @@ VL_INLINE_OPT void VTOP___024unit____Vdpiimwrap_get_pc_TOP____024unit(const Veri
     get_pc(flag__Vcvt);
 }
 
-extern "C" int pmem_read(int addr, int len);
+extern "C" int paddr_read(int addr, int len);
 
-VL_INLINE_OPT void VTOP___024unit____Vdpiimwrap_pmem_read_TOP____024unit(const VerilatedScope* __Vscopep, const char* __Vfilenamep, IData/*31:0*/ __Vlineno, IData/*31:0*/ addr, IData/*31:0*/ len, IData/*31:0*/ &pmem_read__Vfuncrtn) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+        VTOP___024unit____Vdpiimwrap_pmem_read_TOP____024unit\n"); );
+VL_INLINE_OPT void VTOP___024unit____Vdpiimwrap_paddr_read_TOP____024unit(const VerilatedScope* __Vscopep, const char* __Vfilenamep, IData/*31:0*/ __Vlineno, IData/*31:0*/ addr, IData/*31:0*/ len, IData/*31:0*/ &paddr_read__Vfuncrtn) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+        VTOP___024unit____Vdpiimwrap_paddr_read_TOP____024unit\n"); );
     // Body
     int addr__Vcvt;
     for (size_t addr__Vidx = 0; addr__Vidx < 1; ++addr__Vidx) addr__Vcvt = addr;
     int len__Vcvt;
     for (size_t len__Vidx = 0; len__Vidx < 1; ++len__Vidx) len__Vcvt = len;
     Verilated::dpiContext(__Vscopep, __Vfilenamep, __Vlineno);
-    int pmem_read__Vfuncrtn__Vcvt;
-    pmem_read__Vfuncrtn__Vcvt = pmem_read(addr__Vcvt, len__Vcvt);
-    pmem_read__Vfuncrtn = pmem_read__Vfuncrtn__Vcvt;
+    int paddr_read__Vfuncrtn__Vcvt;
+    paddr_read__Vfuncrtn__Vcvt = paddr_read(addr__Vcvt, len__Vcvt);
+    paddr_read__Vfuncrtn = paddr_read__Vfuncrtn__Vcvt;
 }
 
-extern "C" void pmem_write(int addr, int len, int data);
+extern "C" void paddr_write(int addr, int len, int data);
 
-VL_INLINE_OPT void VTOP___024unit____Vdpiimwrap_pmem_write_TOP____024unit(const VerilatedScope* __Vscopep, const char* __Vfilenamep, IData/*31:0*/ __Vlineno, IData/*31:0*/ addr, IData/*31:0*/ len, IData/*31:0*/ data) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+        VTOP___024unit____Vdpiimwrap_pmem_write_TOP____024unit\n"); );
+VL_INLINE_OPT void VTOP___024unit____Vdpiimwrap_paddr_write_TOP____024unit(const VerilatedScope* __Vscopep, const char* __Vfilenamep, IData/*31:0*/ __Vlineno, IData/*31:0*/ addr, IData/*31:0*/ len, IData/*31:0*/ data) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+        VTOP___024unit____Vdpiimwrap_paddr_write_TOP____024unit\n"); );
     // Body
     int addr__Vcvt;
     for (size_t addr__Vidx = 0; addr__Vidx < 1; ++addr__Vidx) addr__Vcvt = addr;
@@ -57,5 +57,5 @@ VL_INLINE_OPT void VTOP___024unit____Vdpiimwrap_pmem_write_TOP____024unit(const 
     int data__Vcvt;
     for (size_t data__Vidx = 0; data__Vidx < 1; ++data__Vidx) data__Vcvt = data;
     Verilated::dpiContext(__Vscopep, __Vfilenamep, __Vlineno);
-    pmem_write(addr__Vcvt, len__Vcvt, data__Vcvt);
+    paddr_write(addr__Vcvt, len__Vcvt, data__Vcvt);
 }
