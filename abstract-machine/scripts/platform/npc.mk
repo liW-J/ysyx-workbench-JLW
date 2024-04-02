@@ -1,8 +1,11 @@
 AM_SRCS := riscv/npc/start.S \
            riscv/npc/trm.c \
-           riscv/npc/ioe.c \
-           riscv/npc/timer.c \
-           riscv/npc/input.c \
+           riscv/npc/ioe/ioe.c \
+           riscv/npc/ioe/timer.c \
+           riscv/npc/ioe/input.c \
+           riscv/npc/ioe/gpu.c \
+           riscv/npc/ioe/audio.c \
+           riscv/npc/ioe/disk.c \
            riscv/npc/cte.c \
            riscv/npc/trap.S \
            platform/dummy/vme.c \
@@ -14,10 +17,11 @@ LDFLAGS   += -T $(AM_HOME)/scripts/linker.ld \
 NPCFLAGS += -l $(shell dirname $(IMAGE).elf)/npc-log.txt
 NPCFLAGS += -f $(shell dirname $(IMAGE).elf)/npc-ftrace.txt
 NPCFLAGS += -e $(IMAGE).elf # parse elf
-NPCFLAGS += -b
+# NPCFLAGS += -b
 
 LDFLAGS   += --gc-sections -e _start
 CFLAGS += -DMAINARGS=\"$(mainargs)\"
+CFLAGS += -I$(AM_HOME)/am/src/riscv/npc/include
 .PHONY: $(AM_HOME)/am/src/riscv/npc/trm.c
 
 image: $(IMAGE).elf

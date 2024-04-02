@@ -14,9 +14,10 @@ class MemRam extends BlackBox with HasBlackBoxResource {
     val addr = Input(UInt(ADDR_WIDTH.W))
     val len = Input(UInt(DATA_WIDTH.W))
     val wdata = Input(UInt(DATA_WIDTH.W))
+    val pc = Input(UInt(ADDR_WIDTH.W))
     val rdata = Output(UInt(DATA_WIDTH.W))
+    val inst = Output(UInt(INST_WIDTH.W))
   })
-  
-  // printf("!!!!!!!!!!!!!!!!!!!")
+
   addResource("/memRam.v")
 }

@@ -73,6 +73,19 @@ VM_USER_CLASSES = \
 	cpu-exec \
 	dut \
 	ref \
+	alarm \
+	audio \
+	device \
+	disk \
+	intr \
+	map \
+	mmio \
+	port-io \
+	keyboard \
+	sdcard \
+	serial \
+	timer \
+	vga \
 	hostcall \
 	init \
 	main \
@@ -92,13 +105,15 @@ VM_USER_CLASSES = \
 	disasm \
 	log \
 	state \
-	timer \
+	timertool \
 
 # User .cpp directories (from .cpp's on Verilator command line)
 VM_USER_DIR = \
 	/home/sends/local/share/ysyx-workbench/npc/sim \
 	/home/sends/local/share/ysyx-workbench/npc/sim/cpu \
 	/home/sends/local/share/ysyx-workbench/npc/sim/cpu/difftest \
+	/home/sends/local/share/ysyx-workbench/npc/sim/device \
+	/home/sends/local/share/ysyx-workbench/npc/sim/device/io \
 	/home/sends/local/share/ysyx-workbench/npc/sim/engine/interpreter \
 	/home/sends/local/share/ysyx-workbench/npc/sim/memory \
 	/home/sends/local/share/ysyx-workbench/npc/sim/monitor \
@@ -123,6 +138,32 @@ cpu-exec.o: /home/sends/local/share/ysyx-workbench/npc/sim/cpu/cpu-exec.c
 dut.o: /home/sends/local/share/ysyx-workbench/npc/sim/cpu/difftest/dut.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 ref.o: /home/sends/local/share/ysyx-workbench/npc/sim/cpu/difftest/ref.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+alarm.o: /home/sends/local/share/ysyx-workbench/npc/sim/device/alarm.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+audio.o: /home/sends/local/share/ysyx-workbench/npc/sim/device/audio.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+device.o: /home/sends/local/share/ysyx-workbench/npc/sim/device/device.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+disk.o: /home/sends/local/share/ysyx-workbench/npc/sim/device/disk.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+intr.o: /home/sends/local/share/ysyx-workbench/npc/sim/device/intr.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+map.o: /home/sends/local/share/ysyx-workbench/npc/sim/device/io/map.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+mmio.o: /home/sends/local/share/ysyx-workbench/npc/sim/device/io/mmio.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+port-io.o: /home/sends/local/share/ysyx-workbench/npc/sim/device/io/port-io.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+keyboard.o: /home/sends/local/share/ysyx-workbench/npc/sim/device/keyboard.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+sdcard.o: /home/sends/local/share/ysyx-workbench/npc/sim/device/sdcard.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+serial.o: /home/sends/local/share/ysyx-workbench/npc/sim/device/serial.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+timer.o: /home/sends/local/share/ysyx-workbench/npc/sim/device/timer.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+vga.o: /home/sends/local/share/ysyx-workbench/npc/sim/device/vga.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 hostcall.o: /home/sends/local/share/ysyx-workbench/npc/sim/engine/interpreter/hostcall.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
@@ -162,7 +203,7 @@ log.o: /home/sends/local/share/ysyx-workbench/npc/sim/utils/log.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 state.o: /home/sends/local/share/ysyx-workbench/npc/sim/utils/state.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
-timer.o: /home/sends/local/share/ysyx-workbench/npc/sim/utils/timer.c
+timertool.o: /home/sends/local/share/ysyx-workbench/npc/sim/utils/timertool.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 
 ### Link rules... (from --exe)

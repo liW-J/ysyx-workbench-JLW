@@ -9,21 +9,33 @@ module MemRam(
   input  wire [31:0] addr,
   input  wire [31:0] len,
   input  wire [31:0] wdata,
-  output reg  [31:0] rdata
+  input  wire [31:0] pc,
+  output reg  [31:0] rdata,
+  output reg  [31:0] inst
 );
 
-  always @(clock) begin
-    if (isLoad) begin
+  reg load_flag ;
+  reg store_flag ;
+
+  always @(pc) begin
+    if(pc != 0) begin
+      inst = paddr_read(pc, 4);
+    end
+  end
+
+  always @(inst) begin
+    load_flag = isLoad;
+    store_flag = isStore;
+    if (load_flag) begin
       rdata = paddr_read(addr, len);
+      load_flag = 0;
     end
     else begin
       rdata = addr;
     end
-  end
-
-  always @(clock) begin
-    if (isStore) begin
+    if (store_flag) begin
       paddr_write(addr, len, wdata);
+      store_flag = 0;
     end
   end
 

@@ -9,9 +9,8 @@ import _root_.stage.ID
 import _root_.stage.EX
 
 class TopIO extends Bundle {
-  
-  val inst          = Input(UInt(INST_WIDTH.W))
   val res          = Input(UInt(INST_WIDTH.W))
+  val inst          = Output(UInt(INST_WIDTH.W))
   val pc            = Output(UInt(ADDR_WIDTH.W))
   val bundleControl = new BundleControl()
   val resEX         = Output(UInt(DATA_WIDTH.W))
@@ -49,6 +48,7 @@ class TOP extends Module {
   memRam.io.isStore := controller.io.bundleControlOut.isStore
   memRam.io.addr := ex.io.res
   memRam.io.len := controller.io.bundleControlOut.lsuType
+  memRam.io.pc := pcReg.io.pc
   memRam.io.wdata := ex.io.src2
   memRam.io.clock    := clock
   memRam.io.reset    := reset
@@ -59,11 +59,8 @@ class TOP extends Module {
   pcReg.io.isBranch <> controller.io.bundleControlOut.isBranch
   pcReg.io.isJump <> controller.io.bundleControlOut.isJump
 
-  // get inst from pcAddr
-//   instRom.io.add
-
   // get inst to Decoder
-  id.io.inst <> io.inst
+  id.io.inst <> memRam.io.inst
 
   // read or write GPRs from IDres to $rs1/$rs2/$rd
   // if isJump, set nextPC to $rd temporarily
@@ -95,5 +92,6 @@ class TOP extends Module {
   io.resBranch <> ex.io.resBranch
   io.src1 <> ex.io.src1
   io.src2 <> ex.io.src2
+  io.inst <> memRam.io.inst
   io.writeEnable <> controller.io.bundleControlOut.writeEnable
 }

@@ -41,7 +41,7 @@ class ID extends Module with DecodeUtils {
   inst := io.inst
 
   val csignals = ListLookup(inst,
-    List(noTYPE, false.B, false.B, false.B, false.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, NO_EXE_TYPE, true.B),
+    List(noTYPE, false.B, false.B, false.B, false.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, NO_EXE_TYPE, false.B),
     Array(
       LUI    -> List(typeU, true.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_LUI, false.B),
       AUIPC  -> List(typeU, true.B, false.B, false.B, true.B, true.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_ADD, false.B),

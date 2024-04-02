@@ -18,7 +18,8 @@
 #include "../local-include/reg.h"
 
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
-
+  Log(WARN, "NPC_PC = %x", pc);
+  Log(WARN, "NEMU_PC = %x", ref_r->pc);
   if (pc != ref_r->pc) {
     return false;
   }

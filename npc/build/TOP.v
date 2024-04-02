@@ -197,48 +197,41 @@ module ID(	// @[<stdin>:20:10]
   wire        _csignals_T_69 = _GEN_0 == 17'h82B3;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_71 = _GEN_0 == 17'h333;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_262 = _GEN_0 == 17'h3B3;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
-  wire        _GEN_1 = _csignals_T_31 | _csignals_T_33 | _csignals_T_355;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  wire        _GEN_2 = _csignals_T_27 | _csignals_T_321;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  wire        _GEN_3 = _csignals_T_21 | _csignals_T_23 | _csignals_T_25 | _GEN_2;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  wire        _GEN_4 = _csignals_T_17 | _csignals_T_252;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  wire        _GEN_5 =
-    _csignals_T_9 | _csignals_T_11 | _csignals_T_13 | _csignals_T_15 | _GEN_4;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  wire        _GEN_6 = _csignals_T_1 | _csignals_T_3;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  wire        _GEN_7 =
+  wire        _csignals_T_483 = io_inst == 32'h100073;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
+  wire        _GEN_1 =
+    _csignals_T_55 | _csignals_T_57 | _csignals_T_59 | _csignals_T_61 | _csignals_T_378
+    | _csignals_T_65 | _csignals_T_67 | _csignals_T_69 | _csignals_T_71 | _csignals_T_262;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  wire        _GEN_2 = _csignals_T_31 | _csignals_T_33 | _csignals_T_355;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  wire        _GEN_3 = _csignals_T_27 | _csignals_T_321;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  wire        _GEN_4 = _csignals_T_21 | _csignals_T_23 | _csignals_T_25 | _GEN_3;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  wire        _GEN_5 = _csignals_T_17 | _csignals_T_252;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  wire        _GEN_6 =
+    _csignals_T_9 | _csignals_T_11 | _csignals_T_13 | _csignals_T_15 | _GEN_5;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  wire        _GEN_7 = _csignals_T_1 | _csignals_T_3;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  wire        _GEN_8 =
     _csignals_T_9 | _csignals_T_11 | _csignals_T_13 | _csignals_T_15 | _csignals_T_17;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  wire        _GEN_8 = _csignals_T_3 | _csignals_T_5 | _csignals_T_184;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  wire        _GEN_9 = _csignals_T_1 | _GEN_8;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  wire        _GEN_10 =
-    _csignals_T_37 | _csignals_T_39 | _csignals_T_41 | _csignals_T_43 | _csignals_T_45
-    | _csignals_T_47 | _csignals_T_49 | _csignals_T_51 | _csignals_T_124 | _csignals_T_55
-    | _csignals_T_57 | _csignals_T_59 | _csignals_T_61 | _csignals_T_378 | _csignals_T_65
-    | _csignals_T_67 | _csignals_T_69 | _csignals_T_71;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  wire        _GEN_9 = _csignals_T_3 | _csignals_T_5 | _csignals_T_184;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  wire        _GEN_10 = _csignals_T_1 | _GEN_9;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
   wire        _GEN_11 =
-    _csignals_T_1 | _csignals_T_3 | _csignals_T_5 | _csignals_T_184 | _GEN_5;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+    _csignals_T_1 | _csignals_T_3 | _csignals_T_5 | _csignals_T_184 | _GEN_6;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
   always_comb begin	// @[cpu/src/stage/IDU.scala:38:28, :98:18, :99:20, :100:20, :101:20, :102:20, :103:20]
-    casez (_GEN_6
+    casez (_GEN_7
              ? 3'h1
              : _csignals_T_5
                  ? 3'h3
                  : _csignals_T_184
                      ? 3'h0
-                     : _GEN_5
+                     : _GEN_6
                          ? 3'h5
-                         : _GEN_3
+                         : _GEN_4
                              ? 3'h0
-                             : _GEN_1
+                             : _GEN_2
                                  ? 3'h2
                                  : _csignals_T_37 | _csignals_T_39 | _csignals_T_41
                                    | _csignals_T_43 | _csignals_T_45 | _csignals_T_47
                                    | _csignals_T_49 | _csignals_T_51 | _csignals_T_124
                                      ? 3'h0
-                                     : {1'h1,
-                                        ~(_csignals_T_55 | _csignals_T_57 | _csignals_T_59
-                                          | _csignals_T_61 | _csignals_T_378
-                                          | _csignals_T_65 | _csignals_T_67
-                                          | _csignals_T_69 | _csignals_T_71
-                                          | _csignals_T_262),
-                                        1'h0})	// @[cpu/src/stage/IDU.scala:38:28, :98:18, :99:20, :100:20, :101:20, :102:20, :103:20, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+                                     : {1'h1, ~_GEN_1, 1'h0})	// @[cpu/src/stage/IDU.scala:38:28, :98:18, :99:20, :100:20, :101:20, :102:20, :103:20, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
       3'b000:
         casez_tmp = {{20{io_inst[31]}}, io_inst[31:20]};	// @[cpu/src/stage/IDU.scala:38:28, :98:18, :99:20, :100:20, :101:20, :102:20, :103:20, cpu/src/utils/DecodeUtils.scala:11:{32,37,43,51}]
       3'b001:
@@ -265,13 +258,19 @@ module ID(	// @[<stdin>:20:10]
     | _csignals_T_31 | _csignals_T_33 | _csignals_T_355 | _csignals_T_37 | _csignals_T_39
     | _csignals_T_41 | _csignals_T_43 | _csignals_T_45 | _csignals_T_47 | _csignals_T_49
     | _csignals_T_51 | _csignals_T_124;	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  assign io_BundleControl_isJump = ~_GEN_6 & (_csignals_T_5 | _csignals_T_184);	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  assign io_BundleControl_isBranch = ~_GEN_9 & (_GEN_7 | _csignals_T_252);	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  assign io_BundleControl_isJump = ~_GEN_7 & (_csignals_T_5 | _csignals_T_184);	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  assign io_BundleControl_isBranch = ~_GEN_10 & (_GEN_8 | _csignals_T_252);	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
   assign io_BundleControl_isJAL =
     ~_csignals_T_1
-    & (_csignals_T_3 | _csignals_T_5 | ~_csignals_T_184 & (_GEN_7 | _csignals_T_252));	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+    & (_csignals_T_3 | _csignals_T_5 | ~_csignals_T_184 & (_GEN_8 | _csignals_T_252));	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
   assign io_BundleControl_writeEnable =
-    _GEN_9 | ~_GEN_5 & (_GEN_3 | ~_GEN_1 & (_GEN_10 | _csignals_T_262));	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+    _GEN_10 | ~_GEN_6
+    & (_GEN_4 | ~_GEN_2
+       & (_csignals_T_37 | _csignals_T_39 | _csignals_T_41 | _csignals_T_43
+          | _csignals_T_45 | _csignals_T_47 | _csignals_T_49 | _csignals_T_51
+          | _csignals_T_124 | _csignals_T_55 | _csignals_T_57 | _csignals_T_59
+          | _csignals_T_61 | _csignals_T_378 | _csignals_T_65 | _csignals_T_67
+          | _csignals_T_69 | _csignals_T_71 | _csignals_T_262));	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
   assign io_BundleControl_isLoad =
     ~_GEN_11
     & (_csignals_T_21 | _csignals_T_23 | _csignals_T_25 | _csignals_T_27
@@ -279,12 +278,12 @@ module ID(	// @[<stdin>:20:10]
   assign io_BundleControl_isStore =
     ~(_csignals_T_1 | _csignals_T_3 | _csignals_T_5 | _csignals_T_184 | _csignals_T_9
       | _csignals_T_11 | _csignals_T_13 | _csignals_T_15 | _csignals_T_17
-      | _csignals_T_252 | _GEN_3) & (_csignals_T_31 | _csignals_T_33 | _csignals_T_355);	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+      | _csignals_T_252 | _GEN_4) & (_csignals_T_31 | _csignals_T_33 | _csignals_T_355);	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
   assign io_BundleControl_isUnsigned =
     ~(_csignals_T_1 | _csignals_T_3 | _csignals_T_5 | _csignals_T_184 | _csignals_T_9
       | _csignals_T_11 | _csignals_T_13 | _csignals_T_15)
-    & (_GEN_4 | ~(_csignals_T_21 | _csignals_T_23 | _csignals_T_25)
-       & (_GEN_2
+    & (_GEN_5 | ~(_csignals_T_21 | _csignals_T_23 | _csignals_T_25)
+       & (_GEN_3
           | ~(_csignals_T_31 | _csignals_T_33 | _csignals_T_355 | _csignals_T_37
               | _csignals_T_39)
           & (_csignals_T_41
@@ -310,7 +309,7 @@ module ID(	// @[<stdin>:20:10]
   assign io_BundleControl_aluType =
     _csignals_T_1
       ? 4'h0
-      : _GEN_8
+      : _GEN_9
           ? 4'h1
           : _csignals_T_9
               ? 4'h9
@@ -361,7 +360,7 @@ module ID(	// @[<stdin>:20:10]
                                                                                                   ? 4'h4
                                                                                                   : _csignals_T_262
                                                                                                       ? 4'h3
-                                                                                                      : io_inst == 32'h100073
+                                                                                                      : _csignals_T_483
                                                                                                           ? 4'h1
                                                                                                           : 4'hF;	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
   assign io_bundleReg_rs1 = io_inst[19:15];	// @[<stdin>:20:10, cpu/src/stage/IDU.scala:34:30]
@@ -373,7 +372,9 @@ module ID(	// @[<stdin>:20:10]
       | _csignals_T_11 | _csignals_T_13 | _csignals_T_15 | _csignals_T_17
       | _csignals_T_252 | _csignals_T_21 | _csignals_T_23 | _csignals_T_25
       | _csignals_T_27 | _csignals_T_321 | _csignals_T_31 | _csignals_T_33
-      | _csignals_T_355 | _GEN_10) & ~_csignals_T_262;	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+      | _csignals_T_355 | _csignals_T_37 | _csignals_T_39 | _csignals_T_41
+      | _csignals_T_43 | _csignals_T_45 | _csignals_T_47 | _csignals_T_49 | _csignals_T_51
+      | _csignals_T_124 | _GEN_1) & _csignals_T_483;	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
 endmodule
 
 module GPRFile(	// @[<stdin>:637:10]
@@ -550,12 +551,12 @@ endmodule
 
 // external module MemRam
 
-module TOP(	// @[<stdin>:856:10]
-  input         clock,	// @[<stdin>:857:11]
-                reset,	// @[<stdin>:858:11]
-  input  [31:0] io_inst,	// @[cpu/src/TOP.scala:29:14]
-                io_res,	// @[cpu/src/TOP.scala:29:14]
-  output [31:0] io_pc,	// @[cpu/src/TOP.scala:29:14]
+module TOP(	// @[<stdin>:858:10]
+  input         clock,	// @[<stdin>:859:11]
+                reset,	// @[<stdin>:860:11]
+  input  [31:0] io_res,	// @[cpu/src/TOP.scala:29:14]
+  output [31:0] io_inst,	// @[cpu/src/TOP.scala:29:14]
+                io_pc,	// @[cpu/src/TOP.scala:29:14]
   output        io_bundleControl_isALUSrc,	// @[cpu/src/TOP.scala:29:14]
                 io_bundleControl_isJump,	// @[cpu/src/TOP.scala:29:14]
                 io_bundleControl_isBranch,	// @[cpu/src/TOP.scala:29:14]
@@ -578,6 +579,7 @@ module TOP(	// @[<stdin>:856:10]
 );
 
   wire [31:0] _memRam_rdata;	// @[cpu/src/TOP.scala:38:26]
+  wire [31:0] _memRam_inst;	// @[cpu/src/TOP.scala:38:26]
   wire        _controller_io_bundleEXControl_isALUSrc;	// @[cpu/src/TOP.scala:35:26]
   wire        _controller_io_bundleEXControl_isJAL;	// @[cpu/src/TOP.scala:35:26]
   wire        _controller_io_bundleEXControl_isBranch;	// @[cpu/src/TOP.scala:35:26]
@@ -621,7 +623,7 @@ module TOP(	// @[<stdin>:856:10]
     .io_pc         (_pcReg_io_pc)
   );
   ID id (	// @[cpu/src/TOP.scala:32:26]
-    .io_inst                      (io_inst),
+    .io_inst                      (_memRam_inst),	// @[cpu/src/TOP.scala:38:26]
     .io_BundleControl_isALUSrc    (_id_io_BundleControl_isALUSrc),
     .io_BundleControl_isJump      (_id_io_BundleControl_isJump),
     .io_BundleControl_isBranch    (_id_io_BundleControl_isBranch),
@@ -710,27 +712,30 @@ module TOP(	// @[<stdin>:856:10]
     .addr    (_ex_io_res),	// @[cpu/src/TOP.scala:34:26]
     .len     ({28'h0, _controller_io_bundleControlOut_lsuType}),	// @[cpu/src/TOP.scala:35:26, :51:17]
     .wdata   (_ex_io_src2),	// @[cpu/src/TOP.scala:34:26]
-    .rdata   (_memRam_rdata)
+    .pc      (_pcReg_io_pc),	// @[cpu/src/TOP.scala:31:26]
+    .rdata   (_memRam_rdata),
+    .inst    (_memRam_inst)
   );
-  assign io_pc = _pcReg_io_pc;	// @[<stdin>:856:10, cpu/src/TOP.scala:31:26]
-  assign io_bundleControl_isALUSrc = _id_io_BundleControl_isALUSrc;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
-  assign io_bundleControl_isJump = _id_io_BundleControl_isJump;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
-  assign io_bundleControl_isBranch = _id_io_BundleControl_isBranch;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
-  assign io_bundleControl_isJAL = _id_io_BundleControl_isJAL;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
-  assign io_bundleControl_writeEnable = _id_io_BundleControl_writeEnable;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
-  assign io_bundleControl_isLoad = _id_io_BundleControl_isLoad;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
-  assign io_bundleControl_isStore = _id_io_BundleControl_isStore;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
-  assign io_bundleControl_isUnsigned = _id_io_BundleControl_isUnsigned;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
-  assign io_bundleControl_lsuType = _id_io_BundleControl_lsuType;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
-  assign io_bundleControl_aluType = _id_io_BundleControl_aluType;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
-  assign io_resEX = _ex_io_res;	// @[<stdin>:856:10, cpu/src/TOP.scala:34:26]
-  assign io_src2 = _ex_io_src2;	// @[<stdin>:856:10, cpu/src/TOP.scala:34:26]
-  assign io_rs1 = _id_io_bundleReg_rs1;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
-  assign io_rs2 = _id_io_bundleReg_rs2;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
-  assign io_rd = _id_io_bundleReg_rd;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
-  assign io_imm = _id_io_imm;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
-  assign io_resBranch = _ex_io_resBranch;	// @[<stdin>:856:10, cpu/src/TOP.scala:34:26]
-  assign io_writeEnable = _controller_io_bundleControlOut_writeEnable;	// @[<stdin>:856:10, cpu/src/TOP.scala:35:26]
+  assign io_inst = _memRam_inst;	// @[<stdin>:858:10, cpu/src/TOP.scala:38:26]
+  assign io_pc = _pcReg_io_pc;	// @[<stdin>:858:10, cpu/src/TOP.scala:31:26]
+  assign io_bundleControl_isALUSrc = _id_io_BundleControl_isALUSrc;	// @[<stdin>:858:10, cpu/src/TOP.scala:32:26]
+  assign io_bundleControl_isJump = _id_io_BundleControl_isJump;	// @[<stdin>:858:10, cpu/src/TOP.scala:32:26]
+  assign io_bundleControl_isBranch = _id_io_BundleControl_isBranch;	// @[<stdin>:858:10, cpu/src/TOP.scala:32:26]
+  assign io_bundleControl_isJAL = _id_io_BundleControl_isJAL;	// @[<stdin>:858:10, cpu/src/TOP.scala:32:26]
+  assign io_bundleControl_writeEnable = _id_io_BundleControl_writeEnable;	// @[<stdin>:858:10, cpu/src/TOP.scala:32:26]
+  assign io_bundleControl_isLoad = _id_io_BundleControl_isLoad;	// @[<stdin>:858:10, cpu/src/TOP.scala:32:26]
+  assign io_bundleControl_isStore = _id_io_BundleControl_isStore;	// @[<stdin>:858:10, cpu/src/TOP.scala:32:26]
+  assign io_bundleControl_isUnsigned = _id_io_BundleControl_isUnsigned;	// @[<stdin>:858:10, cpu/src/TOP.scala:32:26]
+  assign io_bundleControl_lsuType = _id_io_BundleControl_lsuType;	// @[<stdin>:858:10, cpu/src/TOP.scala:32:26]
+  assign io_bundleControl_aluType = _id_io_BundleControl_aluType;	// @[<stdin>:858:10, cpu/src/TOP.scala:32:26]
+  assign io_resEX = _ex_io_res;	// @[<stdin>:858:10, cpu/src/TOP.scala:34:26]
+  assign io_src2 = _ex_io_src2;	// @[<stdin>:858:10, cpu/src/TOP.scala:34:26]
+  assign io_rs1 = _id_io_bundleReg_rs1;	// @[<stdin>:858:10, cpu/src/TOP.scala:32:26]
+  assign io_rs2 = _id_io_bundleReg_rs2;	// @[<stdin>:858:10, cpu/src/TOP.scala:32:26]
+  assign io_rd = _id_io_bundleReg_rd;	// @[<stdin>:858:10, cpu/src/TOP.scala:32:26]
+  assign io_imm = _id_io_imm;	// @[<stdin>:858:10, cpu/src/TOP.scala:32:26]
+  assign io_resBranch = _ex_io_resBranch;	// @[<stdin>:858:10, cpu/src/TOP.scala:34:26]
+  assign io_writeEnable = _controller_io_bundleControlOut_writeEnable;	// @[<stdin>:858:10, cpu/src/TOP.scala:35:26]
 endmodule
 
 
@@ -779,21 +784,33 @@ module MemRam(
   input  wire [31:0] addr,
   input  wire [31:0] len,
   input  wire [31:0] wdata,
-  output reg  [31:0] rdata
+  input  wire [31:0] pc,
+  output reg  [31:0] rdata,
+  output reg  [31:0] inst
 );
 
-  always @(clock) begin
-    if (isLoad) begin
+  reg load_flag ;
+  reg store_flag ;
+
+  always @(pc) begin
+    if(pc != 0) begin
+      inst = paddr_read(pc, 4);
+    end
+  end
+
+  always @(inst) begin
+    load_flag = isLoad;
+    store_flag = isStore;
+    if (load_flag) begin
       rdata = paddr_read(addr, len);
+      load_flag = 0;
     end
     else begin
       rdata = addr;
     end
-  end
-
-  always @(clock) begin
-    if (isStore) begin
+    if (store_flag) begin
       paddr_write(addr, len, wdata);
+      store_flag = 0;
     end
   end
 

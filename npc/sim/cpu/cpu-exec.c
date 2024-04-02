@@ -46,7 +46,6 @@ void get_pc(int pc){
 
 void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
-
 #ifdef CONFIG_ITRACE_COND
   if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
 #endif
@@ -64,13 +63,14 @@ static void single_cycle() {
 }
 
 static void exec_once(Decode *s, vaddr_t pc) {
-  s->pc = pc;
-  s->snpc = pc+4;
-  top.io_inst = Mr(pc,4);
-  s->isa.inst.val = top.io_inst;
-  top.eval();
+  
+
+ 
+  // top.io_inst = Mr(pc,4);
+
+  // top.eval();
   // Log(DEBUG, "inst=%08x", top.io_inst);
-  // Log(DEBUG, "PC: %x", pc);
+  // Log(DEBUG, "PC: %x", g_pc);
   // Log(DEBUG, "reg1=%08x", top.io_rs1);
   // Log(DEBUG, "reg2=%08x", top.io_rs2);
   // Log(DEBUG, "rd=%08x", top.io_rd);
@@ -80,14 +80,16 @@ static void exec_once(Decode *s, vaddr_t pc) {
   // Log(DEBUG, "isLoad=%08x", top.io_bundleControl_isLoad);
   // Log(DEBUG, "isStore=%08x", top.io_bundleControl_isStore);
   // Log(DEBUG, "imm=%x", top.io_imm);
-
+  // Log(DEBUG, "G_PC: %x", g_pc);
+  s->pc = pc;
+  s->snpc = pc+4;
+  s->isa.inst.val = top.io_inst;
   if (is_ebreak) NPCTRAP(pc, 0);
-
-  top.eval();
-  
   single_cycle();
   s->dnpc = g_pc;
-  Log(WARN, "exce_once");
+  
+  
+  // Log(WARN, "exce_once");
 #ifdef CONFIG_ITRACE
   char *p = s->logbuf;
   p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);
@@ -114,9 +116,9 @@ static void execute(uint64_t n) {
   for (;n > 0; n --) {
     // Log(DEBUG, "inst_before=%08x", top.io_inst);
     // Log(DEBUG, "PC: %x", top.io_pc);
-    exec_once(&s, top.io_pc);
+    exec_once(&s, g_pc);
     g_nr_guest_inst ++;
-    trace_and_difftest(&s, top.io_pc);
+    trace_and_difftest(&s, g_pc);
     if (npc_state.state != NPC_RUNNING) break;
     IFDEF(CONFIG_DEVICE, device_update());
   }

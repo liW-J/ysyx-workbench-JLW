@@ -85,6 +85,8 @@ SRCVS_GEN = $(BUILD_DIR)/$(CFG_CFLAGS_TOP_NAME).v
 
 SRCCS_DIR += $(NPC_HOME)/sim             \
              $(NPC_HOME)/sim/cpu         \
+						 $(NPC_HOME)/sim/device         \
+						 $(NPC_HOME)/sim/device/io         \
 						 $(NPC_HOME)/sim/cpu/difftest         \
              $(NPC_HOME)/sim/memory      \
 						 $(NPC_HOME)/sim/riscv32         \

@@ -1,4 +1,5 @@
 #include <am.h>
+#include <klib-macros.h>
 
 bool mpe_init(void (*entry)()) {
   return false;

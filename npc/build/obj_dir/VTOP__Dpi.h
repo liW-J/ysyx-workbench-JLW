@@ -16,13 +16,13 @@ extern "C" {
 
 
     // DPI IMPORTS
-    // DPI import at /home/sends/local/share/ysyx-workbench/npc/build/TOP.v:739:38
+    // DPI import at /home/sends/local/share/ysyx-workbench/npc/build/TOP.v:744:38
     extern void check_ebreak(svBit flag);
-    // DPI import at /home/sends/local/share/ysyx-workbench/npc/build/TOP.v:755:38
+    // DPI import at /home/sends/local/share/ysyx-workbench/npc/build/TOP.v:760:38
     extern void get_pc(int flag);
-    // DPI import at /home/sends/local/share/ysyx-workbench/npc/build/TOP.v:771:37
+    // DPI import at /home/sends/local/share/ysyx-workbench/npc/build/TOP.v:776:37
     extern int paddr_read(int addr, int len);
-    // DPI import at /home/sends/local/share/ysyx-workbench/npc/build/TOP.v:772:38
+    // DPI import at /home/sends/local/share/ysyx-workbench/npc/build/TOP.v:777:38
     extern void paddr_write(int addr, int len, int data);
 
 #ifdef __cplusplus

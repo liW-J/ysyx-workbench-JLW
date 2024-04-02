@@ -28,14 +28,7 @@ static const uint32_t img [] = {
 static void restart() {
   /* Set the initial program counter. */
   cpu.pc = RESET_VECTOR;
-  top.reset = 1;
-  top.eval();
-  top.clock = 0;
-  top.eval();
-  top.clock = 1;
-  top.eval();
-  top.reset = 0;
-  top.eval();
+
   /* The zero register is always 0. */
   cpu.gpr[0] = 0;
 }
