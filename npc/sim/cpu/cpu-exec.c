@@ -83,10 +83,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
 
   if (is_ebreak) NPCTRAP(pc, 0);
 
-  int lsuType = top.io_bundleControl_lsuType;
-  top.io_res = ((top.io_bundleControl_isLoad) ? Mr(top.io_resEX, lsuType) : top.io_resEX);
   top.eval();
-  if (top.io_bundleControl_isStore) Mw(top.io_resEX, top.io_bundleControl_lsuType, top.io_src2);
   
   single_cycle();
   s->dnpc = g_pc;

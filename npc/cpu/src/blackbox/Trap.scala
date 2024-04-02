@@ -11,6 +11,4 @@ class Trap extends BlackBox with HasBlackBoxResource {
   })
   
   addResource("/trap.v")
-
-  
 }

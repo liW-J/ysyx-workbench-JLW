@@ -935,10 +935,10 @@ void VTOP___024root___eval_act(VTOP___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    VTOP___024root___eval_act\n"); );
 }
 
-VL_INLINE_OPT void VTOP___024root___nba_sequent__TOP__2(VTOP___024root* vlSelf) {
+VL_INLINE_OPT void VTOP___024root___nba_sequent__TOP__3(VTOP___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     VTOP__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    VL_DEBUG_IF(VL_DBG_MSGF("+    VTOP___024root___nba_sequent__TOP__2\n"); );
+    VL_DEBUG_IF(VL_DBG_MSGF("+    VTOP___024root___nba_sequent__TOP__3\n"); );
     // Body
     vlSelf->io_src1 = vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory
         [vlSelf->io_rs1];
@@ -1061,6 +1061,7 @@ VL_INLINE_OPT void VTOP___024root___nba_sequent__TOP__2(VTOP___024root* vlSelf) 
 
 void VTOP___024root___nba_sequent__TOP__0(VTOP___024root* vlSelf);
 void VTOP___024root___nba_sequent__TOP__1(VTOP___024root* vlSelf);
+void VTOP___024root___nba_sequent__TOP__2(VTOP___024root* vlSelf);
 
 void VTOP___024root___eval_nba(VTOP___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
@@ -1070,10 +1071,13 @@ void VTOP___024root___eval_nba(VTOP___024root* vlSelf) {
     if (vlSelf->__VnbaTriggered.at(1U)) {
         VTOP___024root___nba_sequent__TOP__0(vlSelf);
     }
-    if (vlSelf->__VnbaTriggered.at(0U)) {
+    if (vlSelf->__VnbaTriggered.at(2U)) {
         VTOP___024root___nba_sequent__TOP__1(vlSelf);
-        vlSelf->__Vm_traceActivity[1U] = 1U;
+    }
+    if (vlSelf->__VnbaTriggered.at(0U)) {
         VTOP___024root___nba_sequent__TOP__2(vlSelf);
+        vlSelf->__Vm_traceActivity[1U] = 1U;
+        VTOP___024root___nba_sequent__TOP__3(vlSelf);
     }
 }
 
@@ -1095,7 +1099,7 @@ void VTOP___024root___eval(VTOP___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    VTOP___024root___eval\n"); );
     // Init
     CData/*0:0*/ __VicoContinue;
-    VlTriggerVec<2> __VpreTriggered;
+    VlTriggerVec<3> __VpreTriggered;
     IData/*31:0*/ __VnbaIterCount;
     CData/*0:0*/ __VnbaContinue;
     // Body
@@ -1110,7 +1114,7 @@ void VTOP___024root___eval(VTOP___024root* vlSelf) {
 #ifdef VL_DEBUG
                 VTOP___024root___dump_triggers__ico(vlSelf);
 #endif
-                VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 548, "", "Input combinational region did not converge.");
+                VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 553, "", "Input combinational region did not converge.");
             }
             vlSelf->__VicoIterCount = ((IData)(1U) 
                                        + vlSelf->__VicoIterCount);
@@ -1133,7 +1137,7 @@ void VTOP___024root___eval(VTOP___024root* vlSelf) {
 #ifdef VL_DEBUG
                     VTOP___024root___dump_triggers__act(vlSelf);
 #endif
-                    VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 548, "", "Active region did not converge.");
+                    VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 553, "", "Active region did not converge.");
                 }
                 vlSelf->__VactIterCount = ((IData)(1U) 
                                            + vlSelf->__VactIterCount);
@@ -1148,7 +1152,7 @@ void VTOP___024root___eval(VTOP___024root* vlSelf) {
 #ifdef VL_DEBUG
                 VTOP___024root___dump_triggers__nba(vlSelf);
 #endif
-                VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 548, "", "NBA region did not converge.");
+                VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 553, "", "NBA region did not converge.");
             }
             __VnbaIterCount = ((IData)(1U) + __VnbaIterCount);
             VTOP___024root___eval_nba(vlSelf);

@@ -35,6 +35,7 @@ class TOP extends Module {
   val controller = Module(new Controller())
   val trap       = Module(new Trap())
   val getPC      = Module(new GetPC())
+  val memRam     = Module(new MemRam())
 
   trap.io.isEbreak := id.io.isEbreak
   trap.io.clock    := clock
@@ -44,9 +45,17 @@ class TOP extends Module {
   getPC.io.clock    := clock
   getPC.io.reset    := reset
 
+  memRam.io.isLoad := controller.io.bundleControlOut.isLoad
+  memRam.io.isStore := controller.io.bundleControlOut.isStore
+  memRam.io.addr := ex.io.res
+  memRam.io.len := controller.io.bundleControlOut.lsuType
+  memRam.io.wdata := ex.io.src2
+  memRam.io.clock    := clock
+  memRam.io.reset    := reset
+
   // judge nextPC by control from frontPC
   pcReg.io.resBranch <> ex.io.resBranch
-  pcReg.io.addrTarget <> io.res
+  pcReg.io.addrTarget <> memRam.io.rdata
   pcReg.io.isBranch <> controller.io.bundleControlOut.isBranch
   pcReg.io.isJump <> controller.io.bundleControlOut.isJump
 
@@ -64,7 +73,7 @@ class TOP extends Module {
   gprFile.io.isJump <> controller.io.bundleControlOut.isJump
   gprFile.io.isLoad <> controller.io.bundleControlOut.isLoad
   gprFile.io.isUnsigned <> controller.io.bundleControlOut.isUnsigned
-  gprFile.io.dataWrite <> io.res
+  gprFile.io.dataWrite <> memRam.io.rdata
   gprFile.io.pc <> pcReg.io.pc
 
   // exec ALU operate by control from thisInstDecode

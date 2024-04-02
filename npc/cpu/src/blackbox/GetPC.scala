@@ -12,6 +12,4 @@ class GetPC extends BlackBox with HasBlackBoxResource {
   })
   
   addResource("/getPC.v")
-
-  
 }

@@ -67,6 +67,7 @@ class VTOP___024root final : public VerilatedModule {
     VL_OUT(io_src1,31,0);
     VL_OUT(io_src2,31,0);
     VL_OUT(io_imm,31,0);
+    IData/*31:0*/ TOP__DOT___memRam_rdata;
     IData/*31:0*/ TOP__DOT__pcReg__DOT__pcReg;
     IData/*31:0*/ TOP__DOT__id__DOT__casez_tmp;
     IData/*16:0*/ TOP__DOT__id__DOT___GEN_0;
@@ -81,8 +82,8 @@ class VTOP___024root final : public VerilatedModule {
     VlUnpacked<CData/*0:0*/, 2> __Vm_traceActivity;
     VlTriggerVec<1> __VstlTriggered;
     VlTriggerVec<1> __VicoTriggered;
-    VlTriggerVec<2> __VactTriggered;
-    VlTriggerVec<2> __VnbaTriggered;
+    VlTriggerVec<3> __VactTriggered;
+    VlTriggerVec<3> __VnbaTriggered;
 
     // INTERNAL VARIABLES
     VTOP__Syms* const vlSymsp;

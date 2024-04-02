@@ -512,6 +512,7 @@ module Controller(	// @[<stdin>:821:10]
                io_bundleControlIn_isJAL,	// @[cpu/src/Controller.scala:14:16]
                io_bundleControlIn_writeEnable,	// @[cpu/src/Controller.scala:14:16]
                io_bundleControlIn_isLoad,	// @[cpu/src/Controller.scala:14:16]
+               io_bundleControlIn_isStore,	// @[cpu/src/Controller.scala:14:16]
                io_bundleControlIn_isUnsigned,	// @[cpu/src/Controller.scala:14:16]
   input  [3:0] io_bundleControlIn_lsuType,	// @[cpu/src/Controller.scala:14:16]
                io_bundleControlIn_aluType,	// @[cpu/src/Controller.scala:14:16]
@@ -524,6 +525,7 @@ module Controller(	// @[<stdin>:821:10]
                io_bundleControlOut_isBranch,	// @[cpu/src/Controller.scala:14:16]
                io_bundleControlOut_writeEnable,	// @[cpu/src/Controller.scala:14:16]
                io_bundleControlOut_isLoad,	// @[cpu/src/Controller.scala:14:16]
+               io_bundleControlOut_isStore,	// @[cpu/src/Controller.scala:14:16]
                io_bundleControlOut_isUnsigned,	// @[cpu/src/Controller.scala:14:16]
   output [3:0] io_bundleControlOut_lsuType	// @[cpu/src/Controller.scala:14:16]
 );
@@ -537,6 +539,7 @@ module Controller(	// @[<stdin>:821:10]
   assign io_bundleControlOut_isBranch = io_bundleControlIn_isBranch;	// @[<stdin>:821:10]
   assign io_bundleControlOut_writeEnable = io_bundleControlIn_writeEnable;	// @[<stdin>:821:10]
   assign io_bundleControlOut_isLoad = io_bundleControlIn_isLoad;	// @[<stdin>:821:10]
+  assign io_bundleControlOut_isStore = io_bundleControlIn_isStore;	// @[<stdin>:821:10]
   assign io_bundleControlOut_isUnsigned = io_bundleControlIn_isUnsigned;	// @[<stdin>:821:10]
   assign io_bundleControlOut_lsuType = io_bundleControlIn_lsuType;	// @[<stdin>:821:10]
 endmodule
@@ -545,9 +548,11 @@ endmodule
 
 // external module GetPC
 
-module TOP(	// @[<stdin>:845:10]
-  input         clock,	// @[<stdin>:846:11]
-                reset,	// @[<stdin>:847:11]
+// external module MemRam
+
+module TOP(	// @[<stdin>:856:10]
+  input         clock,	// @[<stdin>:857:11]
+                reset,	// @[<stdin>:858:11]
   input  [31:0] io_inst,	// @[cpu/src/TOP.scala:29:14]
                 io_res,	// @[cpu/src/TOP.scala:29:14]
   output [31:0] io_pc,	// @[cpu/src/TOP.scala:29:14]
@@ -572,6 +577,7 @@ module TOP(	// @[<stdin>:845:10]
                 io_writeEnable	// @[cpu/src/TOP.scala:29:14]
 );
 
+  wire [31:0] _memRam_rdata;	// @[cpu/src/TOP.scala:38:26]
   wire        _controller_io_bundleEXControl_isALUSrc;	// @[cpu/src/TOP.scala:35:26]
   wire        _controller_io_bundleEXControl_isJAL;	// @[cpu/src/TOP.scala:35:26]
   wire        _controller_io_bundleEXControl_isBranch;	// @[cpu/src/TOP.scala:35:26]
@@ -581,9 +587,12 @@ module TOP(	// @[<stdin>:845:10]
   wire        _controller_io_bundleControlOut_isBranch;	// @[cpu/src/TOP.scala:35:26]
   wire        _controller_io_bundleControlOut_writeEnable;	// @[cpu/src/TOP.scala:35:26]
   wire        _controller_io_bundleControlOut_isLoad;	// @[cpu/src/TOP.scala:35:26]
+  wire        _controller_io_bundleControlOut_isStore;	// @[cpu/src/TOP.scala:35:26]
   wire        _controller_io_bundleControlOut_isUnsigned;	// @[cpu/src/TOP.scala:35:26]
   wire [3:0]  _controller_io_bundleControlOut_lsuType;	// @[cpu/src/TOP.scala:35:26]
   wire        _ex_io_resBranch;	// @[cpu/src/TOP.scala:34:26]
+  wire [31:0] _ex_io_res;	// @[cpu/src/TOP.scala:34:26]
+  wire [31:0] _ex_io_src2;	// @[cpu/src/TOP.scala:34:26]
   wire [31:0] _gprFile_io_dataRead1;	// @[cpu/src/TOP.scala:33:26]
   wire [31:0] _gprFile_io_dataRead2;	// @[cpu/src/TOP.scala:33:26]
   wire        _id_io_BundleControl_isALUSrc;	// @[cpu/src/TOP.scala:32:26]
@@ -592,6 +601,7 @@ module TOP(	// @[<stdin>:845:10]
   wire        _id_io_BundleControl_isJAL;	// @[cpu/src/TOP.scala:32:26]
   wire        _id_io_BundleControl_writeEnable;	// @[cpu/src/TOP.scala:32:26]
   wire        _id_io_BundleControl_isLoad;	// @[cpu/src/TOP.scala:32:26]
+  wire        _id_io_BundleControl_isStore;	// @[cpu/src/TOP.scala:32:26]
   wire        _id_io_BundleControl_isUnsigned;	// @[cpu/src/TOP.scala:32:26]
   wire [3:0]  _id_io_BundleControl_lsuType;	// @[cpu/src/TOP.scala:32:26]
   wire [3:0]  _id_io_BundleControl_aluType;	// @[cpu/src/TOP.scala:32:26]
@@ -607,7 +617,7 @@ module TOP(	// @[<stdin>:845:10]
     .io_isJump     (_controller_io_bundleControlOut_isJump),	// @[cpu/src/TOP.scala:35:26]
     .io_isBranch   (_controller_io_bundleControlOut_isBranch),	// @[cpu/src/TOP.scala:35:26]
     .io_resBranch  (_ex_io_resBranch),	// @[cpu/src/TOP.scala:34:26]
-    .io_addrTarget (io_res),
+    .io_addrTarget (_memRam_rdata),	// @[cpu/src/TOP.scala:38:26]
     .io_pc         (_pcReg_io_pc)
   );
   ID id (	// @[cpu/src/TOP.scala:32:26]
@@ -618,7 +628,7 @@ module TOP(	// @[<stdin>:845:10]
     .io_BundleControl_isJAL       (_id_io_BundleControl_isJAL),
     .io_BundleControl_writeEnable (_id_io_BundleControl_writeEnable),
     .io_BundleControl_isLoad      (_id_io_BundleControl_isLoad),
-    .io_BundleControl_isStore     (io_bundleControl_isStore),
+    .io_BundleControl_isStore     (_id_io_BundleControl_isStore),
     .io_BundleControl_isUnsigned  (_id_io_BundleControl_isUnsigned),
     .io_BundleControl_lsuType     (_id_io_BundleControl_lsuType),
     .io_BundleControl_aluType     (_id_io_BundleControl_aluType),
@@ -636,7 +646,7 @@ module TOP(	// @[<stdin>:845:10]
     .io_isUnsigned    (_controller_io_bundleControlOut_isUnsigned),	// @[cpu/src/TOP.scala:35:26]
     .io_lsuType       (_controller_io_bundleControlOut_lsuType),	// @[cpu/src/TOP.scala:35:26]
     .io_pc            (_pcReg_io_pc),	// @[cpu/src/TOP.scala:31:26]
-    .io_dataWrite     (io_res),
+    .io_dataWrite     (_memRam_rdata),	// @[cpu/src/TOP.scala:38:26]
     .io_bundleReg_rs1 (_id_io_bundleReg_rs1),	// @[cpu/src/TOP.scala:32:26]
     .io_bundleReg_rs2 (_id_io_bundleReg_rs2),	// @[cpu/src/TOP.scala:32:26]
     .io_bundleReg_rd  (_id_io_bundleReg_rd),	// @[cpu/src/TOP.scala:32:26]
@@ -654,9 +664,9 @@ module TOP(	// @[<stdin>:845:10]
     .io_imm                        (_id_io_imm),	// @[cpu/src/TOP.scala:32:26]
     .io_pc                         (_pcReg_io_pc),	// @[cpu/src/TOP.scala:31:26]
     .io_resBranch                  (_ex_io_resBranch),
-    .io_res                        (io_resEX),
+    .io_res                        (_ex_io_res),
     .io_src1                       (io_src1),
-    .io_src2                       (io_src2)
+    .io_src2                       (_ex_io_src2)
   );
   Controller controller (	// @[cpu/src/TOP.scala:35:26]
     .io_bundleControlIn_isALUSrc     (_id_io_BundleControl_isALUSrc),	// @[cpu/src/TOP.scala:32:26]
@@ -665,6 +675,7 @@ module TOP(	// @[<stdin>:845:10]
     .io_bundleControlIn_isJAL        (_id_io_BundleControl_isJAL),	// @[cpu/src/TOP.scala:32:26]
     .io_bundleControlIn_writeEnable  (_id_io_BundleControl_writeEnable),	// @[cpu/src/TOP.scala:32:26]
     .io_bundleControlIn_isLoad       (_id_io_BundleControl_isLoad),	// @[cpu/src/TOP.scala:32:26]
+    .io_bundleControlIn_isStore      (_id_io_BundleControl_isStore),	// @[cpu/src/TOP.scala:32:26]
     .io_bundleControlIn_isUnsigned   (_id_io_BundleControl_isUnsigned),	// @[cpu/src/TOP.scala:32:26]
     .io_bundleControlIn_lsuType      (_id_io_BundleControl_lsuType),	// @[cpu/src/TOP.scala:32:26]
     .io_bundleControlIn_aluType      (_id_io_BundleControl_aluType),	// @[cpu/src/TOP.scala:32:26]
@@ -677,6 +688,7 @@ module TOP(	// @[<stdin>:845:10]
     .io_bundleControlOut_isBranch    (_controller_io_bundleControlOut_isBranch),
     .io_bundleControlOut_writeEnable (_controller_io_bundleControlOut_writeEnable),
     .io_bundleControlOut_isLoad      (_controller_io_bundleControlOut_isLoad),
+    .io_bundleControlOut_isStore     (_controller_io_bundleControlOut_isStore),
     .io_bundleControlOut_isUnsigned  (_controller_io_bundleControlOut_isUnsigned),
     .io_bundleControlOut_lsuType     (_controller_io_bundleControlOut_lsuType)
   );
@@ -690,22 +702,35 @@ module TOP(	// @[<stdin>:845:10]
     .reset (reset),
     .pc    (_pcReg_io_pc)	// @[cpu/src/TOP.scala:31:26]
   );
-  assign io_pc = _pcReg_io_pc;	// @[<stdin>:845:10, cpu/src/TOP.scala:31:26]
-  assign io_bundleControl_isALUSrc = _id_io_BundleControl_isALUSrc;	// @[<stdin>:845:10, cpu/src/TOP.scala:32:26]
-  assign io_bundleControl_isJump = _id_io_BundleControl_isJump;	// @[<stdin>:845:10, cpu/src/TOP.scala:32:26]
-  assign io_bundleControl_isBranch = _id_io_BundleControl_isBranch;	// @[<stdin>:845:10, cpu/src/TOP.scala:32:26]
-  assign io_bundleControl_isJAL = _id_io_BundleControl_isJAL;	// @[<stdin>:845:10, cpu/src/TOP.scala:32:26]
-  assign io_bundleControl_writeEnable = _id_io_BundleControl_writeEnable;	// @[<stdin>:845:10, cpu/src/TOP.scala:32:26]
-  assign io_bundleControl_isLoad = _id_io_BundleControl_isLoad;	// @[<stdin>:845:10, cpu/src/TOP.scala:32:26]
-  assign io_bundleControl_isUnsigned = _id_io_BundleControl_isUnsigned;	// @[<stdin>:845:10, cpu/src/TOP.scala:32:26]
-  assign io_bundleControl_lsuType = _id_io_BundleControl_lsuType;	// @[<stdin>:845:10, cpu/src/TOP.scala:32:26]
-  assign io_bundleControl_aluType = _id_io_BundleControl_aluType;	// @[<stdin>:845:10, cpu/src/TOP.scala:32:26]
-  assign io_rs1 = _id_io_bundleReg_rs1;	// @[<stdin>:845:10, cpu/src/TOP.scala:32:26]
-  assign io_rs2 = _id_io_bundleReg_rs2;	// @[<stdin>:845:10, cpu/src/TOP.scala:32:26]
-  assign io_rd = _id_io_bundleReg_rd;	// @[<stdin>:845:10, cpu/src/TOP.scala:32:26]
-  assign io_imm = _id_io_imm;	// @[<stdin>:845:10, cpu/src/TOP.scala:32:26]
-  assign io_resBranch = _ex_io_resBranch;	// @[<stdin>:845:10, cpu/src/TOP.scala:34:26]
-  assign io_writeEnable = _controller_io_bundleControlOut_writeEnable;	// @[<stdin>:845:10, cpu/src/TOP.scala:35:26]
+  MemRam memRam (	// @[cpu/src/TOP.scala:38:26]
+    .clock   (clock),
+    .reset   (reset),
+    .isLoad  (_controller_io_bundleControlOut_isLoad),	// @[cpu/src/TOP.scala:35:26]
+    .isStore (_controller_io_bundleControlOut_isStore),	// @[cpu/src/TOP.scala:35:26]
+    .addr    (_ex_io_res),	// @[cpu/src/TOP.scala:34:26]
+    .len     ({28'h0, _controller_io_bundleControlOut_lsuType}),	// @[cpu/src/TOP.scala:35:26, :51:17]
+    .wdata   (_ex_io_src2),	// @[cpu/src/TOP.scala:34:26]
+    .rdata   (_memRam_rdata)
+  );
+  assign io_pc = _pcReg_io_pc;	// @[<stdin>:856:10, cpu/src/TOP.scala:31:26]
+  assign io_bundleControl_isALUSrc = _id_io_BundleControl_isALUSrc;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
+  assign io_bundleControl_isJump = _id_io_BundleControl_isJump;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
+  assign io_bundleControl_isBranch = _id_io_BundleControl_isBranch;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
+  assign io_bundleControl_isJAL = _id_io_BundleControl_isJAL;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
+  assign io_bundleControl_writeEnable = _id_io_BundleControl_writeEnable;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
+  assign io_bundleControl_isLoad = _id_io_BundleControl_isLoad;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
+  assign io_bundleControl_isStore = _id_io_BundleControl_isStore;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
+  assign io_bundleControl_isUnsigned = _id_io_BundleControl_isUnsigned;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
+  assign io_bundleControl_lsuType = _id_io_BundleControl_lsuType;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
+  assign io_bundleControl_aluType = _id_io_BundleControl_aluType;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
+  assign io_resEX = _ex_io_res;	// @[<stdin>:856:10, cpu/src/TOP.scala:34:26]
+  assign io_src2 = _ex_io_src2;	// @[<stdin>:856:10, cpu/src/TOP.scala:34:26]
+  assign io_rs1 = _id_io_bundleReg_rs1;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
+  assign io_rs2 = _id_io_bundleReg_rs2;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
+  assign io_rd = _id_io_bundleReg_rd;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
+  assign io_imm = _id_io_imm;	// @[<stdin>:856:10, cpu/src/TOP.scala:32:26]
+  assign io_resBranch = _ex_io_resBranch;	// @[<stdin>:856:10, cpu/src/TOP.scala:34:26]
+  assign io_writeEnable = _controller_io_bundleControlOut_writeEnable;	// @[<stdin>:856:10, cpu/src/TOP.scala:35:26]
 endmodule
 
 
@@ -737,6 +762,39 @@ module GetPC(
 
   always @(*) begin
       get_pc(pc);
+  end
+
+endmodule
+
+// ----- 8< ----- FILE "./memRam.v" ----- 8< -----
+
+import "DPI-C" context function int pmem_read(input int addr, input int len);
+import "DPI-C" context function void pmem_write(input int addr, input int len, input int data);
+
+module MemRam(
+  input  wire        clock,
+  input  wire        reset,
+  input  wire        isLoad,
+  input  wire        isStore,
+  input  wire [31:0] addr,
+  input  wire [31:0] len,
+  input  wire [31:0] wdata,
+  output reg  [31:0] rdata
+);
+
+  always @(clock) begin
+    if (isLoad) begin
+      rdata = pmem_read(addr, len);
+    end
+    else begin
+      rdata = addr;
+    end
+  end
+
+  always @(clock) begin
+    if (isStore) begin
+      pmem_write(addr, len, wdata);
+    end
   end
 
 endmodule
