@@ -38,6 +38,7 @@ static debug_module_config_t difftest_dm_config = {
 
 struct diff_context_t {
   word_t gpr[MUXDEF(CONFIG_RVE, 16, 32)];
+  word_t csr[1024];
   word_t pc;
 };
 
@@ -48,6 +49,7 @@ static state_t *state = NULL;
 void sim_t::diff_init(int port) {
   p = get_core("0");
   state = p->get_state();
+  p->put_csr(0x300, 0x1800);
 }
 
 void sim_t::diff_step(uint64_t n) {

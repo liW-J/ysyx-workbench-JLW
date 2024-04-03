@@ -135,8 +135,8 @@ void cpu_exec(uint64_t n) {
             ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED))),
           nemu_state.halt_pc);
       if (nemu_state.state == NEMU_ABORT || nemu_state.halt_ret != 0){
-          LOG(ERROR, "show iringbuf:");
           #ifdef CONFIG_IRINGBUF_COND
+            LOG(ERROR, "show iringbuf:");
             if (IRINGBUF_COND) { display_iringbuf(); }
           #endif
       }

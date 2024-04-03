@@ -53,7 +53,7 @@ VL_ATTR_COLD void VTOP___024root___stl_sequent__TOP__0(VTOP___024root* vlSelf) {
                                        | (0x7fU & vlSelf->TOP__DOT___memRam_inst));
     VTOP___024unit____Vdpiimwrap_get_pc_TOP____024unit(
                                                        (&(vlSymsp->__Vscope_TOP__getPC)), 
-                                                       "/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 0x301U, vlSelf->io_pc);
+                                                       "/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 0x300U, vlSelf->io_pc);
     vlSelf->io_src1 = vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory
         [vlSelf->io_rs1];
     vlSelf->io_src2 = vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory

@@ -87,6 +87,7 @@ void *memcpy(void *out, const void *in, size_t n) {
     return out;
 }
 
+
 // copies n bytes from memory area src to memory area dest.  The memory areas must not overlap.
 int memcmp(const void *s1, const void *s2, size_t n) {
     const unsigned char *su1, *su2;

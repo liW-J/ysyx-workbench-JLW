@@ -63,7 +63,6 @@ class VTOP___024root final : public VerilatedModule {
         CData/*0:0*/ __VactDidInit;
         CData/*0:0*/ __VactContinue;
         SData/*9:0*/ TOP__DOT__id__DOT___GEN;
-        VL_IN(io_res,31,0);
         VL_OUT(io_inst,31,0);
         VL_OUT(io_pc,31,0);
         VL_OUT(io_resEX,31,0);
@@ -83,9 +82,9 @@ class VTOP___024root final : public VerilatedModule {
         IData/*31:0*/ __Vtrigrprev__TOP__io_pc;
         IData/*31:0*/ __Vtrigrprev__TOP__TOP__DOT___memRam_inst;
         IData/*31:0*/ __VactIterCount;
+        VlUnpacked<IData/*31:0*/, 32> TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory;
     };
     struct {
-        VlUnpacked<IData/*31:0*/, 32> TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory;
         VlUnpacked<CData/*0:0*/, 4> __Vm_traceActivity;
     };
     VlTriggerVec<1> __VstlTriggered;

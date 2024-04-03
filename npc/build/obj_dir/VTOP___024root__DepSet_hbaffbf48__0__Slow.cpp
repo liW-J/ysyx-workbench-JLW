@@ -151,7 +151,6 @@ VL_ATTR_COLD void VTOP___024root___ctor_var_reset(VTOP___024root* vlSelf) {
     // Body
     vlSelf->clock = 0;
     vlSelf->reset = 0;
-    vlSelf->io_res = 0;
     vlSelf->io_inst = 0;
     vlSelf->io_pc = 0;
     vlSelf->io_bundleControl_isALUSrc = 0;

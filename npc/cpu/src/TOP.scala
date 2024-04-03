@@ -9,7 +9,6 @@ import _root_.stage.ID
 import _root_.stage.EX
 
 class TopIO extends Bundle {
-  val res          = Input(UInt(INST_WIDTH.W))
   val inst          = Output(UInt(INST_WIDTH.W))
   val pc            = Output(UInt(ADDR_WIDTH.W))
   val bundleControl = new BundleControl()
