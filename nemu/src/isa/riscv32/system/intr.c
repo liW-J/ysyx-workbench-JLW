@@ -23,9 +23,9 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   cpu.csr[CSR_MEPC] = epc;
   cpu.csr[CSR_MCAUSE] = NO;
 
+#ifdef CONFIG_ETRACE_COND
   word_t mstatus = cpu.csr[CSR_MSTATUS];
   cpu.csr[CSR_MSTATUS] = 0x1800;
-#ifdef CONFIG_ETRACE_COND
   LOG(DEBUG, "[etrace] mcause: " FMT_WORD \
                 ", mstatus: " FMT_WORD \
                 ", mepc: " FMT_WORD \
@@ -37,17 +37,20 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   LOG(DEBUG, "[etrace] ecall before: " FMT_WORD ", after: " FMT_WORD ,
            mstatus, cpu.csr[CSR_MSTATUS]);
 #endif
+  cpu.csr[CSR_MSTATUS] = 0x1800;
   return cpu.csr[CSR_MTVEC];
   // return 0;
 }
 
 word_t isa_mret() {
+  
+#ifdef CONFIG_ETRACE_COND
   word_t mstatus = cpu.csr[CSR_MSTATUS];
   cpu.csr[CSR_MSTATUS] = 0x1800;
-#ifdef CONFIG_ETRACE_COND
   LOG(DEBUG, "[etrace] mret  before: " FMT_WORD ", after: " FMT_WORD ,
            mstatus, cpu.csr[CSR_MSTATUS]);
 #endif
+  cpu.csr[CSR_MSTATUS] = 0x1800;
   return cpu.csr[CSR_MEPC];
 }
 

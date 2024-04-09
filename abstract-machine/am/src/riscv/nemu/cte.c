@@ -7,9 +7,12 @@ static Context* (*user_handler)(Event, Context*) = NULL;
 Context* __am_irq_handle(Context *c) {
   if (user_handler) {
     // printf("c->mcause=%d\n",c->mcause);
+    int mcause = c->mcause;
+    mcause = (mcause >= 0 && mcause <= 19) ? 1 : mcause;
     Event ev = {0};
-    switch (c->mcause) {
-      case 11: ev.event = EVENT_YIELD; break;
+    switch (mcause) {
+      case 1: ev.event = EVENT_SYSCALL; break;
+      case -1: ev.event = EVENT_YIELD; break;
       default: ev.event = EVENT_ERROR; break;
     }
 
@@ -33,7 +36,10 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
 }
 
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
-  return NULL;
+  Context *c = (Context *)kstack.end - sizeof(Context);
+  c->mepc = (uintptr_t)entry; 
+  c->gpr[10] = (uintptr_t) arg;
+  return c;
 }
 
 void yield() {
