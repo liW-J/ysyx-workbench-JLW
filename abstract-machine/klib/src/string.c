@@ -52,7 +52,7 @@ int strcmp(const char *s1, const char *s2) {
 }
 
 int strncmp(const char *s1, const char *s2, size_t n) {
-    panic("Not implemented");
+    return memcmp(s1, s2, n);
 }
 
 void *memset(void *s, int c, size_t n) {
