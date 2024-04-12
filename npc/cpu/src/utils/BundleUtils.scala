@@ -3,6 +3,7 @@ package utils
 import chisel3._
 import config.Configs._
 import config.ExeTypes._
+import javax.xml.transform.OutputKeys
 
 
 class BundleControl extends Bundle {
@@ -14,6 +15,8 @@ class BundleControl extends Bundle {
   val isLoad = Output(Bool())
   val isStore = Output(Bool())
   val isUnsigned = Output(Bool()) // unsignNum or signNum
+  val isContext = Output(Bool())
+  val csrType = Output(UInt(EXE_TYPES_WIDTH.W))
   val lsuType = Output(UInt(EXE_TYPES_WIDTH.W))
   val aluType = Output(UInt(EXE_TYPES_WIDTH.W))
 }

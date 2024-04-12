@@ -22,6 +22,8 @@ VTOP::VTOP(VerilatedContext* _vcontextp__, const char* _vcname__)
     , io_bundleControl_isLoad{vlSymsp->TOP.io_bundleControl_isLoad}
     , io_bundleControl_isStore{vlSymsp->TOP.io_bundleControl_isStore}
     , io_bundleControl_isUnsigned{vlSymsp->TOP.io_bundleControl_isUnsigned}
+    , io_bundleControl_isContext{vlSymsp->TOP.io_bundleControl_isContext}
+    , io_bundleControl_csrType{vlSymsp->TOP.io_bundleControl_csrType}
     , io_bundleControl_lsuType{vlSymsp->TOP.io_bundleControl_lsuType}
     , io_bundleControl_aluType{vlSymsp->TOP.io_bundleControl_aluType}
     , io_rs1{vlSymsp->TOP.io_rs1}

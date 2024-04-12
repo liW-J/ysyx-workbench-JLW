@@ -13,14 +13,14 @@ class TopIO extends Bundle {
   val pc            = Output(UInt(ADDR_WIDTH.W))
   val bundleControl = new BundleControl()
   val resEX         = Output(UInt(DATA_WIDTH.W))
-  val src1           = Output(UInt(DATA_WIDTH.W))
-  val src2           = Output(UInt(DATA_WIDTH.W))
+  val src1          = Output(UInt(DATA_WIDTH.W))
+  val src2          = Output(UInt(DATA_WIDTH.W))
   val rs1           = Output(UInt(REG_NUMS_LOG.W))
   val rs2           = Output(UInt(REG_NUMS_LOG.W))
-  val rd           = Output(UInt(REG_NUMS_LOG.W))
+  val rd            = Output(UInt(REG_NUMS_LOG.W))
   val imm           = Output(UInt(DATA_WIDTH.W))
   val resBranch     = Output(Bool())
-  val writeEnable     = Output(Bool())
+  val writeEnable   = Output(Bool())
 }
 
 class TOP extends Module {
@@ -39,24 +39,26 @@ class TOP extends Module {
   trap.io.clock    := clock
   trap.io.reset    := reset
 
-  getPC.io.pc       := pcReg.io.pc
-  getPC.io.clock    := clock
-  getPC.io.reset    := reset
+  getPC.io.pc    := pcReg.io.pc
+  getPC.io.clock := clock
+  getPC.io.reset := reset
 
-  memRam.io.isLoad := controller.io.bundleControlOut.isLoad
+  memRam.io.isLoad  := controller.io.bundleControlOut.isLoad
   memRam.io.isStore := controller.io.bundleControlOut.isStore
-  memRam.io.addr := ex.io.res
-  memRam.io.len := controller.io.bundleControlOut.lsuType
-  memRam.io.pc := pcReg.io.pc
-  memRam.io.wdata := ex.io.src2
-  memRam.io.clock    := clock
-  memRam.io.reset    := reset
+  memRam.io.addr    := ex.io.res
+  memRam.io.len     := controller.io.bundleControlOut.lsuType
+  memRam.io.pc      := pcReg.io.pc
+  memRam.io.wdata   := ex.io.src2
+  memRam.io.clock   := clock
+  memRam.io.reset   := reset
 
   // judge nextPC by control from frontPC
   pcReg.io.resBranch <> ex.io.resBranch
   pcReg.io.addrTarget <> memRam.io.rdata
   pcReg.io.isBranch <> controller.io.bundleControlOut.isBranch
   pcReg.io.isJump <> controller.io.bundleControlOut.isJump
+  pcReg.io.csrType <> controller.io.bundleControlOut.csrType
+  pcReg.io.resCSR <> gprFile.io.resCSR
 
   // get inst to Decoder
   id.io.inst <> memRam.io.inst
@@ -69,6 +71,9 @@ class TOP extends Module {
   gprFile.io.isJump <> controller.io.bundleControlOut.isJump
   gprFile.io.isLoad <> controller.io.bundleControlOut.isLoad
   gprFile.io.isUnsigned <> controller.io.bundleControlOut.isUnsigned
+  gprFile.io.isContext <> controller.io.bundleControlOut.isContext
+  gprFile.io.csrType <> controller.io.bundleControlOut.csrType
+  gprFile.io.imm <> id.io.imm
   gprFile.io.dataWrite <> memRam.io.rdata
   gprFile.io.pc <> pcReg.io.pc
 
@@ -76,6 +81,7 @@ class TOP extends Module {
   ex.io.bundleEXControl <> controller.io.bundleEXControl
   ex.io.dataRead1 <> gprFile.io.dataRead1
   ex.io.dataRead2 <> gprFile.io.dataRead2
+  ex.io.csrData <> gprFile.io.csrData
   ex.io.imm <> id.io.imm
   ex.io.pc <> pcReg.io.pc
 

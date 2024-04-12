@@ -41,58 +41,62 @@ class ID extends Module with DecodeUtils {
   inst := io.inst
 
   val csignals = ListLookup(inst,
-    List(noTYPE, false.B, false.B, false.B, false.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, NO_EXE_TYPE, false.B),
+    List(noTYPE, false.B, false.B, false.B, false.B, false.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, NO_EXE_TYPE, NO_EXE_TYPE, false.B),
     Array(
-      LUI    -> List(typeU, true.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_LUI, false.B),
-      AUIPC  -> List(typeU, true.B, false.B, false.B, true.B, true.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_ADD, false.B),
-      JAL    -> List(typeJ, true.B, true.B, false.B, true.B, true.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_ADD, false.B),
-      JALR   -> List(typeI, true.B, true.B, false.B, false.B, true.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_ADD, false.B),
+      LUI    -> List(typeU, true.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_LUI, NO_EXE_TYPE, false.B),
+      AUIPC  -> List(typeU, true.B, false.B, false.B, true.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_ADD, NO_EXE_TYPE, false.B),
+      JAL    -> List(typeJ, true.B, true.B, false.B, true.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_ADD, NO_EXE_TYPE, false.B),
+      JALR   -> List(typeI, true.B, true.B, false.B, false.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_ADD, NO_EXE_TYPE, false.B),
       
-      BEQ    -> List(typeB, true.B, false.B, true.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_EQ, false.B),
-      BNE    -> List(typeB, true.B, false.B, true.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_NEQ, false.B),
-      BLT    -> List(typeB, true.B, false.B, true.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_LT, false.B),
-      BGE    -> List(typeB, true.B, false.B, true.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_GE, false.B),
-      BLTU   -> List(typeB, true.B, false.B, true.B, true.B, false.B, false.B, false.B, true.B, NO_EXE_TYPE, ALU_LT, false.B),
-      BGEU   -> List(typeB, true.B, false.B, true.B, true.B, false.B, false.B, false.B, true.B, NO_EXE_TYPE, ALU_GE, false.B),
+      BEQ    -> List(typeB, true.B, false.B, true.B, true.B, false.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_EQ, NO_EXE_TYPE, false.B),
+      BNE    -> List(typeB, true.B, false.B, true.B, true.B, false.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_NEQ, NO_EXE_TYPE, false.B),
+      BLT    -> List(typeB, true.B, false.B, true.B, true.B, false.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_LT, NO_EXE_TYPE, false.B),
+      BGE    -> List(typeB, true.B, false.B, true.B, true.B, false.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_GE, NO_EXE_TYPE, false.B),
+      BLTU   -> List(typeB, true.B, false.B, true.B, true.B, false.B, false.B, false.B, true.B, false.B, NO_EXE_TYPE, ALU_LT, NO_EXE_TYPE, false.B),
+      BGEU   -> List(typeB, true.B, false.B, true.B, true.B, false.B, false.B, false.B, true.B, false.B, NO_EXE_TYPE, ALU_GE, NO_EXE_TYPE, false.B),
       
-      LB     -> List(typeI, true.B, false.B, false.B, false.B, true.B, true.B, false.B, false.B, LSU_B, ALU_ADD, false.B),
-      LH     -> List(typeI, true.B, false.B, false.B, false.B, true.B, true.B, false.B, false.B, LSU_H, ALU_ADD, false.B),
-      LW     -> List(typeI, true.B, false.B, false.B, false.B, true.B, true.B, false.B, false.B, LSU_W, ALU_ADD, false.B),
-      LBU    -> List(typeI, true.B, false.B, false.B, false.B, true.B, true.B, false.B, true.B, LSU_B, ALU_ADD, false.B),
-      LHU    -> List(typeI, true.B, false.B, false.B, false.B, true.B, true.B, false.B, true.B, LSU_H, ALU_ADD, false.B),
+      LB     -> List(typeI, true.B, false.B, false.B, false.B, true.B, true.B, false.B, false.B, false.B, LSU_B, ALU_ADD, NO_EXE_TYPE, false.B),
+      LH     -> List(typeI, true.B, false.B, false.B, false.B, true.B, true.B, false.B, false.B, false.B, LSU_H, ALU_ADD, NO_EXE_TYPE, false.B),
+      LW     -> List(typeI, true.B, false.B, false.B, false.B, true.B, true.B, false.B, false.B, false.B, LSU_W, ALU_ADD, NO_EXE_TYPE, false.B),
+      LBU    -> List(typeI, true.B, false.B, false.B, false.B, true.B, true.B, false.B, true.B, false.B, LSU_B, ALU_ADD, NO_EXE_TYPE, false.B),
+      LHU    -> List(typeI, true.B, false.B, false.B, false.B, true.B, true.B, false.B, true.B, false.B, LSU_H, ALU_ADD, NO_EXE_TYPE, false.B),
 
-      SB     -> List(typeS, true.B, false.B, false.B, false.B, false.B, false.B, true.B, false.B, LSU_B, ALU_ADD, false.B),
-      SH     -> List(typeS, true.B, false.B, false.B, false.B, false.B, false.B, true.B, false.B, LSU_H, ALU_ADD, false.B),
-      SW     -> List(typeS, true.B, false.B, false.B, false.B, false.B, false.B, true.B, false.B, LSU_W, ALU_ADD, false.B),
+      SB     -> List(typeS, true.B, false.B, false.B, false.B, false.B, false.B, true.B, false.B, false.B, LSU_B, ALU_ADD, NO_EXE_TYPE, false.B),
+      SH     -> List(typeS, true.B, false.B, false.B, false.B, false.B, false.B, true.B, false.B, false.B, LSU_H, ALU_ADD, NO_EXE_TYPE, false.B),
+      SW     -> List(typeS, true.B, false.B, false.B, false.B, false.B, false.B, true.B, false.B, false.B, LSU_W, ALU_ADD, NO_EXE_TYPE, false.B),
       
-      ADDI   -> List(typeI, true.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_ADD, false.B),
-      SLTI   -> List(typeI, true.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_LT, false.B),
-      SLTIU  -> List(typeI, true.B, false.B, false.B, false.B, true.B, false.B, false.B, true.B, NO_EXE_TYPE, ALU_LT, false.B),
-      XORI   -> List(typeI, true.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_XOR, false.B),
-      ORI    -> List(typeI, true.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_OR, false.B),
-      ANDI   -> List(typeI, true.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_AND, false.B),
+      ADDI   -> List(typeI, true.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_ADD, NO_EXE_TYPE, false.B),
+      SLTI   -> List(typeI, true.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_LT, NO_EXE_TYPE, false.B),
+      SLTIU  -> List(typeI, true.B, false.B, false.B, false.B, true.B, false.B, false.B, true.B, false.B, NO_EXE_TYPE, ALU_LT, NO_EXE_TYPE, false.B),
+      XORI   -> List(typeI, true.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_XOR, NO_EXE_TYPE, false.B),
+      ORI    -> List(typeI, true.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_OR, NO_EXE_TYPE, false.B),
+      ANDI   -> List(typeI, true.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_AND, NO_EXE_TYPE, false.B),
       
-      SLLI   -> List(typeI, true.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_SLL, false.B),
-      SRLI   -> List(typeI, true.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_SRL, false.B),
-      SRAI   -> List(typeI, true.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_SRA, false.B),
+      SLLI   -> List(typeI, true.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_SLL, NO_EXE_TYPE, false.B),
+      SRLI   -> List(typeI, true.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_SRL, NO_EXE_TYPE, false.B),
+      SRAI   -> List(typeI, true.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_SRA, NO_EXE_TYPE, false.B),
       
-      ADD    -> List(typeR, false.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_ADD, false.B),
-      SUB    -> List(typeR, false.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_SUB, false.B),
-      SLL    -> List(typeR, false.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_SLL, false.B),
-      SLT    -> List(typeR, false.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_LT, false.B),
-      SLTU   -> List(typeR, false.B, false.B, false.B, false.B, true.B, false.B, false.B, true.B, NO_EXE_TYPE, ALU_LT, false.B ),
-      XOR    -> List(typeR, false.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_XOR, false.B),
-      SRL    -> List(typeR, false.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_SRL, false.B),
-      SRA    -> List(typeR, false.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_SRA, false.B),
-      OR     -> List(typeR, false.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_OR, false.B),
-      AND    -> List(typeR, false.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_AND, false.B),
+      ADD    -> List(typeR, false.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_ADD, NO_EXE_TYPE, false.B),
+      SUB    -> List(typeR, false.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_SUB, NO_EXE_TYPE, false.B),
+      SLL    -> List(typeR, false.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_SLL, NO_EXE_TYPE, false.B),
+      SLT    -> List(typeR, false.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_LT, NO_EXE_TYPE, false.B),
+      SLTU   -> List(typeR, false.B, false.B, false.B, false.B, true.B, false.B, false.B, true.B, false.B, NO_EXE_TYPE, ALU_LT, NO_EXE_TYPE, false.B ),
+      XOR    -> List(typeR, false.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_XOR, NO_EXE_TYPE, false.B),
+      SRL    -> List(typeR, false.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_SRL, NO_EXE_TYPE, false.B),
+      SRA    -> List(typeR, false.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_SRA, NO_EXE_TYPE, false.B),
+      OR     -> List(typeR, false.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_OR, NO_EXE_TYPE, false.B),
+      AND    -> List(typeR, false.B, false.B, false.B, false.B, true.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_AND, NO_EXE_TYPE, false.B),
       
-      EBREAK -> List(noTYPE, false.B, false.B, false.B, false.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_ADD, true.B)  
+      EBREAK -> List(noTYPE, false.B, false.B, false.B, false.B, false.B, false.B, false.B, false.B, false.B, NO_EXE_TYPE, ALU_ADD, NO_EXE_TYPE, true.B),  
+      ECALL  -> List(noTYPE, false.B, false.B, false.B, false.B, false.B, false.B, false.B, false.B, true.B, NO_EXE_TYPE, NO_EXE_TYPE, CSR_ECALL, false.B),
 
+      CSRRS  -> List(typeI, false.B, false.B, false.B, false.B, false.B, false.B, false.B, false.B, true.B, NO_EXE_TYPE, ALU_CSR_RS, CSR_RS, false.B),
+      CSRRW  -> List(typeI, false.B, false.B, false.B, false.B, false.B, false.B, false.B, false.B, true.B, NO_EXE_TYPE, ALU_CSR_RW, CSR_RW, false.B),
+      MRET   -> List(noTYPE, false.B, false.B, false.B, false.B, false.B, false.B, false.B, false.B, true.B, NO_EXE_TYPE, NO_EXE_TYPE, CSR_MRET, false.B)
       )
   )
 
-  val opType::isALUSrc::isJump::isBranch::isJAL::writeEnable::isLoad::isStore::isUnsigned::lsuType::aluType::isEbreak::Nil = csignals
+  val opType::isALUSrc::isJump::isBranch::isJAL::writeEnable::isLoad::isStore::isUnsigned::isContext::lsuType::aluType::csrType::isEbreak::Nil = csignals
 
 
   switch(opType) {
@@ -111,8 +115,10 @@ class ID extends Module with DecodeUtils {
   io.BundleControl.isLoad      := isLoad
   io.BundleControl.isStore     := isStore
   io.BundleControl.isUnsigned  := isUnsigned
+  io.BundleControl.isContext  := isContext
   io.BundleControl.lsuType     := lsuType
   io.BundleControl.aluType     := aluType
+  io.BundleControl.csrType     := csrType
   io.isEbreak                  := isEbreak
   io.imm                       := imm
 }

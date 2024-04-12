@@ -25,9 +25,23 @@ object ExeTypes {
   val ALU_NEQ         = "b1010".U(EXE_TYPES_WIDTH.W)
   val ALU_LT          = "b1011".U(EXE_TYPES_WIDTH.W)
   val ALU_GE          = "b1100".U(EXE_TYPES_WIDTH.W)
+  val ALU_CSR_RS      = "b1101".U(EXE_TYPES_WIDTH.W)
+  val ALU_CSR_RW      = "b1110".U(EXE_TYPES_WIDTH.W)
 
 // enum Load/Store
-  val LSU_B          = "b0001".U(EXE_TYPES_WIDTH.W)
-  val LSU_H          = "b0010".U(EXE_TYPES_WIDTH.W)
-  val LSU_W          = "b0100".U(EXE_TYPES_WIDTH.W)
+  val LSU_B = "b0001".U(EXE_TYPES_WIDTH.W)
+  val LSU_H = "b0010".U(EXE_TYPES_WIDTH.W)
+  val LSU_W = "b0100".U(EXE_TYPES_WIDTH.W)
+
+  val CSR_RS    = "b0000".U(EXE_TYPES_WIDTH.W)
+  val CSR_RW    = "b0001".U(EXE_TYPES_WIDTH.W)
+  val CSR_ECALL = "b0010".U(EXE_TYPES_WIDTH.W)
+  val CSR_MRET  = "b0011".U(EXE_TYPES_WIDTH.W)
+}
+
+object CSRNums {
+  val CSR_MTVEC   = 0x305.U
+  val CSR_MSTATUS = 0x300.U
+  val CSR_MEPC    = 0x341.U
+  val CSR_MCAUSE  = 0x342.U
 }

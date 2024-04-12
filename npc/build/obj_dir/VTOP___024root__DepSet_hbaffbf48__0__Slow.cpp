@@ -56,7 +56,7 @@ VL_ATTR_COLD void VTOP___024root___eval_settle(VTOP___024root* vlSelf) {
 #ifdef VL_DEBUG
                 VTOP___024root___dump_triggers__stl(vlSelf);
 #endif
-                VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 554, "", "Settle region did not converge.");
+                VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 753, "", "Settle region did not converge.");
             }
             vlSelf->__VstlIterCount = ((IData)(1U) 
                                        + vlSelf->__VstlIterCount);
@@ -161,6 +161,8 @@ VL_ATTR_COLD void VTOP___024root___ctor_var_reset(VTOP___024root* vlSelf) {
     vlSelf->io_bundleControl_isLoad = 0;
     vlSelf->io_bundleControl_isStore = 0;
     vlSelf->io_bundleControl_isUnsigned = 0;
+    vlSelf->io_bundleControl_isContext = 0;
+    vlSelf->io_bundleControl_csrType = 0;
     vlSelf->io_bundleControl_lsuType = 0;
     vlSelf->io_bundleControl_aluType = 0;
     vlSelf->io_resEX = 0;
@@ -176,6 +178,7 @@ VL_ATTR_COLD void VTOP___024root___ctor_var_reset(VTOP___024root* vlSelf) {
     vlSelf->TOP__DOT___memRam_inst = 0;
     vlSelf->TOP__DOT___id_io_isEbreak = 0;
     vlSelf->TOP__DOT__pcReg__DOT__pcReg = 0;
+    vlSelf->TOP__DOT__pcReg__DOT___GEN = 0;
     vlSelf->TOP__DOT__id__DOT__casez_tmp = 0;
     vlSelf->TOP__DOT__id__DOT___GEN = 0;
     vlSelf->TOP__DOT__id__DOT___GEN_0 = 0;
@@ -186,9 +189,11 @@ VL_ATTR_COLD void VTOP___024root___ctor_var_reset(VTOP___024root* vlSelf) {
     vlSelf->TOP__DOT__id__DOT___GEN_5 = 0;
     vlSelf->TOP__DOT__id__DOT___GEN_6 = 0;
     vlSelf->TOP__DOT__id__DOT___GEN_7 = 0;
-    vlSelf->TOP__DOT__id__DOT___GEN_9 = 0;
+    vlSelf->TOP__DOT__id__DOT___GEN_8 = 0;
     vlSelf->TOP__DOT__id__DOT___GEN_10 = 0;
     vlSelf->TOP__DOT__id__DOT___GEN_11 = 0;
+    vlSelf->TOP__DOT__id__DOT___GEN_12 = 0;
+    vlSelf->TOP__DOT__id__DOT___GEN_13 = 0;
     vlSelf->TOP__DOT__id__DOT____VdfgTmp_hc285b89a__0 = 0;
     vlSelf->TOP__DOT__id__DOT____VdfgTmp_h5d4f4c30__0 = 0;
     vlSelf->TOP__DOT__id__DOT____VdfgTmp_h5eaebdb1__0 = 0;
@@ -197,9 +202,19 @@ VL_ATTR_COLD void VTOP___024root___ctor_var_reset(VTOP___024root* vlSelf) {
     vlSelf->TOP__DOT__id__DOT____VdfgTmp_h98976784__0 = 0;
     vlSelf->TOP__DOT__id__DOT____VdfgTmp_he0211b27__0 = 0;
     vlSelf->TOP__DOT__id__DOT____VdfgTmp_h86568975__0 = 0;
+    vlSelf->TOP__DOT__gprFile__DOT___csrs_ext_R0_data = 0;
+    vlSelf->TOP__DOT__gprFile__DOT__dataWrite = 0;
     vlSelf->TOP__DOT__gprFile__DOT___GEN = 0;
+    vlSelf->TOP__DOT__gprFile__DOT___GEN_3 = 0;
+    vlSelf->TOP__DOT__gprFile__DOT___GEN_4 = 0;
+    vlSelf->TOP__DOT__gprFile__DOT___GEN_6 = 0;
+    vlSelf->TOP__DOT__gprFile__DOT____Vcellinp__csrs_ext__W1_en = 0;
+    vlSelf->TOP__DOT__gprFile__DOT____Vcellinp__csrs_ext__W0_en = 0;
     for (int __Vi0 = 0; __Vi0 < 32; ++__Vi0) {
         vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory[__Vi0] = 0;
+    }
+    for (int __Vi0 = 0; __Vi0 < 1024; ++__Vi0) {
+        vlSelf->TOP__DOT__gprFile__DOT__csrs_ext__DOT__Memory[__Vi0] = 0;
     }
     vlSelf->TOP__DOT__ex__DOT__casez_tmp = 0;
     vlSelf->TOP__DOT__ex__DOT__operand1 = 0;

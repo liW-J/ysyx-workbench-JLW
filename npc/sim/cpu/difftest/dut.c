@@ -16,6 +16,7 @@
 #include <dlfcn.h>
 
 #include <isa.h>
+#include "../local-include/reg.h"
 #include <cpu/cpu.h>
 #include <memory/paddr.h>
 #include <utils.h>
@@ -97,6 +98,7 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
   ref_difftest_init(port);
   ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), img_size, DIFFTEST_TO_REF);
   ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
+  Log(WARN, "pc=%x", cpu.pc);
 }
 
 static void checkregs(CPU_state *ref, vaddr_t pc) {
@@ -122,12 +124,17 @@ void difftest_step(vaddr_t pc, vaddr_t npc) {
     return;
   }
 
-  Log(ERROR,"111111111");
-
   if (is_skip_ref) {
     Log(ERROR,"00000000");
     // to skip the checking of an instruction, just copy the reg state to reference design
+    for(int i = 0; i < MUXDEF(CONFIG_RVE, 16, 32); i++){
+      cpu.gpr[i] = gpr(i);
+    }
     ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
+    ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
+    Log(WARN, "cpoy_pc1=%x", cpu.pc);
+    Log(WARN, "cpoy_pc2=%x", ref_r.pc);
+
     is_skip_ref = false;
     return;
   }
@@ -135,7 +142,7 @@ void difftest_step(vaddr_t pc, vaddr_t npc) {
   ref_difftest_exec(1);
   ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
 
-  // Log(WARN, "next_pc=%x", ref_r.pc);
+  Log(WARN, "next_pc=%x", ref_r.pc);
 
   checkregs(&ref_r, pc);
  

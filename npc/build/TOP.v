@@ -56,7 +56,7 @@
 `endif // not def SYNTHESIS
 
 // VCS coverage exclude_file
-module regs_combMem(	// @[cpu/src/unit/GPRFile.scala:27:17]
+module regs_combMem(	// @[cpu/src/unit/GPRFile.scala:36:22]
   input  [4:0]  R0_addr,
   input         R0_en,
                 R0_clk,
@@ -71,51 +71,142 @@ module regs_combMem(	// @[cpu/src/unit/GPRFile.scala:27:17]
   input         W1_en,
                 W1_clk,
   input  [31:0] W1_data,
+  input  [4:0]  W2_addr,
+  input         W2_en,
+                W2_clk,
+  input  [31:0] W2_data,
+  input  [4:0]  W3_addr,
+  input         W3_en,
+                W3_clk,
+  input  [31:0] W3_data,
   output [31:0] R0_data,
                 R1_data
 );
 
-  reg [31:0] Memory[0:31];	// @[cpu/src/unit/GPRFile.scala:27:17]
-  always @(posedge W0_clk) begin	// @[cpu/src/unit/GPRFile.scala:27:17]
-    if (W0_en)	// @[cpu/src/unit/GPRFile.scala:27:17]
-      Memory[W0_addr] <= W0_data;	// @[cpu/src/unit/GPRFile.scala:27:17]
-    if (W1_en)	// @[cpu/src/unit/GPRFile.scala:27:17]
-      Memory[W1_addr] <= W1_data;	// @[cpu/src/unit/GPRFile.scala:27:17]
+  reg [31:0] Memory[0:31];	// @[cpu/src/unit/GPRFile.scala:36:22]
+  always @(posedge W0_clk) begin	// @[cpu/src/unit/GPRFile.scala:36:22]
+    if (W0_en)	// @[cpu/src/unit/GPRFile.scala:36:22]
+      Memory[W0_addr] <= W0_data;	// @[cpu/src/unit/GPRFile.scala:36:22]
+    if (W1_en)	// @[cpu/src/unit/GPRFile.scala:36:22]
+      Memory[W1_addr] <= W1_data;	// @[cpu/src/unit/GPRFile.scala:36:22]
+    if (W2_en)	// @[cpu/src/unit/GPRFile.scala:36:22]
+      Memory[W2_addr] <= W2_data;	// @[cpu/src/unit/GPRFile.scala:36:22]
+    if (W3_en)	// @[cpu/src/unit/GPRFile.scala:36:22]
+      Memory[W3_addr] <= W3_data;	// @[cpu/src/unit/GPRFile.scala:36:22]
   end // always @(posedge)
-  `ifdef ENABLE_INITIAL_MEM_	// @[cpu/src/unit/GPRFile.scala:27:17]
-    reg [31:0] _RANDOM_MEM;	// @[cpu/src/unit/GPRFile.scala:27:17]
-    initial begin	// @[cpu/src/unit/GPRFile.scala:27:17]
-      `INIT_RANDOM_PROLOG_	// @[cpu/src/unit/GPRFile.scala:27:17]
-      `ifdef RANDOMIZE_MEM_INIT	// @[cpu/src/unit/GPRFile.scala:27:17]
+  `ifdef ENABLE_INITIAL_MEM_	// @[cpu/src/unit/GPRFile.scala:36:22]
+    reg [31:0] _RANDOM_MEM;	// @[cpu/src/unit/GPRFile.scala:36:22]
+    initial begin	// @[cpu/src/unit/GPRFile.scala:36:22]
+      `INIT_RANDOM_PROLOG_	// @[cpu/src/unit/GPRFile.scala:36:22]
+      `ifdef RANDOMIZE_MEM_INIT	// @[cpu/src/unit/GPRFile.scala:36:22]
         for (logic [5:0] i = 6'h0; i < 6'h20; i += 6'h1) begin
-          _RANDOM_MEM = `RANDOM;	// @[cpu/src/unit/GPRFile.scala:27:17]
-          Memory[i[4:0]] = _RANDOM_MEM;	// @[cpu/src/unit/GPRFile.scala:27:17]
-        end	// @[cpu/src/unit/GPRFile.scala:27:17]
+          _RANDOM_MEM = `RANDOM;	// @[cpu/src/unit/GPRFile.scala:36:22]
+          Memory[i[4:0]] = _RANDOM_MEM;	// @[cpu/src/unit/GPRFile.scala:36:22]
+        end	// @[cpu/src/unit/GPRFile.scala:36:22]
       `endif // RANDOMIZE_MEM_INIT
     end // initial
   `endif // ENABLE_INITIAL_MEM_
-  assign R0_data = R0_en ? Memory[R0_addr] : 32'bx;	// @[cpu/src/unit/GPRFile.scala:27:17]
-  assign R1_data = R1_en ? Memory[R1_addr] : 32'bx;	// @[cpu/src/unit/GPRFile.scala:27:17]
+  assign R0_data = R0_en ? Memory[R0_addr] : 32'bx;	// @[cpu/src/unit/GPRFile.scala:36:22]
+  assign R1_data = R1_en ? Memory[R1_addr] : 32'bx;	// @[cpu/src/unit/GPRFile.scala:36:22]
+endmodule
+
+// VCS coverage exclude_file
+module csrs_combMem(	// @[cpu/src/unit/GPRFile.scala:37:22]
+  input  [9:0]  R0_addr,
+  input         R0_en,
+                R0_clk,
+  input  [9:0]  R1_addr,
+  input         R1_en,
+                R1_clk,
+  input  [9:0]  R2_addr,
+  input         R2_en,
+                R2_clk,
+  input  [9:0]  W0_addr,
+  input         W0_en,
+                W0_clk,
+  input  [31:0] W0_data,
+  input  [9:0]  W1_addr,
+  input         W1_en,
+                W1_clk,
+  input  [31:0] W1_data,
+  input  [9:0]  W2_addr,
+  input         W2_en,
+                W2_clk,
+  input  [31:0] W2_data,
+  input  [9:0]  W3_addr,
+  input         W3_en,
+                W3_clk,
+  input  [31:0] W3_data,
+  input  [9:0]  W4_addr,
+  input         W4_en,
+                W4_clk,
+  input  [31:0] W4_data,
+  input  [9:0]  W5_addr,
+  input         W5_en,
+                W5_clk,
+  input  [31:0] W5_data,
+  output [31:0] R0_data,
+                R1_data,
+                R2_data
+);
+
+  reg [31:0] Memory[0:1023];	// @[cpu/src/unit/GPRFile.scala:37:22]
+  always @(posedge W0_clk) begin	// @[cpu/src/unit/GPRFile.scala:37:22]
+    if (W0_en)	// @[cpu/src/unit/GPRFile.scala:37:22]
+      Memory[W0_addr] <= W0_data;	// @[cpu/src/unit/GPRFile.scala:37:22]
+    if (W1_en)	// @[cpu/src/unit/GPRFile.scala:37:22]
+      Memory[W1_addr] <= W1_data;	// @[cpu/src/unit/GPRFile.scala:37:22]
+    if (W2_en)	// @[cpu/src/unit/GPRFile.scala:37:22]
+      Memory[W2_addr] <= W2_data;	// @[cpu/src/unit/GPRFile.scala:37:22]
+    if (W3_en)	// @[cpu/src/unit/GPRFile.scala:37:22]
+      Memory[W3_addr] <= W3_data;	// @[cpu/src/unit/GPRFile.scala:37:22]
+    if (W4_en)	// @[cpu/src/unit/GPRFile.scala:37:22]
+      Memory[W4_addr] <= W4_data;	// @[cpu/src/unit/GPRFile.scala:37:22]
+    if (W5_en)	// @[cpu/src/unit/GPRFile.scala:37:22]
+      Memory[W5_addr] <= W5_data;	// @[cpu/src/unit/GPRFile.scala:37:22]
+  end // always @(posedge)
+  `ifdef ENABLE_INITIAL_MEM_	// @[cpu/src/unit/GPRFile.scala:37:22]
+    reg [31:0] _RANDOM_MEM;	// @[cpu/src/unit/GPRFile.scala:37:22]
+    initial begin	// @[cpu/src/unit/GPRFile.scala:37:22]
+      `INIT_RANDOM_PROLOG_	// @[cpu/src/unit/GPRFile.scala:37:22]
+      `ifdef RANDOMIZE_MEM_INIT	// @[cpu/src/unit/GPRFile.scala:37:22]
+        for (logic [10:0] i = 11'h0; i < 11'h400; i += 11'h1) begin
+          _RANDOM_MEM = `RANDOM;	// @[cpu/src/unit/GPRFile.scala:37:22]
+          Memory[i[9:0]] = _RANDOM_MEM;	// @[cpu/src/unit/GPRFile.scala:37:22]
+        end	// @[cpu/src/unit/GPRFile.scala:37:22]
+      `endif // RANDOMIZE_MEM_INIT
+    end // initial
+  `endif // ENABLE_INITIAL_MEM_
+  assign R0_data = R0_en ? Memory[R0_addr] : 32'bx;	// @[cpu/src/unit/GPRFile.scala:37:22]
+  assign R1_data = R1_en ? Memory[R1_addr] : 32'bx;	// @[cpu/src/unit/GPRFile.scala:37:22]
+  assign R2_data = R2_en ? Memory[R2_addr] : 32'bx;	// @[cpu/src/unit/GPRFile.scala:37:22]
 endmodule
 
 module PCRegister(	// @[<stdin>:3:10]
   input         clock,	// @[<stdin>:4:11]
                 reset,	// @[<stdin>:5:11]
-                io_isJump,	// @[cpu/src/unit/PCRegister.scala:25:14]
-                io_isBranch,	// @[cpu/src/unit/PCRegister.scala:25:14]
-                io_resBranch,	// @[cpu/src/unit/PCRegister.scala:25:14]
-  input  [31:0] io_addrTarget,	// @[cpu/src/unit/PCRegister.scala:25:14]
-  output [31:0] io_pc	// @[cpu/src/unit/PCRegister.scala:25:14]
+                io_isJump,	// @[cpu/src/unit/PCRegister.scala:27:14]
+                io_isBranch,	// @[cpu/src/unit/PCRegister.scala:27:14]
+                io_resBranch,	// @[cpu/src/unit/PCRegister.scala:27:14]
+  input  [31:0] io_addrTarget,	// @[cpu/src/unit/PCRegister.scala:27:14]
+  input  [3:0]  io_csrType,	// @[cpu/src/unit/PCRegister.scala:27:14]
+  input  [31:0] io_resCSR,	// @[cpu/src/unit/PCRegister.scala:27:14]
+  output [31:0] io_pc	// @[cpu/src/unit/PCRegister.scala:27:14]
 );
 
-  reg [31:0] pcReg;	// @[cpu/src/unit/PCRegister.scala:27:22]
+  reg  [31:0] pcReg;	// @[cpu/src/unit/PCRegister.scala:29:22]
+  wire        _GEN = io_isJump | io_isBranch & io_resBranch;	// @[cpu/src/unit/PCRegister.scala:31:{18,34}]
   always @(posedge clock) begin	// @[<stdin>:4:11]
     if (reset)	// @[<stdin>:4:11]
-      pcReg <= 32'h80000000;	// @[cpu/src/unit/PCRegister.scala:27:22]
-    else if (io_isJump | io_isBranch & io_resBranch)	// @[cpu/src/unit/PCRegister.scala:29:{18,34}]
-      pcReg <= io_addrTarget;	// @[cpu/src/unit/PCRegister.scala:27:22]
-    else	// @[cpu/src/unit/PCRegister.scala:29:18]
-      pcReg <= pcReg + 32'h4;	// @[cpu/src/unit/PCRegister.scala:27:22, :32:20]
+      pcReg <= 32'h80000000;	// @[cpu/src/unit/PCRegister.scala:29:22]
+    else if (_GEN | io_csrType == 4'h2 | io_csrType == 4'h3) begin	// @[cpu/src/unit/PCRegister.scala:31:{18,66,81,96}]
+      if (_GEN)	// @[cpu/src/unit/PCRegister.scala:31:18]
+        pcReg <= io_addrTarget;	// @[cpu/src/unit/PCRegister.scala:29:22]
+      else	// @[cpu/src/unit/PCRegister.scala:31:18]
+        pcReg <= io_resCSR;	// @[cpu/src/unit/PCRegister.scala:29:22]
+    end
+    else	// @[cpu/src/unit/PCRegister.scala:31:81]
+      pcReg <= pcReg + 32'h4;	// @[cpu/src/unit/PCRegister.scala:29:22, :38:20]
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// @[<stdin>:3:10]
     `ifdef FIRRTL_BEFORE_INITIAL	// @[<stdin>:3:10]
@@ -128,17 +219,17 @@ module PCRegister(	// @[<stdin>:3:10]
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT	// @[<stdin>:3:10]
         _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// @[<stdin>:3:10]
-        pcReg = _RANDOM[/*Zero width*/ 1'b0];	// @[<stdin>:3:10, cpu/src/unit/PCRegister.scala:27:22]
+        pcReg = _RANDOM[/*Zero width*/ 1'b0];	// @[<stdin>:3:10, cpu/src/unit/PCRegister.scala:29:22]
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// @[<stdin>:3:10]
       `FIRRTL_AFTER_INITIAL	// @[<stdin>:3:10]
     `endif // FIRRTL_AFTER_INITIAL
   `endif // ENABLE_INITIAL_REG_
-  assign io_pc = pcReg;	// @[<stdin>:3:10, cpu/src/unit/PCRegister.scala:27:22]
+  assign io_pc = pcReg;	// @[<stdin>:3:10, cpu/src/unit/PCRegister.scala:29:22]
 endmodule
 
-module ID(	// @[<stdin>:20:10]
+module ID(	// @[<stdin>:29:10]
   input  [31:0] io_inst,	// @[cpu/src/stage/IDU.scala:32:14]
   output        io_BundleControl_isALUSrc,	// @[cpu/src/stage/IDU.scala:32:14]
                 io_BundleControl_isJump,	// @[cpu/src/stage/IDU.scala:32:14]
@@ -148,7 +239,9 @@ module ID(	// @[<stdin>:20:10]
                 io_BundleControl_isLoad,	// @[cpu/src/stage/IDU.scala:32:14]
                 io_BundleControl_isStore,	// @[cpu/src/stage/IDU.scala:32:14]
                 io_BundleControl_isUnsigned,	// @[cpu/src/stage/IDU.scala:32:14]
-  output [3:0]  io_BundleControl_lsuType,	// @[cpu/src/stage/IDU.scala:32:14]
+                io_BundleControl_isContext,	// @[cpu/src/stage/IDU.scala:32:14]
+  output [3:0]  io_BundleControl_csrType,	// @[cpu/src/stage/IDU.scala:32:14]
+                io_BundleControl_lsuType,	// @[cpu/src/stage/IDU.scala:32:14]
                 io_BundleControl_aluType,	// @[cpu/src/stage/IDU.scala:32:14]
   output [4:0]  io_bundleReg_rs1,	// @[cpu/src/stage/IDU.scala:32:14]
                 io_bundleReg_rs2,	// @[cpu/src/stage/IDU.scala:32:14]
@@ -157,26 +250,26 @@ module ID(	// @[<stdin>:20:10]
   output        io_isEbreak	// @[cpu/src/stage/IDU.scala:32:14]
 );
 
-  reg  [31:0] casez_tmp;	// @[cpu/src/stage/IDU.scala:98:18, :99:20]
+  reg  [31:0] casez_tmp;	// @[cpu/src/stage/IDU.scala:102:18, :103:20]
   wire        _csignals_T_1 = io_inst[6:0] == 7'h37;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_3 = io_inst[6:0] == 7'h17;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_5 = io_inst[6:0] == 7'h6F;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire [9:0]  _GEN = {io_inst[14:12], io_inst[6:0]};	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
-  wire        _csignals_T_184 = _GEN == 10'h67;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
+  wire        _csignals_T_204 = _GEN == 10'h67;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_9 = _GEN == 10'h63;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_11 = _GEN == 10'hE3;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_13 = _GEN == 10'h263;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_15 = _GEN == 10'h2E3;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_17 = _GEN == 10'h363;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
-  wire        _csignals_T_252 = _GEN == 10'h3E3;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
+  wire        _csignals_T_280 = _GEN == 10'h3E3;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_21 = _GEN == 10'h3;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_23 = _GEN == 10'h83;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_25 = _GEN == 10'h103;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_27 = _GEN == 10'h203;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
-  wire        _csignals_T_321 = _GEN == 10'h283;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
+  wire        _csignals_T_357 = _GEN == 10'h283;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_31 = _GEN == 10'h23;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_33 = _GEN == 10'hA3;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
-  wire        _csignals_T_355 = _GEN == 10'h123;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
+  wire        _csignals_T_395 = _GEN == 10'h123;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_37 = _GEN == 10'h13;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_39 = _GEN == 10'h113;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_41 = _GEN == 10'h193;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
@@ -186,112 +279,138 @@ module ID(	// @[<stdin>:20:10]
   wire [16:0] _GEN_0 = {io_inst[31:25], io_inst[14:12], io_inst[6:0]};	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_49 = _GEN_0 == 17'h93;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_51 = _GEN_0 == 17'h293;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
-  wire        _csignals_T_124 = _GEN_0 == 17'h8293;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
+  wire        _csignals_T_140 = _GEN_0 == 17'h8293;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_55 = _GEN_0 == 17'h33;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_57 = _GEN_0 == 17'h8033;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_59 = _GEN_0 == 17'hB3;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_61 = _GEN_0 == 17'h133;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
-  wire        _csignals_T_378 = _GEN_0 == 17'h1B3;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
+  wire        _csignals_T_422 = _GEN_0 == 17'h1B3;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_65 = _GEN_0 == 17'h233;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_67 = _GEN_0 == 17'h2B3;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_69 = _GEN_0 == 17'h82B3;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
   wire        _csignals_T_71 = _GEN_0 == 17'h333;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
-  wire        _csignals_T_262 = _GEN_0 == 17'h3B3;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
-  wire        _csignals_T_483 = io_inst == 32'h100073;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
-  wire        _GEN_1 =
-    _csignals_T_55 | _csignals_T_57 | _csignals_T_59 | _csignals_T_61 | _csignals_T_378
-    | _csignals_T_65 | _csignals_T_67 | _csignals_T_69 | _csignals_T_71 | _csignals_T_262;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  wire        _GEN_2 = _csignals_T_31 | _csignals_T_33 | _csignals_T_355;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  wire        _GEN_3 = _csignals_T_27 | _csignals_T_321;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  wire        _GEN_4 = _csignals_T_21 | _csignals_T_23 | _csignals_T_25 | _GEN_3;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  wire        _GEN_5 = _csignals_T_17 | _csignals_T_252;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  wire        _GEN_6 =
-    _csignals_T_9 | _csignals_T_11 | _csignals_T_13 | _csignals_T_15 | _GEN_5;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  wire        _GEN_7 = _csignals_T_1 | _csignals_T_3;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  wire        _GEN_8 =
+  wire        _csignals_T_294 = _GEN_0 == 17'h3B3;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
+  wire        _csignals_T_621 = io_inst == 32'h100073;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
+  wire        _csignals_T_77 = io_inst == 32'h73;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
+  wire        _csignals_T_79 = _GEN == 10'h173;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
+  wire        _csignals_T_81 = _GEN == 10'hF3;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
+  wire        _csignals_T_453 = io_inst == 32'h30200073;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38]
+  wire        _GEN_1 = _csignals_T_79 | _csignals_T_81;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  wire        _GEN_2 =
+    _csignals_T_55 | _csignals_T_57 | _csignals_T_59 | _csignals_T_61 | _csignals_T_422
+    | _csignals_T_65 | _csignals_T_67 | _csignals_T_69 | _csignals_T_71 | _csignals_T_294;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  wire        _GEN_3 = _csignals_T_31 | _csignals_T_33 | _csignals_T_395;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  wire        _GEN_4 = _csignals_T_27 | _csignals_T_357;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  wire        _GEN_5 = _csignals_T_21 | _csignals_T_23 | _csignals_T_25 | _GEN_4;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  wire        _GEN_6 = _csignals_T_17 | _csignals_T_280;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  wire        _GEN_7 =
+    _csignals_T_9 | _csignals_T_11 | _csignals_T_13 | _csignals_T_15 | _GEN_6;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  wire        _GEN_8 = _csignals_T_1 | _csignals_T_3;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  wire        _GEN_9 =
     _csignals_T_9 | _csignals_T_11 | _csignals_T_13 | _csignals_T_15 | _csignals_T_17;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  wire        _GEN_9 = _csignals_T_3 | _csignals_T_5 | _csignals_T_184;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  wire        _GEN_10 = _csignals_T_1 | _GEN_9;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  wire        _GEN_11 =
-    _csignals_T_1 | _csignals_T_3 | _csignals_T_5 | _csignals_T_184 | _GEN_6;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  always_comb begin	// @[cpu/src/stage/IDU.scala:38:28, :98:18, :99:20, :100:20, :101:20, :102:20, :103:20]
-    casez (_GEN_7
+  wire        _GEN_10 = _csignals_T_3 | _csignals_T_5 | _csignals_T_204;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  wire        _GEN_11 = _csignals_T_1 | _GEN_10;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  wire        _GEN_12 =
+    _csignals_T_1 | _csignals_T_3 | _csignals_T_5 | _csignals_T_204 | _GEN_7;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  wire        _GEN_13 =
+    _csignals_T_1 | _csignals_T_3 | _csignals_T_5 | _csignals_T_204 | _csignals_T_9
+    | _csignals_T_11 | _csignals_T_13 | _csignals_T_15 | _csignals_T_17 | _csignals_T_280
+    | _csignals_T_21 | _csignals_T_23 | _csignals_T_25 | _csignals_T_27 | _csignals_T_357
+    | _csignals_T_31 | _csignals_T_33 | _csignals_T_395 | _csignals_T_37 | _csignals_T_39
+    | _csignals_T_41 | _csignals_T_43 | _csignals_T_45 | _csignals_T_47 | _csignals_T_49
+    | _csignals_T_51 | _csignals_T_140 | _csignals_T_55 | _csignals_T_57 | _csignals_T_59
+    | _csignals_T_61 | _csignals_T_422 | _csignals_T_65 | _csignals_T_67 | _csignals_T_69
+    | _csignals_T_71 | _csignals_T_294 | _csignals_T_621;	// @[src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  always_comb begin	// @[cpu/src/stage/IDU.scala:38:28, :102:18, :103:20, :104:20, :105:20, :106:20, :107:20]
+    casez (_GEN_8
              ? 3'h1
              : _csignals_T_5
                  ? 3'h3
-                 : _csignals_T_184
+                 : _csignals_T_204
                      ? 3'h0
-                     : _GEN_6
+                     : _GEN_7
                          ? 3'h5
-                         : _GEN_4
+                         : _GEN_5
                              ? 3'h0
-                             : _GEN_2
+                             : _GEN_3
                                  ? 3'h2
                                  : _csignals_T_37 | _csignals_T_39 | _csignals_T_41
                                    | _csignals_T_43 | _csignals_T_45 | _csignals_T_47
-                                   | _csignals_T_49 | _csignals_T_51 | _csignals_T_124
+                                   | _csignals_T_49 | _csignals_T_51 | _csignals_T_140
                                      ? 3'h0
-                                     : {1'h1, ~_GEN_1, 1'h0})	// @[cpu/src/stage/IDU.scala:38:28, :98:18, :99:20, :100:20, :101:20, :102:20, :103:20, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+                                     : _GEN_2
+                                         ? 3'h4
+                                         : _csignals_T_621 | _csignals_T_77 | ~_GEN_1
+                                             ? 3'h6
+                                             : 3'h0)	// @[cpu/src/stage/IDU.scala:38:28, :102:18, :103:20, :104:20, :105:20, :106:20, :107:20, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
       3'b000:
-        casez_tmp = {{20{io_inst[31]}}, io_inst[31:20]};	// @[cpu/src/stage/IDU.scala:38:28, :98:18, :99:20, :100:20, :101:20, :102:20, :103:20, cpu/src/utils/DecodeUtils.scala:11:{32,37,43,51}]
+        casez_tmp = {{20{io_inst[31]}}, io_inst[31:20]};	// @[cpu/src/stage/IDU.scala:38:28, :102:18, :103:20, :104:20, :105:20, :106:20, :107:20, cpu/src/utils/DecodeUtils.scala:11:{32,37,43,51}]
       3'b001:
-        casez_tmp = {io_inst[31:12], 12'h0};	// @[cpu/src/stage/IDU.scala:38:28, :98:18, :99:20, :100:20, :101:20, :102:20, :103:20, cpu/src/utils/DecodeUtils.scala:12:{32,34,48}]
+        casez_tmp = {io_inst[31:12], 12'h0};	// @[cpu/src/stage/IDU.scala:38:28, :102:18, :103:20, :104:20, :105:20, :106:20, :107:20, cpu/src/utils/DecodeUtils.scala:12:{32,34,48}]
       3'b010:
-        casez_tmp = {{20{io_inst[31]}}, io_inst[31:25], io_inst[11:7]};	// @[cpu/src/stage/IDU.scala:38:28, :98:18, :99:20, :100:20, :101:20, :102:20, :103:20, cpu/src/utils/DecodeUtils.scala:13:{32,37,43,51,62}]
+        casez_tmp = {{20{io_inst[31]}}, io_inst[31:25], io_inst[11:7]};	// @[cpu/src/stage/IDU.scala:38:28, :102:18, :103:20, :104:20, :105:20, :106:20, :107:20, cpu/src/utils/DecodeUtils.scala:13:{32,37,43,51,62}]
       3'b011:
         casez_tmp =
-          {{12{io_inst[31]}}, io_inst[19:12], io_inst[20], io_inst[30:21], 1'h0};	// @[cpu/src/stage/IDU.scala:38:28, :98:18, :99:20, :100:20, :101:20, :102:20, :103:20, cpu/src/utils/DecodeUtils.scala:14:{43,58,69,76}, src/main/scala/chisel3/util/Lookup.scala:34:39]
+          {{12{io_inst[31]}}, io_inst[19:12], io_inst[20], io_inst[30:21], 1'h0};	// @[cpu/src/stage/IDU.scala:38:28, :102:18, :103:20, :104:20, :105:20, :106:20, :107:20, cpu/src/utils/DecodeUtils.scala:14:{43,58,69,76}, src/main/scala/chisel3/util/Lookup.scala:34:39]
       3'b100:
-        casez_tmp = 32'h0;	// @[cpu/src/stage/IDU.scala:38:28, :98:18, :99:20, :100:20, :101:20, :102:20, :103:20]
+        casez_tmp = 32'h0;	// @[cpu/src/stage/IDU.scala:38:28, :102:18, :103:20, :104:20, :105:20, :106:20, :107:20]
       3'b101:
-        casez_tmp = {{20{io_inst[31]}}, io_inst[7], io_inst[30:25], io_inst[11:8], 1'h0};	// @[cpu/src/stage/IDU.scala:38:28, :98:18, :99:20, :100:20, :101:20, :102:20, :103:20, cpu/src/utils/DecodeUtils.scala:15:{32,37,43,51,57,68}, src/main/scala/chisel3/util/Lookup.scala:34:39]
+        casez_tmp = {{20{io_inst[31]}}, io_inst[7], io_inst[30:25], io_inst[11:8], 1'h0};	// @[cpu/src/stage/IDU.scala:38:28, :102:18, :103:20, :104:20, :105:20, :106:20, :107:20, cpu/src/utils/DecodeUtils.scala:15:{32,37,43,51,57,68}, src/main/scala/chisel3/util/Lookup.scala:34:39]
       3'b110:
-        casez_tmp = 32'h0;	// @[cpu/src/stage/IDU.scala:38:28, :98:18, :99:20, :100:20, :101:20, :102:20, :103:20]
+        casez_tmp = 32'h0;	// @[cpu/src/stage/IDU.scala:38:28, :102:18, :103:20, :104:20, :105:20, :106:20, :107:20]
       default:
-        casez_tmp = 32'h0;	// @[cpu/src/stage/IDU.scala:38:28, :98:18, :99:20, :100:20, :101:20, :102:20, :103:20]
-    endcase	// @[cpu/src/stage/IDU.scala:38:28, :98:18, :99:20, :100:20, :101:20, :102:20, :103:20, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+        casez_tmp = 32'h0;	// @[cpu/src/stage/IDU.scala:38:28, :102:18, :103:20, :104:20, :105:20, :106:20, :107:20]
+    endcase	// @[cpu/src/stage/IDU.scala:38:28, :102:18, :103:20, :104:20, :105:20, :106:20, :107:20, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
   end // always_comb
   assign io_BundleControl_isALUSrc =
-    _csignals_T_1 | _csignals_T_3 | _csignals_T_5 | _csignals_T_184 | _csignals_T_9
-    | _csignals_T_11 | _csignals_T_13 | _csignals_T_15 | _csignals_T_17 | _csignals_T_252
-    | _csignals_T_21 | _csignals_T_23 | _csignals_T_25 | _csignals_T_27 | _csignals_T_321
-    | _csignals_T_31 | _csignals_T_33 | _csignals_T_355 | _csignals_T_37 | _csignals_T_39
+    _csignals_T_1 | _csignals_T_3 | _csignals_T_5 | _csignals_T_204 | _csignals_T_9
+    | _csignals_T_11 | _csignals_T_13 | _csignals_T_15 | _csignals_T_17 | _csignals_T_280
+    | _csignals_T_21 | _csignals_T_23 | _csignals_T_25 | _csignals_T_27 | _csignals_T_357
+    | _csignals_T_31 | _csignals_T_33 | _csignals_T_395 | _csignals_T_37 | _csignals_T_39
     | _csignals_T_41 | _csignals_T_43 | _csignals_T_45 | _csignals_T_47 | _csignals_T_49
-    | _csignals_T_51 | _csignals_T_124;	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  assign io_BundleControl_isJump = ~_GEN_7 & (_csignals_T_5 | _csignals_T_184);	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  assign io_BundleControl_isBranch = ~_GEN_10 & (_GEN_8 | _csignals_T_252);	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+    | _csignals_T_51 | _csignals_T_140;	// @[<stdin>:29:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  assign io_BundleControl_isJump = ~_GEN_8 & (_csignals_T_5 | _csignals_T_204);	// @[<stdin>:29:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  assign io_BundleControl_isBranch = ~_GEN_11 & (_GEN_9 | _csignals_T_280);	// @[<stdin>:29:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
   assign io_BundleControl_isJAL =
     ~_csignals_T_1
-    & (_csignals_T_3 | _csignals_T_5 | ~_csignals_T_184 & (_GEN_8 | _csignals_T_252));	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+    & (_csignals_T_3 | _csignals_T_5 | ~_csignals_T_204 & (_GEN_9 | _csignals_T_280));	// @[<stdin>:29:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
   assign io_BundleControl_writeEnable =
-    _GEN_10 | ~_GEN_6
-    & (_GEN_4 | ~_GEN_2
+    _GEN_11 | ~_GEN_7
+    & (_GEN_5 | ~_GEN_3
        & (_csignals_T_37 | _csignals_T_39 | _csignals_T_41 | _csignals_T_43
           | _csignals_T_45 | _csignals_T_47 | _csignals_T_49 | _csignals_T_51
-          | _csignals_T_124 | _csignals_T_55 | _csignals_T_57 | _csignals_T_59
-          | _csignals_T_61 | _csignals_T_378 | _csignals_T_65 | _csignals_T_67
-          | _csignals_T_69 | _csignals_T_71 | _csignals_T_262));	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+          | _csignals_T_140 | _csignals_T_55 | _csignals_T_57 | _csignals_T_59
+          | _csignals_T_61 | _csignals_T_422 | _csignals_T_65 | _csignals_T_67
+          | _csignals_T_69 | _csignals_T_71 | _csignals_T_294));	// @[<stdin>:29:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
   assign io_BundleControl_isLoad =
-    ~_GEN_11
+    ~_GEN_12
     & (_csignals_T_21 | _csignals_T_23 | _csignals_T_25 | _csignals_T_27
-       | _csignals_T_321);	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+       | _csignals_T_357);	// @[<stdin>:29:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
   assign io_BundleControl_isStore =
-    ~(_csignals_T_1 | _csignals_T_3 | _csignals_T_5 | _csignals_T_184 | _csignals_T_9
+    ~(_csignals_T_1 | _csignals_T_3 | _csignals_T_5 | _csignals_T_204 | _csignals_T_9
       | _csignals_T_11 | _csignals_T_13 | _csignals_T_15 | _csignals_T_17
-      | _csignals_T_252 | _GEN_4) & (_csignals_T_31 | _csignals_T_33 | _csignals_T_355);	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+      | _csignals_T_280 | _GEN_5) & (_csignals_T_31 | _csignals_T_33 | _csignals_T_395);	// @[<stdin>:29:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
   assign io_BundleControl_isUnsigned =
-    ~(_csignals_T_1 | _csignals_T_3 | _csignals_T_5 | _csignals_T_184 | _csignals_T_9
+    ~(_csignals_T_1 | _csignals_T_3 | _csignals_T_5 | _csignals_T_204 | _csignals_T_9
       | _csignals_T_11 | _csignals_T_13 | _csignals_T_15)
-    & (_GEN_5 | ~(_csignals_T_21 | _csignals_T_23 | _csignals_T_25)
-       & (_GEN_3
-          | ~(_csignals_T_31 | _csignals_T_33 | _csignals_T_355 | _csignals_T_37
+    & (_GEN_6 | ~(_csignals_T_21 | _csignals_T_23 | _csignals_T_25)
+       & (_GEN_4
+          | ~(_csignals_T_31 | _csignals_T_33 | _csignals_T_395 | _csignals_T_37
               | _csignals_T_39)
           & (_csignals_T_41
              | ~(_csignals_T_43 | _csignals_T_45 | _csignals_T_47 | _csignals_T_49
-                 | _csignals_T_51 | _csignals_T_124 | _csignals_T_55 | _csignals_T_57
-                 | _csignals_T_59 | _csignals_T_61) & _csignals_T_378)));	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+                 | _csignals_T_51 | _csignals_T_140 | _csignals_T_55 | _csignals_T_57
+                 | _csignals_T_59 | _csignals_T_61) & _csignals_T_422)));	// @[<stdin>:29:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  assign io_BundleControl_isContext =
+    ~_GEN_13 & (_csignals_T_77 | _GEN_1 | _csignals_T_453);	// @[<stdin>:29:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  assign io_BundleControl_csrType =
+    _GEN_13
+      ? 4'hF
+      : _csignals_T_77
+          ? 4'h2
+          : _csignals_T_79 ? 4'h0 : _csignals_T_81 ? 4'h1 : _csignals_T_453 ? 4'h3 : 4'hF;	// @[<stdin>:29:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
   assign io_BundleControl_lsuType =
-    _GEN_11
+    _GEN_12
       ? 4'hF
       : _csignals_T_21
           ? 4'h1
@@ -301,15 +420,15 @@ module ID(	// @[<stdin>:20:10]
                   ? 4'h4
                   : _csignals_T_27
                       ? 4'h1
-                      : _csignals_T_321
+                      : _csignals_T_357
                           ? 4'h2
                           : _csignals_T_31
                               ? 4'h1
-                              : _csignals_T_33 ? 4'h2 : _csignals_T_355 ? 4'h4 : 4'hF;	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+                              : _csignals_T_33 ? 4'h2 : _csignals_T_395 ? 4'h4 : 4'hF;	// @[<stdin>:29:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
   assign io_BundleControl_aluType =
     _csignals_T_1
       ? 4'h0
-      : _GEN_9
+      : _GEN_10
           ? 4'h1
           : _csignals_T_9
               ? 4'h9
@@ -321,11 +440,11 @@ module ID(	// @[<stdin>:20:10]
                           ? 4'hC
                           : _csignals_T_17
                               ? 4'hB
-                              : _csignals_T_252
+                              : _csignals_T_280
                                   ? 4'hC
                                   : _csignals_T_21 | _csignals_T_23 | _csignals_T_25
-                                    | _csignals_T_27 | _csignals_T_321 | _csignals_T_31
-                                    | _csignals_T_33 | _csignals_T_355 | _csignals_T_37
+                                    | _csignals_T_27 | _csignals_T_357 | _csignals_T_31
+                                    | _csignals_T_33 | _csignals_T_395 | _csignals_T_37
                                       ? 4'h1
                                       : _csignals_T_39 | _csignals_T_41
                                           ? 4'hB
@@ -339,7 +458,7 @@ module ID(	// @[<stdin>:20:10]
                                                           ? 4'h6
                                                           : _csignals_T_51
                                                               ? 4'h7
-                                                              : _csignals_T_124
+                                                              : _csignals_T_140
                                                                   ? 4'h8
                                                                   : _csignals_T_55
                                                                       ? 4'h1
@@ -348,7 +467,7 @@ module ID(	// @[<stdin>:20:10]
                                                                           : _csignals_T_59
                                                                               ? 4'h6
                                                                               : _csignals_T_61
-                                                                                | _csignals_T_378
+                                                                                | _csignals_T_422
                                                                                   ? 4'hB
                                                                                   : _csignals_T_65
                                                                                       ? 4'h5
@@ -358,114 +477,188 @@ module ID(	// @[<stdin>:20:10]
                                                                                               ? 4'h8
                                                                                               : _csignals_T_71
                                                                                                   ? 4'h4
-                                                                                                  : _csignals_T_262
+                                                                                                  : _csignals_T_294
                                                                                                       ? 4'h3
-                                                                                                      : _csignals_T_483
+                                                                                                      : _csignals_T_621
                                                                                                           ? 4'h1
-                                                                                                          : 4'hF;	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
-  assign io_bundleReg_rs1 = io_inst[19:15];	// @[<stdin>:20:10, cpu/src/stage/IDU.scala:34:30]
-  assign io_bundleReg_rs2 = io_inst[24:20];	// @[<stdin>:20:10, cpu/src/stage/IDU.scala:35:30]
-  assign io_bundleReg_rd = io_inst[11:7];	// @[<stdin>:20:10, cpu/src/stage/IDU.scala:36:30]
-  assign io_imm = casez_tmp;	// @[<stdin>:20:10, cpu/src/stage/IDU.scala:98:18, :99:20]
+                                                                                                          : _csignals_T_77
+                                                                                                              ? 4'hF
+                                                                                                              : _csignals_T_79
+                                                                                                                  ? 4'hD
+                                                                                                                  : {3'h7,
+                                                                                                                     ~_csignals_T_81};	// @[<stdin>:29:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+  assign io_bundleReg_rs1 = io_inst[19:15];	// @[<stdin>:29:10, cpu/src/stage/IDU.scala:34:30]
+  assign io_bundleReg_rs2 = io_inst[24:20];	// @[<stdin>:29:10, cpu/src/stage/IDU.scala:35:30]
+  assign io_bundleReg_rd = io_inst[11:7];	// @[<stdin>:29:10, cpu/src/stage/IDU.scala:36:30]
+  assign io_imm = casez_tmp;	// @[<stdin>:29:10, cpu/src/stage/IDU.scala:102:18, :103:20]
   assign io_isEbreak =
-    ~(_csignals_T_1 | _csignals_T_3 | _csignals_T_5 | _csignals_T_184 | _csignals_T_9
+    ~(_csignals_T_1 | _csignals_T_3 | _csignals_T_5 | _csignals_T_204 | _csignals_T_9
       | _csignals_T_11 | _csignals_T_13 | _csignals_T_15 | _csignals_T_17
-      | _csignals_T_252 | _csignals_T_21 | _csignals_T_23 | _csignals_T_25
-      | _csignals_T_27 | _csignals_T_321 | _csignals_T_31 | _csignals_T_33
-      | _csignals_T_355 | _csignals_T_37 | _csignals_T_39 | _csignals_T_41
+      | _csignals_T_280 | _csignals_T_21 | _csignals_T_23 | _csignals_T_25
+      | _csignals_T_27 | _csignals_T_357 | _csignals_T_31 | _csignals_T_33
+      | _csignals_T_395 | _csignals_T_37 | _csignals_T_39 | _csignals_T_41
       | _csignals_T_43 | _csignals_T_45 | _csignals_T_47 | _csignals_T_49 | _csignals_T_51
-      | _csignals_T_124 | _GEN_1) & _csignals_T_483;	// @[<stdin>:20:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
+      | _csignals_T_140 | _GEN_2) & _csignals_T_621;	// @[<stdin>:29:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
 endmodule
 
-module GPRFile(	// @[<stdin>:637:10]
-  input         clock,	// @[<stdin>:638:11]
-                io_writeEnable,	// @[cpu/src/unit/GPRFile.scala:24:14]
-                io_isJump,	// @[cpu/src/unit/GPRFile.scala:24:14]
-                io_isLoad,	// @[cpu/src/unit/GPRFile.scala:24:14]
-                io_isUnsigned,	// @[cpu/src/unit/GPRFile.scala:24:14]
-  input  [3:0]  io_lsuType,	// @[cpu/src/unit/GPRFile.scala:24:14]
-  input  [31:0] io_pc,	// @[cpu/src/unit/GPRFile.scala:24:14]
-                io_dataWrite,	// @[cpu/src/unit/GPRFile.scala:24:14]
-  input  [4:0]  io_bundleReg_rs1,	// @[cpu/src/unit/GPRFile.scala:24:14]
-                io_bundleReg_rs2,	// @[cpu/src/unit/GPRFile.scala:24:14]
-                io_bundleReg_rd,	// @[cpu/src/unit/GPRFile.scala:24:14]
-  output [31:0] io_dataRead1,	// @[cpu/src/unit/GPRFile.scala:24:14]
-                io_dataRead2	// @[cpu/src/unit/GPRFile.scala:24:14]
+module GPRFile(	// @[<stdin>:788:10]
+  input         clock,	// @[<stdin>:789:11]
+                io_writeEnable,	// @[cpu/src/unit/GPRFile.scala:33:14]
+                io_isJump,	// @[cpu/src/unit/GPRFile.scala:33:14]
+                io_isLoad,	// @[cpu/src/unit/GPRFile.scala:33:14]
+                io_isUnsigned,	// @[cpu/src/unit/GPRFile.scala:33:14]
+                io_isContext,	// @[cpu/src/unit/GPRFile.scala:33:14]
+  input  [31:0] io_imm,	// @[cpu/src/unit/GPRFile.scala:33:14]
+  input  [3:0]  io_csrType,	// @[cpu/src/unit/GPRFile.scala:33:14]
+                io_lsuType,	// @[cpu/src/unit/GPRFile.scala:33:14]
+  input  [31:0] io_pc,	// @[cpu/src/unit/GPRFile.scala:33:14]
+                io_dataWrite,	// @[cpu/src/unit/GPRFile.scala:33:14]
+  input  [4:0]  io_bundleReg_rs1,	// @[cpu/src/unit/GPRFile.scala:33:14]
+                io_bundleReg_rs2,	// @[cpu/src/unit/GPRFile.scala:33:14]
+                io_bundleReg_rd,	// @[cpu/src/unit/GPRFile.scala:33:14]
+  output [31:0] io_dataRead1,	// @[cpu/src/unit/GPRFile.scala:33:14]
+                io_dataRead2,	// @[cpu/src/unit/GPRFile.scala:33:14]
+                io_csrData,	// @[cpu/src/unit/GPRFile.scala:33:14]
+                io_resCSR	// @[cpu/src/unit/GPRFile.scala:33:14]
 );
 
-  wire _GEN = io_writeEnable & (|io_bundleReg_rd);	// @[cpu/src/unit/GPRFile.scala:46:{23,42}]
-  regs_combMem regs_ext (	// @[cpu/src/unit/GPRFile.scala:27:17]
+  wire [31:0] _csrs_ext_R0_data;	// @[cpu/src/unit/GPRFile.scala:37:22]
+  wire [31:0] _csrs_ext_R1_data;	// @[cpu/src/unit/GPRFile.scala:37:22]
+  wire [31:0] _csrs_ext_R2_data;	// @[cpu/src/unit/GPRFile.scala:37:22]
+  wire [31:0] snpc = io_pc + 32'h4;	// @[cpu/src/unit/GPRFile.scala:46:25]
+  wire [31:0] dataWrite =
+    io_isLoad & ~io_isUnsigned
+      ? (io_lsuType == 4'h1
+           ? {{24{io_dataWrite[7]}}, io_dataWrite[7:0]}
+           : io_lsuType == 4'h2
+               ? {{16{io_dataWrite[15]}}, io_dataWrite[15:0]}
+               : io_lsuType == 4'h4 ? io_dataWrite : 32'h0)
+      : io_dataWrite;	// @[cpu/src/unit/GPRFile.scala:38:30, :51:{18,21,37}, :52:24, :53:{29,35,40,57,75}, :54:{29,35,40,57,76}, :55:29, :57:27]
+  wire        _GEN = io_writeEnable & (|io_bundleReg_rd);	// @[cpu/src/unit/GPRFile.scala:59:{23,42}]
+  wire        _GEN_0 = io_csrType == 4'h0;	// @[cpu/src/unit/GPRFile.scala:66:24]
+  wire        _GEN_1 = io_csrType == 4'h1;	// @[cpu/src/unit/GPRFile.scala:52:24, :66:24]
+  wire        _GEN_2 = io_csrType == 4'h2;	// @[cpu/src/unit/GPRFile.scala:52:24, :66:24]
+  wire        _GEN_3 = _GEN_0 | _GEN_1;	// @[cpu/src/unit/GPRFile.scala:37:22, :66:24]
+  wire        _GEN_4 = io_isContext & ~_GEN_3 & _GEN_2;	// @[cpu/src/unit/GPRFile.scala:37:22, :65:21, :66:24]
+  wire        _GEN_5 = io_csrType == 4'h3;	// @[cpu/src/unit/GPRFile.scala:66:24]
+  wire        _GEN_6 = io_isContext & ~(_GEN_0 | _GEN_1 | _GEN_2) & _GEN_5;	// @[cpu/src/unit/GPRFile.scala:37:22, :65:21, :66:24]
+  regs_combMem regs_ext (	// @[cpu/src/unit/GPRFile.scala:36:22]
     .R0_addr (io_bundleReg_rs1),
-    .R0_en   (1'h1),	// @[<stdin>:637:10]
+    .R0_en   (1'h1),	// @[<stdin>:788:10]
     .R0_clk  (clock),
     .R1_addr (io_bundleReg_rs2),
-    .R1_en   (1'h1),	// @[<stdin>:637:10]
+    .R1_en   (1'h1),	// @[<stdin>:788:10]
     .R1_clk  (clock),
     .W0_addr (io_bundleReg_rd),
-    .W0_en   (_GEN & io_isJump),	// @[cpu/src/unit/GPRFile.scala:27:17, :46:{23,51}, :47:22]
+    .W0_en   (_GEN & io_isJump),	// @[cpu/src/unit/GPRFile.scala:36:22, :59:{23,51}, :60:21]
     .W0_clk  (clock),
-    .W0_data (io_pc + 32'h4),	// @[cpu/src/unit/GPRFile.scala:48:41]
+    .W0_data (snpc),	// @[cpu/src/unit/GPRFile.scala:46:25]
     .W1_addr (io_bundleReg_rd),
-    .W1_en   (_GEN & ~io_isJump),	// @[<stdin>:637:10, cpu/src/unit/GPRFile.scala:27:17, :46:{23,51}, :47:22, :49:29]
+    .W1_en   (_GEN & ~io_isJump),	// @[<stdin>:788:10, cpu/src/unit/GPRFile.scala:36:22, :59:{23,51}, :60:21, :62:29]
     .W1_clk  (clock),
-    .W1_data
-      (io_isLoad & ~io_isUnsigned
-         ? (io_lsuType == 4'h1
-              ? {{24{io_dataWrite[7]}}, io_dataWrite[7:0]}
-              : io_lsuType == 4'h2
-                  ? {{16{io_dataWrite[15]}}, io_dataWrite[15:0]}
-                  : io_lsuType == 4'h4 ? io_dataWrite : 32'h0)
-         : io_dataWrite),	// @[cpu/src/unit/GPRFile.scala:28:30, :37:{18,21,36}, :38:24, :39:{28,34,39,56,74}, :40:{28,34,39,56,75}, :41:28, :43:25]
+    .W1_data (dataWrite),	// @[cpu/src/unit/GPRFile.scala:51:37, :52:24, :57:27]
+    .W2_addr (io_bundleReg_rd),
+    .W2_en   (io_isContext & _GEN_0 & (|io_bundleReg_rd)),	// @[cpu/src/unit/GPRFile.scala:36:22, :59:42, :65:21, :66:24, :68:39]
+    .W2_clk  (clock),
+    .W2_data (_csrs_ext_R0_data),	// @[cpu/src/unit/GPRFile.scala:37:22]
+    .W3_addr (io_bundleReg_rd),
+    .W3_en   (io_isContext & ~_GEN_0 & _GEN_1 & (|io_bundleReg_rd)),	// @[cpu/src/unit/GPRFile.scala:36:22, :59:42, :65:21, :66:24]
+    .W3_clk  (clock),
+    .W3_data (_csrs_ext_R0_data),	// @[cpu/src/unit/GPRFile.scala:37:22]
     .R0_data (io_dataRead1),
     .R1_data (io_dataRead2)
   );
+  csrs_combMem csrs_ext (	// @[cpu/src/unit/GPRFile.scala:37:22]
+    .R0_addr (io_imm[9:0]),	// @[cpu/src/unit/GPRFile.scala:49:28]
+    .R0_en   (1'h1),	// @[<stdin>:788:10]
+    .R0_clk  (clock),
+    .R1_addr (10'h305),	// @[cpu/src/unit/GPRFile.scala:87:34]
+    .R1_en   (_GEN_4),	// @[cpu/src/unit/GPRFile.scala:37:22, :65:21, :66:24]
+    .R1_clk  (clock),
+    .R2_addr (10'h341),	// @[cpu/src/unit/GPRFile.scala:84:19]
+    .R2_en   (_GEN_6),	// @[cpu/src/unit/GPRFile.scala:37:22, :65:21, :66:24]
+    .R2_clk  (clock),
+    .W0_addr (io_imm[9:0]),	// @[cpu/src/unit/GPRFile.scala:49:28]
+    .W0_en   (io_isContext & _GEN_0),	// @[cpu/src/unit/GPRFile.scala:37:22, :65:21, :66:24]
+    .W0_clk  (clock),
+    .W0_data (dataWrite),	// @[cpu/src/unit/GPRFile.scala:51:37, :52:24, :57:27]
+    .W1_addr (io_imm[9:0]),	// @[cpu/src/unit/GPRFile.scala:49:28]
+    .W1_en   (io_isContext & ~_GEN_0 & _GEN_1),	// @[cpu/src/unit/GPRFile.scala:36:22, :37:22, :65:21, :66:24]
+    .W1_clk  (clock),
+    .W1_data (dataWrite),	// @[cpu/src/unit/GPRFile.scala:51:37, :52:24, :57:27]
+    .W2_addr (10'h341),	// @[cpu/src/unit/GPRFile.scala:84:19]
+    .W2_en   (_GEN_4),	// @[cpu/src/unit/GPRFile.scala:37:22, :65:21, :66:24]
+    .W2_clk  (clock),
+    .W2_data (snpc),	// @[cpu/src/unit/GPRFile.scala:46:25]
+    .W3_addr (10'h342),	// @[cpu/src/unit/GPRFile.scala:85:19]
+    .W3_en   (_GEN_4),	// @[cpu/src/unit/GPRFile.scala:37:22, :65:21, :66:24]
+    .W3_clk  (clock),
+    .W3_data (32'hB),	// @[cpu/src/unit/GPRFile.scala:85:19]
+    .W4_addr (10'h300),	// @[cpu/src/unit/GPRFile.scala:86:19]
+    .W4_en   (_GEN_4),	// @[cpu/src/unit/GPRFile.scala:37:22, :65:21, :66:24]
+    .W4_clk  (clock),
+    .W4_data (32'h1800),	// @[cpu/src/unit/GPRFile.scala:86:19]
+    .W5_addr (10'h300),	// @[cpu/src/unit/GPRFile.scala:86:19]
+    .W5_en   (_GEN_6),	// @[cpu/src/unit/GPRFile.scala:37:22, :65:21, :66:24]
+    .W5_clk  (clock),
+    .W5_data (32'h1800),	// @[cpu/src/unit/GPRFile.scala:86:19]
+    .R0_data (_csrs_ext_R0_data),
+    .R1_data (_csrs_ext_R1_data),
+    .R2_data (_csrs_ext_R2_data)
+  );
+  assign io_csrData = _csrs_ext_R0_data;	// @[<stdin>:788:10, cpu/src/unit/GPRFile.scala:37:22]
+  assign io_resCSR =
+    ~io_isContext | _GEN_3
+      ? 32'h0
+      : _GEN_2 ? _csrs_ext_R1_data : _GEN_5 ? _csrs_ext_R2_data : 32'h0;	// @[<stdin>:788:10, cpu/src/unit/GPRFile.scala:37:22, :38:30, :39:30, :65:21, :66:24, :87:22, :92:16]
 endmodule
 
-module EX(	// @[<stdin>:694:10]
-  input         io_bundleEXControl_isALUSrc,	// @[cpu/src/stage/EXU.scala:33:16]
-                io_bundleEXControl_isJAL,	// @[cpu/src/stage/EXU.scala:33:16]
-                io_bundleEXControl_isBranch,	// @[cpu/src/stage/EXU.scala:33:16]
-                io_bundleEXControl_isUnsigned,	// @[cpu/src/stage/EXU.scala:33:16]
-  input  [3:0]  io_bundleEXControl_aluType,	// @[cpu/src/stage/EXU.scala:33:16]
-  input  [31:0] io_dataRead1,	// @[cpu/src/stage/EXU.scala:33:16]
-                io_dataRead2,	// @[cpu/src/stage/EXU.scala:33:16]
-                io_imm,	// @[cpu/src/stage/EXU.scala:33:16]
-                io_pc,	// @[cpu/src/stage/EXU.scala:33:16]
-  output        io_resBranch,	// @[cpu/src/stage/EXU.scala:33:16]
-  output [31:0] io_res,	// @[cpu/src/stage/EXU.scala:33:16]
-                io_src1,	// @[cpu/src/stage/EXU.scala:33:16]
-                io_src2	// @[cpu/src/stage/EXU.scala:33:16]
+module EX(	// @[<stdin>:892:10]
+  input         io_bundleEXControl_isALUSrc,	// @[cpu/src/stage/EXU.scala:35:14]
+                io_bundleEXControl_isJAL,	// @[cpu/src/stage/EXU.scala:35:14]
+                io_bundleEXControl_isBranch,	// @[cpu/src/stage/EXU.scala:35:14]
+                io_bundleEXControl_isUnsigned,	// @[cpu/src/stage/EXU.scala:35:14]
+  input  [3:0]  io_bundleEXControl_aluType,	// @[cpu/src/stage/EXU.scala:35:14]
+  input  [31:0] io_dataRead1,	// @[cpu/src/stage/EXU.scala:35:14]
+                io_dataRead2,	// @[cpu/src/stage/EXU.scala:35:14]
+                io_csrData,	// @[cpu/src/stage/EXU.scala:35:14]
+                io_imm,	// @[cpu/src/stage/EXU.scala:35:14]
+                io_pc,	// @[cpu/src/stage/EXU.scala:35:14]
+  output        io_resBranch,	// @[cpu/src/stage/EXU.scala:35:14]
+  output [31:0] io_res,	// @[cpu/src/stage/EXU.scala:35:14]
+                io_src1,	// @[cpu/src/stage/EXU.scala:35:14]
+                io_src2	// @[cpu/src/stage/EXU.scala:35:14]
 );
 
-  reg  [31:0] casez_tmp;	// @[cpu/src/stage/EXU.scala:49:40, :50:27]
-  wire [31:0] operand1 = io_bundleEXControl_isJAL ? io_pc : io_dataRead1;	// @[cpu/src/stage/EXU.scala:46:23]
-  wire [31:0] operand2 = io_bundleEXControl_isALUSrc ? io_imm : io_dataRead2;	// @[cpu/src/stage/EXU.scala:47:23]
-  wire [31:0] _GEN = operand1 + operand2;	// @[cpu/src/stage/EXU.scala:46:23, :47:23, :51:39]
-  wire [62:0] _res_T_21 = {31'h0, operand1} << operand2[4:0];	// @[cpu/src/stage/EXU.scala:46:23, :47:23, :64:25, :84:{40,51}]
-  always_comb begin	// @[cpu/src/stage/EXU.scala:36:26, :49:40, :50:27, :51:27, :52:27, :53:27, :54:26, :55:27, :57:46, :70:17, :74:17, :80:17, :82:27, :83:27, :84:27]
-    casez (io_bundleEXControl_aluType)	// @[cpu/src/stage/EXU.scala:36:26, :49:40, :50:27, :51:27, :52:27, :53:27, :54:26, :55:27, :57:46, :70:17, :74:17, :80:17, :82:27, :83:27, :84:27]
+  reg  [31:0] casez_tmp;	// @[cpu/src/stage/EXU.scala:54:38, :55:23]
+  wire [31:0] operand1 = io_bundleEXControl_isJAL ? io_pc : io_dataRead1;	// @[cpu/src/stage/EXU.scala:51:21]
+  wire [31:0] operand2 = io_bundleEXControl_isALUSrc ? io_imm : io_dataRead2;	// @[cpu/src/stage/EXU.scala:52:21]
+  wire [31:0] _GEN = operand1 + operand2;	// @[cpu/src/stage/EXU.scala:51:21, :52:21, :56:35]
+  wire [62:0] _res_T_21 = {31'h0, operand1} << operand2[4:0];	// @[cpu/src/stage/EXU.scala:51:21, :52:21, :69:15, :89:{36,47}]
+  always_comb begin	// @[cpu/src/stage/EXU.scala:38:36, :54:38, :55:23, :56:23, :57:23, :58:23, :59:22, :60:23, :62:41, :75:17, :79:17, :85:11, :87:23, :88:23, :89:23, :91:11, :94:11]
+    casez (io_bundleEXControl_aluType)	// @[cpu/src/stage/EXU.scala:38:36, :54:38, :55:23, :56:23, :57:23, :58:23, :59:22, :60:23, :62:41, :75:17, :79:17, :85:11, :87:23, :88:23, :89:23, :91:11, :94:11]
       4'b0000:
-        casez_tmp = operand2;	// @[cpu/src/stage/EXU.scala:36:26, :47:23, :49:40, :50:27, :51:27, :52:27, :53:27, :54:26, :55:27, :57:46, :70:17, :74:17, :80:17, :82:27, :83:27, :84:27]
+        casez_tmp = operand2;	// @[cpu/src/stage/EXU.scala:38:36, :52:21, :54:38, :55:23, :56:23, :57:23, :58:23, :59:22, :60:23, :62:41, :75:17, :79:17, :85:11, :87:23, :88:23, :89:23, :91:11, :94:11]
       4'b0001:
-        casez_tmp = _GEN;	// @[cpu/src/stage/EXU.scala:36:26, :49:40, :50:27, :51:{27,39}, :52:27, :53:27, :54:26, :55:27, :57:46, :70:17, :74:17, :80:17, :82:27, :83:27, :84:27]
+        casez_tmp = _GEN;	// @[cpu/src/stage/EXU.scala:38:36, :54:38, :55:23, :56:{23,35}, :57:23, :58:23, :59:22, :60:23, :62:41, :75:17, :79:17, :85:11, :87:23, :88:23, :89:23, :91:11, :94:11]
       4'b0010:
-        casez_tmp = operand1 - operand2;	// @[cpu/src/stage/EXU.scala:36:26, :46:23, :47:23, :49:40, :50:27, :51:27, :52:{27,39}, :53:27, :54:26, :55:27, :57:46, :70:17, :74:17, :80:17, :82:27, :83:27, :84:27]
+        casez_tmp = operand1 - operand2;	// @[cpu/src/stage/EXU.scala:38:36, :51:21, :52:21, :54:38, :55:23, :56:23, :57:{23,35}, :58:23, :59:22, :60:23, :62:41, :75:17, :79:17, :85:11, :87:23, :88:23, :89:23, :91:11, :94:11]
       4'b0011:
-        casez_tmp = operand1 & operand2;	// @[cpu/src/stage/EXU.scala:36:26, :46:23, :47:23, :49:40, :50:27, :51:27, :52:27, :53:{27,40}, :54:26, :55:27, :57:46, :70:17, :74:17, :80:17, :82:27, :83:27, :84:27]
+        casez_tmp = operand1 & operand2;	// @[cpu/src/stage/EXU.scala:38:36, :51:21, :52:21, :54:38, :55:23, :56:23, :57:23, :58:{23,35}, :59:22, :60:23, :62:41, :75:17, :79:17, :85:11, :87:23, :88:23, :89:23, :91:11, :94:11]
       4'b0100:
-        casez_tmp = operand1 | operand2;	// @[cpu/src/stage/EXU.scala:36:26, :46:23, :47:23, :49:40, :50:27, :51:27, :52:27, :53:27, :54:{26,39}, :55:27, :57:46, :70:17, :74:17, :80:17, :82:27, :83:27, :84:27]
+        casez_tmp = operand1 | operand2;	// @[cpu/src/stage/EXU.scala:38:36, :51:21, :52:21, :54:38, :55:23, :56:23, :57:23, :58:23, :59:{22,34}, :60:23, :62:41, :75:17, :79:17, :85:11, :87:23, :88:23, :89:23, :91:11, :94:11]
       4'b0101:
-        casez_tmp = operand1 ^ operand2;	// @[cpu/src/stage/EXU.scala:36:26, :46:23, :47:23, :49:40, :50:27, :51:27, :52:27, :53:27, :54:26, :55:{27,40}, :57:46, :70:17, :74:17, :80:17, :82:27, :83:27, :84:27]
+        casez_tmp = operand1 ^ operand2;	// @[cpu/src/stage/EXU.scala:38:36, :51:21, :52:21, :54:38, :55:23, :56:23, :57:23, :58:23, :59:22, :60:{23,35}, :62:41, :75:17, :79:17, :85:11, :87:23, :88:23, :89:23, :91:11, :94:11]
       4'b0110:
-        casez_tmp = _res_T_21[31:0];	// @[cpu/src/stage/EXU.scala:36:26, :49:40, :50:27, :51:27, :52:27, :53:27, :54:26, :55:27, :57:46, :70:17, :74:17, :80:17, :82:27, :83:27, :84:{27,40}]
+        casez_tmp = _res_T_21[31:0];	// @[cpu/src/stage/EXU.scala:38:36, :54:38, :55:23, :56:23, :57:23, :58:23, :59:22, :60:23, :62:41, :75:17, :79:17, :85:11, :87:23, :88:23, :89:{23,36}, :91:11, :94:11]
       4'b0111:
-        casez_tmp = operand1 >> operand2[4:0];	// @[cpu/src/stage/EXU.scala:36:26, :46:23, :47:23, :49:40, :50:27, :51:27, :52:27, :53:27, :54:26, :55:27, :57:46, :70:17, :74:17, :80:17, :82:27, :83:{27,40,51}, :84:27]
+        casez_tmp = operand1 >> operand2[4:0];	// @[cpu/src/stage/EXU.scala:38:36, :51:21, :52:21, :54:38, :55:23, :56:23, :57:23, :58:23, :59:22, :60:23, :62:41, :75:17, :79:17, :85:11, :87:23, :88:{23,36,47}, :89:23, :91:11, :94:11]
       4'b1000:
-        casez_tmp = $signed($signed(operand1) >>> operand2[4:0]);	// @[cpu/src/stage/EXU.scala:36:26, :46:23, :47:23, :49:40, :50:27, :51:27, :52:27, :53:27, :54:26, :55:27, :57:46, :70:17, :74:17, :80:17, :82:{27,47,58}, :83:27, :84:27]
+        casez_tmp = $signed($signed(operand1) >>> operand2[4:0]);	// @[cpu/src/stage/EXU.scala:38:36, :51:21, :52:21, :54:38, :55:23, :56:23, :57:23, :58:23, :59:22, :60:23, :62:41, :75:17, :79:17, :85:11, :87:{23,43,54}, :88:23, :89:23, :91:11, :94:11]
       4'b1001:
-        casez_tmp = _GEN;	// @[cpu/src/stage/EXU.scala:36:26, :49:40, :50:27, :51:{27,39}, :52:27, :53:27, :54:26, :55:27, :57:46, :70:17, :74:17, :80:17, :82:27, :83:27, :84:27]
+        casez_tmp = _GEN;	// @[cpu/src/stage/EXU.scala:38:36, :54:38, :55:23, :56:{23,35}, :57:23, :58:23, :59:22, :60:23, :62:41, :75:17, :79:17, :85:11, :87:23, :88:23, :89:23, :91:11, :94:11]
       4'b1010:
-        casez_tmp = _GEN;	// @[cpu/src/stage/EXU.scala:36:26, :49:40, :50:27, :51:{27,39}, :52:27, :53:27, :54:26, :55:27, :57:46, :70:17, :74:17, :80:17, :82:27, :83:27, :84:27]
+        casez_tmp = _GEN;	// @[cpu/src/stage/EXU.scala:38:36, :54:38, :55:23, :56:{23,35}, :57:23, :58:23, :59:22, :60:23, :62:41, :75:17, :79:17, :85:11, :87:23, :88:23, :89:23, :91:11, :94:11]
       4'b1011:
         casez_tmp =
           io_bundleEXControl_isBranch
@@ -473,16 +666,16 @@ module EX(	// @[<stdin>:694:10]
             : {31'h0,
                io_bundleEXControl_isUnsigned
                  ? operand1 < operand2
-                 : $signed(operand1) < $signed(operand2)};	// @[cpu/src/stage/EXU.scala:36:26, :46:23, :47:23, :49:40, :50:27, :51:{27,39}, :52:27, :53:27, :54:26, :55:27, :57:46, :61:21, :63:52, :64:{25,37}, :65:{33,52}, :70:17, :74:17, :80:17, :82:27, :83:27, :84:27]
+                 : $signed(operand1) < $signed(operand2)};	// @[cpu/src/stage/EXU.scala:38:36, :51:21, :52:21, :54:38, :55:23, :56:{23,35}, :57:23, :58:23, :59:22, :60:23, :62:41, :66:13, :68:45, :69:{15,27}, :70:{27,46}, :75:17, :79:17, :85:11, :87:23, :88:23, :89:23, :91:11, :94:11]
       4'b1100:
-        casez_tmp = _GEN;	// @[cpu/src/stage/EXU.scala:36:26, :49:40, :50:27, :51:{27,39}, :52:27, :53:27, :54:26, :55:27, :57:46, :70:17, :74:17, :80:17, :82:27, :83:27, :84:27]
+        casez_tmp = _GEN;	// @[cpu/src/stage/EXU.scala:38:36, :54:38, :55:23, :56:{23,35}, :57:23, :58:23, :59:22, :60:23, :62:41, :75:17, :79:17, :85:11, :87:23, :88:23, :89:23, :91:11, :94:11]
       4'b1101:
-        casez_tmp = 32'h0;	// @[cpu/src/stage/EXU.scala:36:26, :49:40, :50:27, :51:27, :52:27, :53:27, :54:26, :55:27, :57:46, :70:17, :74:17, :80:17, :82:27, :83:27, :84:27]
+        casez_tmp = operand1 | io_csrData;	// @[cpu/src/stage/EXU.scala:38:36, :51:21, :54:38, :55:23, :56:23, :57:23, :58:23, :59:22, :60:23, :62:41, :75:17, :79:17, :85:11, :87:23, :88:23, :89:23, :91:{11,23}, :94:11]
       4'b1110:
-        casez_tmp = 32'h0;	// @[cpu/src/stage/EXU.scala:36:26, :49:40, :50:27, :51:27, :52:27, :53:27, :54:26, :55:27, :57:46, :70:17, :74:17, :80:17, :82:27, :83:27, :84:27]
+        casez_tmp = operand1;	// @[cpu/src/stage/EXU.scala:38:36, :51:21, :54:38, :55:23, :56:23, :57:23, :58:23, :59:22, :60:23, :62:41, :75:17, :79:17, :85:11, :87:23, :88:23, :89:23, :91:11, :94:11]
       default:
-        casez_tmp = 32'h0;	// @[cpu/src/stage/EXU.scala:36:26, :49:40, :50:27, :51:27, :52:27, :53:27, :54:26, :55:27, :57:46, :70:17, :74:17, :80:17, :82:27, :83:27, :84:27]
-    endcase	// @[cpu/src/stage/EXU.scala:36:26, :49:40, :50:27, :51:27, :52:27, :53:27, :54:26, :55:27, :57:46, :70:17, :74:17, :80:17, :82:27, :83:27, :84:27]
+        casez_tmp = 32'h0;	// @[cpu/src/stage/EXU.scala:38:36, :54:38, :55:23, :56:23, :57:23, :58:23, :59:22, :60:23, :62:41, :75:17, :79:17, :85:11, :87:23, :88:23, :89:23, :91:11, :94:11]
+    endcase	// @[cpu/src/stage/EXU.scala:38:36, :54:38, :55:23, :56:23, :57:23, :58:23, :59:22, :60:23, :62:41, :75:17, :79:17, :85:11, :87:23, :88:23, :89:23, :91:11, :94:11]
   end // always_comb
   assign io_resBranch =
     ~(io_bundleEXControl_aluType == 4'h0 | io_bundleEXControl_aluType == 4'h1
@@ -500,13 +693,13 @@ module EX(	// @[<stdin>:694:10]
                  : io_bundleEXControl_aluType == 4'hC
                    & (io_bundleEXControl_isUnsigned
                         ? io_dataRead1 >= io_dataRead2
-                        : $signed(io_dataRead1) >= $signed(io_dataRead2)));	// @[<stdin>:694:10, cpu/src/stage/EXU.scala:35:32, :49:40, :57:46, :58:52, :59:{31,39}, :60:{40,55}, :69:{23,32}, :73:{23,32}, :77:48, :78:{27,35}, :79:{35,50}]
-  assign io_res = casez_tmp;	// @[<stdin>:694:10, cpu/src/stage/EXU.scala:49:40, :50:27]
-  assign io_src1 = io_dataRead1;	// @[<stdin>:694:10]
-  assign io_src2 = io_dataRead2;	// @[<stdin>:694:10]
+                        : $signed(io_dataRead1) >= $signed(io_dataRead2)));	// @[<stdin>:892:10, cpu/src/stage/EXU.scala:37:36, :54:38, :62:41, :63:45, :64:{21,29}, :65:{33,48}, :74:{17,26}, :78:{17,26}, :82:43, :83:{19,27}, :84:{31,46}]
+  assign io_res = casez_tmp;	// @[<stdin>:892:10, cpu/src/stage/EXU.scala:54:38, :55:23]
+  assign io_src1 = io_dataRead1;	// @[<stdin>:892:10]
+  assign io_src2 = io_dataRead2;	// @[<stdin>:892:10]
 endmodule
 
-module Controller(	// @[<stdin>:821:10]
+module Controller(	// @[<stdin>:1034:10]
   input        io_bundleControlIn_isALUSrc,	// @[cpu/src/Controller.scala:14:16]
                io_bundleControlIn_isJump,	// @[cpu/src/Controller.scala:14:16]
                io_bundleControlIn_isBranch,	// @[cpu/src/Controller.scala:14:16]
@@ -515,7 +708,9 @@ module Controller(	// @[<stdin>:821:10]
                io_bundleControlIn_isLoad,	// @[cpu/src/Controller.scala:14:16]
                io_bundleControlIn_isStore,	// @[cpu/src/Controller.scala:14:16]
                io_bundleControlIn_isUnsigned,	// @[cpu/src/Controller.scala:14:16]
-  input  [3:0] io_bundleControlIn_lsuType,	// @[cpu/src/Controller.scala:14:16]
+               io_bundleControlIn_isContext,	// @[cpu/src/Controller.scala:14:16]
+  input  [3:0] io_bundleControlIn_csrType,	// @[cpu/src/Controller.scala:14:16]
+               io_bundleControlIn_lsuType,	// @[cpu/src/Controller.scala:14:16]
                io_bundleControlIn_aluType,	// @[cpu/src/Controller.scala:14:16]
   output       io_bundleEXControl_isALUSrc,	// @[cpu/src/Controller.scala:14:16]
                io_bundleEXControl_isJAL,	// @[cpu/src/Controller.scala:14:16]
@@ -528,21 +723,25 @@ module Controller(	// @[<stdin>:821:10]
                io_bundleControlOut_isLoad,	// @[cpu/src/Controller.scala:14:16]
                io_bundleControlOut_isStore,	// @[cpu/src/Controller.scala:14:16]
                io_bundleControlOut_isUnsigned,	// @[cpu/src/Controller.scala:14:16]
-  output [3:0] io_bundleControlOut_lsuType	// @[cpu/src/Controller.scala:14:16]
+               io_bundleControlOut_isContext,	// @[cpu/src/Controller.scala:14:16]
+  output [3:0] io_bundleControlOut_csrType,	// @[cpu/src/Controller.scala:14:16]
+               io_bundleControlOut_lsuType	// @[cpu/src/Controller.scala:14:16]
 );
 
-  assign io_bundleEXControl_isALUSrc = io_bundleControlIn_isALUSrc;	// @[<stdin>:821:10]
-  assign io_bundleEXControl_isJAL = io_bundleControlIn_isJAL;	// @[<stdin>:821:10]
-  assign io_bundleEXControl_isBranch = io_bundleControlIn_isBranch;	// @[<stdin>:821:10]
-  assign io_bundleEXControl_isUnsigned = io_bundleControlIn_isUnsigned;	// @[<stdin>:821:10]
-  assign io_bundleEXControl_aluType = io_bundleControlIn_aluType;	// @[<stdin>:821:10]
-  assign io_bundleControlOut_isJump = io_bundleControlIn_isJump;	// @[<stdin>:821:10]
-  assign io_bundleControlOut_isBranch = io_bundleControlIn_isBranch;	// @[<stdin>:821:10]
-  assign io_bundleControlOut_writeEnable = io_bundleControlIn_writeEnable;	// @[<stdin>:821:10]
-  assign io_bundleControlOut_isLoad = io_bundleControlIn_isLoad;	// @[<stdin>:821:10]
-  assign io_bundleControlOut_isStore = io_bundleControlIn_isStore;	// @[<stdin>:821:10]
-  assign io_bundleControlOut_isUnsigned = io_bundleControlIn_isUnsigned;	// @[<stdin>:821:10]
-  assign io_bundleControlOut_lsuType = io_bundleControlIn_lsuType;	// @[<stdin>:821:10]
+  assign io_bundleEXControl_isALUSrc = io_bundleControlIn_isALUSrc;	// @[<stdin>:1034:10]
+  assign io_bundleEXControl_isJAL = io_bundleControlIn_isJAL;	// @[<stdin>:1034:10]
+  assign io_bundleEXControl_isBranch = io_bundleControlIn_isBranch;	// @[<stdin>:1034:10]
+  assign io_bundleEXControl_isUnsigned = io_bundleControlIn_isUnsigned;	// @[<stdin>:1034:10]
+  assign io_bundleEXControl_aluType = io_bundleControlIn_aluType;	// @[<stdin>:1034:10]
+  assign io_bundleControlOut_isJump = io_bundleControlIn_isJump;	// @[<stdin>:1034:10]
+  assign io_bundleControlOut_isBranch = io_bundleControlIn_isBranch;	// @[<stdin>:1034:10]
+  assign io_bundleControlOut_writeEnable = io_bundleControlIn_writeEnable;	// @[<stdin>:1034:10]
+  assign io_bundleControlOut_isLoad = io_bundleControlIn_isLoad;	// @[<stdin>:1034:10]
+  assign io_bundleControlOut_isStore = io_bundleControlIn_isStore;	// @[<stdin>:1034:10]
+  assign io_bundleControlOut_isUnsigned = io_bundleControlIn_isUnsigned;	// @[<stdin>:1034:10]
+  assign io_bundleControlOut_isContext = io_bundleControlIn_isContext;	// @[<stdin>:1034:10]
+  assign io_bundleControlOut_csrType = io_bundleControlIn_csrType;	// @[<stdin>:1034:10]
+  assign io_bundleControlOut_lsuType = io_bundleControlIn_lsuType;	// @[<stdin>:1034:10]
 endmodule
 
 // external module Trap
@@ -551,9 +750,9 @@ endmodule
 
 // external module MemRam
 
-module TOP(	// @[<stdin>:858:10]
-  input         clock,	// @[<stdin>:859:11]
-                reset,	// @[<stdin>:860:11]
+module TOP(	// @[<stdin>:1071:10]
+  input         clock,	// @[<stdin>:1072:11]
+                reset,	// @[<stdin>:1073:11]
   output [31:0] io_inst,	// @[cpu/src/TOP.scala:27:14]
                 io_pc,	// @[cpu/src/TOP.scala:27:14]
   output        io_bundleControl_isALUSrc,	// @[cpu/src/TOP.scala:27:14]
@@ -564,7 +763,9 @@ module TOP(	// @[<stdin>:858:10]
                 io_bundleControl_isLoad,	// @[cpu/src/TOP.scala:27:14]
                 io_bundleControl_isStore,	// @[cpu/src/TOP.scala:27:14]
                 io_bundleControl_isUnsigned,	// @[cpu/src/TOP.scala:27:14]
-  output [3:0]  io_bundleControl_lsuType,	// @[cpu/src/TOP.scala:27:14]
+                io_bundleControl_isContext,	// @[cpu/src/TOP.scala:27:14]
+  output [3:0]  io_bundleControl_csrType,	// @[cpu/src/TOP.scala:27:14]
+                io_bundleControl_lsuType,	// @[cpu/src/TOP.scala:27:14]
                 io_bundleControl_aluType,	// @[cpu/src/TOP.scala:27:14]
   output [31:0] io_resEX,	// @[cpu/src/TOP.scala:27:14]
                 io_src1,	// @[cpu/src/TOP.scala:27:14]
@@ -590,12 +791,16 @@ module TOP(	// @[<stdin>:858:10]
   wire        _controller_io_bundleControlOut_isLoad;	// @[cpu/src/TOP.scala:33:26]
   wire        _controller_io_bundleControlOut_isStore;	// @[cpu/src/TOP.scala:33:26]
   wire        _controller_io_bundleControlOut_isUnsigned;	// @[cpu/src/TOP.scala:33:26]
+  wire        _controller_io_bundleControlOut_isContext;	// @[cpu/src/TOP.scala:33:26]
+  wire [3:0]  _controller_io_bundleControlOut_csrType;	// @[cpu/src/TOP.scala:33:26]
   wire [3:0]  _controller_io_bundleControlOut_lsuType;	// @[cpu/src/TOP.scala:33:26]
   wire        _ex_io_resBranch;	// @[cpu/src/TOP.scala:32:26]
   wire [31:0] _ex_io_res;	// @[cpu/src/TOP.scala:32:26]
   wire [31:0] _ex_io_src2;	// @[cpu/src/TOP.scala:32:26]
   wire [31:0] _gprFile_io_dataRead1;	// @[cpu/src/TOP.scala:31:26]
   wire [31:0] _gprFile_io_dataRead2;	// @[cpu/src/TOP.scala:31:26]
+  wire [31:0] _gprFile_io_csrData;	// @[cpu/src/TOP.scala:31:26]
+  wire [31:0] _gprFile_io_resCSR;	// @[cpu/src/TOP.scala:31:26]
   wire        _id_io_BundleControl_isALUSrc;	// @[cpu/src/TOP.scala:30:26]
   wire        _id_io_BundleControl_isJump;	// @[cpu/src/TOP.scala:30:26]
   wire        _id_io_BundleControl_isBranch;	// @[cpu/src/TOP.scala:30:26]
@@ -604,6 +809,8 @@ module TOP(	// @[<stdin>:858:10]
   wire        _id_io_BundleControl_isLoad;	// @[cpu/src/TOP.scala:30:26]
   wire        _id_io_BundleControl_isStore;	// @[cpu/src/TOP.scala:30:26]
   wire        _id_io_BundleControl_isUnsigned;	// @[cpu/src/TOP.scala:30:26]
+  wire        _id_io_BundleControl_isContext;	// @[cpu/src/TOP.scala:30:26]
+  wire [3:0]  _id_io_BundleControl_csrType;	// @[cpu/src/TOP.scala:30:26]
   wire [3:0]  _id_io_BundleControl_lsuType;	// @[cpu/src/TOP.scala:30:26]
   wire [3:0]  _id_io_BundleControl_aluType;	// @[cpu/src/TOP.scala:30:26]
   wire [4:0]  _id_io_bundleReg_rs1;	// @[cpu/src/TOP.scala:30:26]
@@ -619,6 +826,8 @@ module TOP(	// @[<stdin>:858:10]
     .io_isBranch   (_controller_io_bundleControlOut_isBranch),	// @[cpu/src/TOP.scala:33:26]
     .io_resBranch  (_ex_io_resBranch),	// @[cpu/src/TOP.scala:32:26]
     .io_addrTarget (_memRam_rdata),	// @[cpu/src/TOP.scala:36:26]
+    .io_csrType    (_controller_io_bundleControlOut_csrType),	// @[cpu/src/TOP.scala:33:26]
+    .io_resCSR     (_gprFile_io_resCSR),	// @[cpu/src/TOP.scala:31:26]
     .io_pc         (_pcReg_io_pc)
   );
   ID id (	// @[cpu/src/TOP.scala:30:26]
@@ -631,6 +840,8 @@ module TOP(	// @[<stdin>:858:10]
     .io_BundleControl_isLoad      (_id_io_BundleControl_isLoad),
     .io_BundleControl_isStore     (_id_io_BundleControl_isStore),
     .io_BundleControl_isUnsigned  (_id_io_BundleControl_isUnsigned),
+    .io_BundleControl_isContext   (_id_io_BundleControl_isContext),
+    .io_BundleControl_csrType     (_id_io_BundleControl_csrType),
     .io_BundleControl_lsuType     (_id_io_BundleControl_lsuType),
     .io_BundleControl_aluType     (_id_io_BundleControl_aluType),
     .io_bundleReg_rs1             (_id_io_bundleReg_rs1),
@@ -645,6 +856,9 @@ module TOP(	// @[<stdin>:858:10]
     .io_isJump        (_controller_io_bundleControlOut_isJump),	// @[cpu/src/TOP.scala:33:26]
     .io_isLoad        (_controller_io_bundleControlOut_isLoad),	// @[cpu/src/TOP.scala:33:26]
     .io_isUnsigned    (_controller_io_bundleControlOut_isUnsigned),	// @[cpu/src/TOP.scala:33:26]
+    .io_isContext     (_controller_io_bundleControlOut_isContext),	// @[cpu/src/TOP.scala:33:26]
+    .io_imm           (_id_io_imm),	// @[cpu/src/TOP.scala:30:26]
+    .io_csrType       (_controller_io_bundleControlOut_csrType),	// @[cpu/src/TOP.scala:33:26]
     .io_lsuType       (_controller_io_bundleControlOut_lsuType),	// @[cpu/src/TOP.scala:33:26]
     .io_pc            (_pcReg_io_pc),	// @[cpu/src/TOP.scala:29:26]
     .io_dataWrite     (_memRam_rdata),	// @[cpu/src/TOP.scala:36:26]
@@ -652,7 +866,9 @@ module TOP(	// @[<stdin>:858:10]
     .io_bundleReg_rs2 (_id_io_bundleReg_rs2),	// @[cpu/src/TOP.scala:30:26]
     .io_bundleReg_rd  (_id_io_bundleReg_rd),	// @[cpu/src/TOP.scala:30:26]
     .io_dataRead1     (_gprFile_io_dataRead1),
-    .io_dataRead2     (_gprFile_io_dataRead2)
+    .io_dataRead2     (_gprFile_io_dataRead2),
+    .io_csrData       (_gprFile_io_csrData),
+    .io_resCSR        (_gprFile_io_resCSR)
   );
   EX ex (	// @[cpu/src/TOP.scala:32:26]
     .io_bundleEXControl_isALUSrc   (_controller_io_bundleEXControl_isALUSrc),	// @[cpu/src/TOP.scala:33:26]
@@ -662,6 +878,7 @@ module TOP(	// @[<stdin>:858:10]
     .io_bundleEXControl_aluType    (_controller_io_bundleEXControl_aluType),	// @[cpu/src/TOP.scala:33:26]
     .io_dataRead1                  (_gprFile_io_dataRead1),	// @[cpu/src/TOP.scala:31:26]
     .io_dataRead2                  (_gprFile_io_dataRead2),	// @[cpu/src/TOP.scala:31:26]
+    .io_csrData                    (_gprFile_io_csrData),	// @[cpu/src/TOP.scala:31:26]
     .io_imm                        (_id_io_imm),	// @[cpu/src/TOP.scala:30:26]
     .io_pc                         (_pcReg_io_pc),	// @[cpu/src/TOP.scala:29:26]
     .io_resBranch                  (_ex_io_resBranch),
@@ -678,6 +895,8 @@ module TOP(	// @[<stdin>:858:10]
     .io_bundleControlIn_isLoad       (_id_io_BundleControl_isLoad),	// @[cpu/src/TOP.scala:30:26]
     .io_bundleControlIn_isStore      (_id_io_BundleControl_isStore),	// @[cpu/src/TOP.scala:30:26]
     .io_bundleControlIn_isUnsigned   (_id_io_BundleControl_isUnsigned),	// @[cpu/src/TOP.scala:30:26]
+    .io_bundleControlIn_isContext    (_id_io_BundleControl_isContext),	// @[cpu/src/TOP.scala:30:26]
+    .io_bundleControlIn_csrType      (_id_io_BundleControl_csrType),	// @[cpu/src/TOP.scala:30:26]
     .io_bundleControlIn_lsuType      (_id_io_BundleControl_lsuType),	// @[cpu/src/TOP.scala:30:26]
     .io_bundleControlIn_aluType      (_id_io_BundleControl_aluType),	// @[cpu/src/TOP.scala:30:26]
     .io_bundleEXControl_isALUSrc     (_controller_io_bundleEXControl_isALUSrc),
@@ -691,6 +910,8 @@ module TOP(	// @[<stdin>:858:10]
     .io_bundleControlOut_isLoad      (_controller_io_bundleControlOut_isLoad),
     .io_bundleControlOut_isStore     (_controller_io_bundleControlOut_isStore),
     .io_bundleControlOut_isUnsigned  (_controller_io_bundleControlOut_isUnsigned),
+    .io_bundleControlOut_isContext   (_controller_io_bundleControlOut_isContext),
+    .io_bundleControlOut_csrType     (_controller_io_bundleControlOut_csrType),
     .io_bundleControlOut_lsuType     (_controller_io_bundleControlOut_lsuType)
   );
   Trap trap (	// @[cpu/src/TOP.scala:34:26]
@@ -709,32 +930,34 @@ module TOP(	// @[<stdin>:858:10]
     .isLoad  (_controller_io_bundleControlOut_isLoad),	// @[cpu/src/TOP.scala:33:26]
     .isStore (_controller_io_bundleControlOut_isStore),	// @[cpu/src/TOP.scala:33:26]
     .addr    (_ex_io_res),	// @[cpu/src/TOP.scala:32:26]
-    .len     ({28'h0, _controller_io_bundleControlOut_lsuType}),	// @[cpu/src/TOP.scala:33:26, :49:17]
+    .len     ({28'h0, _controller_io_bundleControlOut_lsuType}),	// @[cpu/src/TOP.scala:33:26, :49:21]
     .wdata   (_ex_io_src2),	// @[cpu/src/TOP.scala:32:26]
     .pc      (_pcReg_io_pc),	// @[cpu/src/TOP.scala:29:26]
     .rdata   (_memRam_rdata),
     .inst    (_memRam_inst)
   );
-  assign io_inst = _memRam_inst;	// @[<stdin>:858:10, cpu/src/TOP.scala:36:26]
-  assign io_pc = _pcReg_io_pc;	// @[<stdin>:858:10, cpu/src/TOP.scala:29:26]
-  assign io_bundleControl_isALUSrc = _id_io_BundleControl_isALUSrc;	// @[<stdin>:858:10, cpu/src/TOP.scala:30:26]
-  assign io_bundleControl_isJump = _id_io_BundleControl_isJump;	// @[<stdin>:858:10, cpu/src/TOP.scala:30:26]
-  assign io_bundleControl_isBranch = _id_io_BundleControl_isBranch;	// @[<stdin>:858:10, cpu/src/TOP.scala:30:26]
-  assign io_bundleControl_isJAL = _id_io_BundleControl_isJAL;	// @[<stdin>:858:10, cpu/src/TOP.scala:30:26]
-  assign io_bundleControl_writeEnable = _id_io_BundleControl_writeEnable;	// @[<stdin>:858:10, cpu/src/TOP.scala:30:26]
-  assign io_bundleControl_isLoad = _id_io_BundleControl_isLoad;	// @[<stdin>:858:10, cpu/src/TOP.scala:30:26]
-  assign io_bundleControl_isStore = _id_io_BundleControl_isStore;	// @[<stdin>:858:10, cpu/src/TOP.scala:30:26]
-  assign io_bundleControl_isUnsigned = _id_io_BundleControl_isUnsigned;	// @[<stdin>:858:10, cpu/src/TOP.scala:30:26]
-  assign io_bundleControl_lsuType = _id_io_BundleControl_lsuType;	// @[<stdin>:858:10, cpu/src/TOP.scala:30:26]
-  assign io_bundleControl_aluType = _id_io_BundleControl_aluType;	// @[<stdin>:858:10, cpu/src/TOP.scala:30:26]
-  assign io_resEX = _ex_io_res;	// @[<stdin>:858:10, cpu/src/TOP.scala:32:26]
-  assign io_src2 = _ex_io_src2;	// @[<stdin>:858:10, cpu/src/TOP.scala:32:26]
-  assign io_rs1 = _id_io_bundleReg_rs1;	// @[<stdin>:858:10, cpu/src/TOP.scala:30:26]
-  assign io_rs2 = _id_io_bundleReg_rs2;	// @[<stdin>:858:10, cpu/src/TOP.scala:30:26]
-  assign io_rd = _id_io_bundleReg_rd;	// @[<stdin>:858:10, cpu/src/TOP.scala:30:26]
-  assign io_imm = _id_io_imm;	// @[<stdin>:858:10, cpu/src/TOP.scala:30:26]
-  assign io_resBranch = _ex_io_resBranch;	// @[<stdin>:858:10, cpu/src/TOP.scala:32:26]
-  assign io_writeEnable = _controller_io_bundleControlOut_writeEnable;	// @[<stdin>:858:10, cpu/src/TOP.scala:33:26]
+  assign io_inst = _memRam_inst;	// @[<stdin>:1071:10, cpu/src/TOP.scala:36:26]
+  assign io_pc = _pcReg_io_pc;	// @[<stdin>:1071:10, cpu/src/TOP.scala:29:26]
+  assign io_bundleControl_isALUSrc = _id_io_BundleControl_isALUSrc;	// @[<stdin>:1071:10, cpu/src/TOP.scala:30:26]
+  assign io_bundleControl_isJump = _id_io_BundleControl_isJump;	// @[<stdin>:1071:10, cpu/src/TOP.scala:30:26]
+  assign io_bundleControl_isBranch = _id_io_BundleControl_isBranch;	// @[<stdin>:1071:10, cpu/src/TOP.scala:30:26]
+  assign io_bundleControl_isJAL = _id_io_BundleControl_isJAL;	// @[<stdin>:1071:10, cpu/src/TOP.scala:30:26]
+  assign io_bundleControl_writeEnable = _id_io_BundleControl_writeEnable;	// @[<stdin>:1071:10, cpu/src/TOP.scala:30:26]
+  assign io_bundleControl_isLoad = _id_io_BundleControl_isLoad;	// @[<stdin>:1071:10, cpu/src/TOP.scala:30:26]
+  assign io_bundleControl_isStore = _id_io_BundleControl_isStore;	// @[<stdin>:1071:10, cpu/src/TOP.scala:30:26]
+  assign io_bundleControl_isUnsigned = _id_io_BundleControl_isUnsigned;	// @[<stdin>:1071:10, cpu/src/TOP.scala:30:26]
+  assign io_bundleControl_isContext = _id_io_BundleControl_isContext;	// @[<stdin>:1071:10, cpu/src/TOP.scala:30:26]
+  assign io_bundleControl_csrType = _id_io_BundleControl_csrType;	// @[<stdin>:1071:10, cpu/src/TOP.scala:30:26]
+  assign io_bundleControl_lsuType = _id_io_BundleControl_lsuType;	// @[<stdin>:1071:10, cpu/src/TOP.scala:30:26]
+  assign io_bundleControl_aluType = _id_io_BundleControl_aluType;	// @[<stdin>:1071:10, cpu/src/TOP.scala:30:26]
+  assign io_resEX = _ex_io_res;	// @[<stdin>:1071:10, cpu/src/TOP.scala:32:26]
+  assign io_src2 = _ex_io_src2;	// @[<stdin>:1071:10, cpu/src/TOP.scala:32:26]
+  assign io_rs1 = _id_io_bundleReg_rs1;	// @[<stdin>:1071:10, cpu/src/TOP.scala:30:26]
+  assign io_rs2 = _id_io_bundleReg_rs2;	// @[<stdin>:1071:10, cpu/src/TOP.scala:30:26]
+  assign io_rd = _id_io_bundleReg_rd;	// @[<stdin>:1071:10, cpu/src/TOP.scala:30:26]
+  assign io_imm = _id_io_imm;	// @[<stdin>:1071:10, cpu/src/TOP.scala:30:26]
+  assign io_resBranch = _ex_io_resBranch;	// @[<stdin>:1071:10, cpu/src/TOP.scala:32:26]
+  assign io_writeEnable = _controller_io_bundleControlOut_writeEnable;	// @[<stdin>:1071:10, cpu/src/TOP.scala:33:26]
 endmodule
 
 

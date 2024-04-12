@@ -63,7 +63,6 @@ static void single_cycle() {
 }
 
 static void exec_once(Decode *s, vaddr_t pc) {
-  
 
  
   // top.io_inst = Mr(pc,4);
@@ -86,7 +85,9 @@ static void exec_once(Decode *s, vaddr_t pc) {
   s->isa.inst.val = top.io_inst;
   if (is_ebreak) NPCTRAP(pc, 0);
   single_cycle();
+  cpu.pc = g_pc;
   s->dnpc = g_pc;
+
   
   
   // Log(WARN, "exce_once");
