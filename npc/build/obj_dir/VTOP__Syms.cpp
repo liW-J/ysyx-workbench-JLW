@@ -28,8 +28,9 @@ VTOP__Syms::VTOP__Syms(VerilatedContext* contextp, const char* namep, VTOP* mode
     TOP.__Vconfigure(true);
     TOP____024unit.__Vconfigure(true);
     // Setup scopes
+    __Vscope_TOP__dataSRAM.configure(this, name(), "dataSRAM", "dataSRAM", -12, VerilatedScope::SCOPE_OTHER);
     __Vscope_TOP__getPC.configure(this, name(), "getPC", "getPC", -12, VerilatedScope::SCOPE_OTHER);
-    __Vscope_TOP__memRam.configure(this, name(), "memRam", "memRam", -12, VerilatedScope::SCOPE_OTHER);
+    __Vscope_TOP__instSRAM.configure(this, name(), "instSRAM", "instSRAM", -12, VerilatedScope::SCOPE_OTHER);
     __Vscope_TOP__trap.configure(this, name(), "trap", "trap", -12, VerilatedScope::SCOPE_OTHER);
     // Setup export functions
     for (int __Vfinal = 0; __Vfinal < 2; ++__Vfinal) {

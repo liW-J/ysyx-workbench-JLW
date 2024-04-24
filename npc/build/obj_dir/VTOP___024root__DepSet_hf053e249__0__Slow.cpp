@@ -32,28 +32,28 @@ VL_ATTR_COLD void VTOP___024root___stl_sequent__TOP__0(VTOP___024root* vlSelf) {
     VTOP__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    VTOP___024root___stl_sequent__TOP__0\n"); );
     // Body
-    vlSelf->io_inst = vlSelf->TOP__DOT___memRam_inst;
+    vlSelf->io_inst = vlSelf->TOP__DOT___instSRAM_inst;
     vlSelf->io_pc = vlSelf->TOP__DOT__pcReg__DOT__pcReg;
-    vlSelf->io_rd = (0x1fU & (vlSelf->TOP__DOT___memRam_inst 
+    vlSelf->io_rd = (0x1fU & (vlSelf->TOP__DOT___instSRAM_inst 
                               >> 7U));
-    vlSelf->io_rs1 = (0x1fU & (vlSelf->TOP__DOT___memRam_inst 
+    vlSelf->io_rs1 = (0x1fU & (vlSelf->TOP__DOT___instSRAM_inst 
                                >> 0xfU));
-    vlSelf->io_rs2 = (0x1fU & (vlSelf->TOP__DOT___memRam_inst 
+    vlSelf->io_rs2 = (0x1fU & (vlSelf->TOP__DOT___instSRAM_inst 
                                >> 0x14U));
     vlSelf->TOP__DOT__id__DOT____VdfgTmp_h87db9210__0 
-        = ((0x17U == (0x7fU & vlSelf->TOP__DOT___memRam_inst)) 
-           | (0x6fU == (0x7fU & vlSelf->TOP__DOT___memRam_inst)));
+        = ((0x17U == (0x7fU & vlSelf->TOP__DOT___instSRAM_inst)) 
+           | (0x6fU == (0x7fU & vlSelf->TOP__DOT___instSRAM_inst)));
     vlSelf->TOP__DOT__id__DOT___GEN_8 = ((0x37U == 
-                                          (0x7fU & vlSelf->TOP__DOT___memRam_inst)) 
+                                          (0x7fU & vlSelf->TOP__DOT___instSRAM_inst)) 
                                          | (0x17U == 
                                             (0x7fU 
-                                             & vlSelf->TOP__DOT___memRam_inst)));
-    vlSelf->TOP__DOT__id__DOT___GEN = ((0x380U & (vlSelf->TOP__DOT___memRam_inst 
+                                             & vlSelf->TOP__DOT___instSRAM_inst)));
+    vlSelf->TOP__DOT__id__DOT___GEN = ((0x380U & (vlSelf->TOP__DOT___instSRAM_inst 
                                                   >> 5U)) 
-                                       | (0x7fU & vlSelf->TOP__DOT___memRam_inst));
+                                       | (0x7fU & vlSelf->TOP__DOT___instSRAM_inst));
     VTOP___024unit____Vdpiimwrap_get_pc_TOP____024unit(
                                                        (&(vlSymsp->__Vscope_TOP__getPC)), 
-                                                       "/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 0x3dfU, vlSelf->io_pc);
+                                                       "/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 0x3e5U, vlSelf->io_pc);
     vlSelf->io_src1 = vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory
         [vlSelf->io_rs1];
     vlSelf->io_src2 = vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory
@@ -76,7 +76,7 @@ VL_ATTR_COLD void VTOP___024root___stl_sequent__TOP__0(VTOP___024root* vlSelf) {
                                          | (0x283U 
                                             == (IData)(vlSelf->TOP__DOT__id__DOT___GEN)));
     vlSelf->TOP__DOT__id__DOT____VdfgTmp_h5d4f4c30__0 
-        = ((0x6fU == (0x7fU & vlSelf->TOP__DOT___memRam_inst)) 
+        = ((0x6fU == (0x7fU & vlSelf->TOP__DOT___instSRAM_inst)) 
            | (0x67U == (IData)(vlSelf->TOP__DOT__id__DOT___GEN)));
     vlSelf->TOP__DOT__id__DOT___GEN_6 = ((0x363U == (IData)(vlSelf->TOP__DOT__id__DOT___GEN)) 
                                          | (0x3e3U 
@@ -87,11 +87,11 @@ VL_ATTR_COLD void VTOP___024root___stl_sequent__TOP__0(VTOP___024root* vlSelf) {
               | ((0x263U == (IData)(vlSelf->TOP__DOT__id__DOT___GEN)) 
                  | (0x2e3U == (IData)(vlSelf->TOP__DOT__id__DOT___GEN)))));
     vlSelf->TOP__DOT__id__DOT___GEN_0 = ((0x1fc00U 
-                                          & (vlSelf->TOP__DOT___memRam_inst 
+                                          & (vlSelf->TOP__DOT___instSRAM_inst 
                                              >> 0xfU)) 
                                          | (IData)(vlSelf->TOP__DOT__id__DOT___GEN));
     vlSelf->TOP__DOT__id__DOT___GEN_11 = ((0x37U == 
-                                           (0x7fU & vlSelf->TOP__DOT___memRam_inst)) 
+                                           (0x7fU & vlSelf->TOP__DOT___instSRAM_inst)) 
                                           | (IData)(vlSelf->TOP__DOT__id__DOT___GEN_10));
     vlSelf->TOP__DOT__id__DOT___GEN_5 = ((IData)(vlSelf->TOP__DOT__id__DOT____VdfgTmp_h98976784__0) 
                                          | (IData)(vlSelf->TOP__DOT__id__DOT___GEN_4));
@@ -126,7 +126,7 @@ VL_ATTR_COLD void VTOP___024root___stl_sequent__TOP__0(VTOP___024root* vlSelf) {
                                                                  | (0x3b3U 
                                                                     == vlSelf->TOP__DOT__id__DOT___GEN_0))))))))));
     vlSelf->io_bundleControl_aluType = ((0x37U == (0x7fU 
-                                                   & vlSelf->TOP__DOT___memRam_inst))
+                                                   & vlSelf->TOP__DOT___instSRAM_inst))
                                          ? 0U : ((IData)(vlSelf->TOP__DOT__id__DOT___GEN_10)
                                                   ? 1U
                                                   : 
@@ -234,11 +234,11 @@ VL_ATTR_COLD void VTOP___024root___stl_sequent__TOP__0(VTOP___024root* vlSelf) {
                                                                          ? 3U
                                                                          : 
                                                                         ((0x100073U 
-                                                                          == vlSelf->TOP__DOT___memRam_inst)
+                                                                          == vlSelf->TOP__DOT___instSRAM_inst)
                                                                           ? 1U
                                                                           : 
                                                                          ((0x73U 
-                                                                           == vlSelf->TOP__DOT___memRam_inst)
+                                                                           == vlSelf->TOP__DOT___instSRAM_inst)
                                                                            ? 0xfU
                                                                            : 
                                                                           ((0x173U 
@@ -254,7 +254,7 @@ VL_ATTR_COLD void VTOP___024root___stl_sequent__TOP__0(VTOP___024root* vlSelf) {
     vlSelf->io_bundleControl_isBranch = ((~ (IData)(vlSelf->TOP__DOT__id__DOT___GEN_11)) 
                                          & (IData)(vlSelf->TOP__DOT__id__DOT____VdfgTmp_h5eaebdb1__0));
     vlSelf->io_bundleControl_isJAL = ((0x37U != (0x7fU 
-                                                 & vlSelf->TOP__DOT___memRam_inst)) 
+                                                 & vlSelf->TOP__DOT___instSRAM_inst)) 
                                       & ((IData)(vlSelf->TOP__DOT__id__DOT____VdfgTmp_h87db9210__0) 
                                          | ((0x67U 
                                              != (IData)(vlSelf->TOP__DOT__id__DOT___GEN)) 
@@ -288,7 +288,7 @@ VL_ATTR_COLD void VTOP___024root___stl_sequent__TOP__0(VTOP___024root* vlSelf) {
                                               ? 0U : 
                                              ((0x6fU 
                                                == (0x7fU 
-                                                   & vlSelf->TOP__DOT___memRam_inst))
+                                                   & vlSelf->TOP__DOT___instSRAM_inst))
                                                ? 0U
                                                : ((0x67U 
                                                    == (IData)(vlSelf->TOP__DOT__id__DOT___GEN))
@@ -328,9 +328,9 @@ VL_ATTR_COLD void VTOP___024root___stl_sequent__TOP__0(VTOP___024root* vlSelf) {
                                                         : 
                                                        ((1U 
                                                          & (((0x100073U 
-                                                              == vlSelf->TOP__DOT___memRam_inst) 
+                                                              == vlSelf->TOP__DOT___instSRAM_inst) 
                                                              | (0x73U 
-                                                                == vlSelf->TOP__DOT___memRam_inst)) 
+                                                                == vlSelf->TOP__DOT___instSRAM_inst)) 
                                                             | (~ (IData)(vlSelf->TOP__DOT__id__DOT___GEN_1))))
                                                          ? 4U
                                                          : 0U)))))))))
@@ -340,7 +340,7 @@ VL_ATTR_COLD void VTOP___024root___stl_sequent__TOP__0(VTOP___024root* vlSelf) {
                                                  ((0x6fU 
                                                    == 
                                                    (0x7fU 
-                                                    & vlSelf->TOP__DOT___memRam_inst))
+                                                    & vlSelf->TOP__DOT___instSRAM_inst))
                                                    ? 2U
                                                    : 
                                                   ((0x67U 
@@ -381,9 +381,9 @@ VL_ATTR_COLD void VTOP___024root___stl_sequent__TOP__0(VTOP___024root* vlSelf) {
                                                          : 
                                                         ((1U 
                                                           & (((0x100073U 
-                                                               == vlSelf->TOP__DOT___memRam_inst) 
+                                                               == vlSelf->TOP__DOT___instSRAM_inst) 
                                                               | (0x73U 
-                                                                 == vlSelf->TOP__DOT___memRam_inst)) 
+                                                                 == vlSelf->TOP__DOT___instSRAM_inst)) 
                                                              | (~ (IData)(vlSelf->TOP__DOT__id__DOT___GEN_1))))
                                                           ? 2U
                                                           : 0U)))))))))
@@ -395,7 +395,7 @@ VL_ATTR_COLD void VTOP___024root___stl_sequent__TOP__0(VTOP___024root* vlSelf) {
                                                   ((0x6fU 
                                                     == 
                                                     (0x7fU 
-                                                     & vlSelf->TOP__DOT___memRam_inst))
+                                                     & vlSelf->TOP__DOT___instSRAM_inst))
                                                     ? 1U
                                                     : 
                                                    ((0x67U 
@@ -407,17 +407,17 @@ VL_ATTR_COLD void VTOP___024root___stl_sequent__TOP__0(VTOP___024root* vlSelf) {
                                                       : 0U))))
                                                   ? 
                                                  (((- (IData)(
-                                                              (vlSelf->TOP__DOT___memRam_inst 
+                                                              (vlSelf->TOP__DOT___instSRAM_inst 
                                                                >> 0x1fU))) 
                                                    << 0xcU) 
                                                   | ((0x800U 
-                                                      & (vlSelf->TOP__DOT___memRam_inst 
+                                                      & (vlSelf->TOP__DOT___instSRAM_inst 
                                                          << 4U)) 
                                                      | ((0x7e0U 
-                                                         & (vlSelf->TOP__DOT___memRam_inst 
+                                                         & (vlSelf->TOP__DOT___instSRAM_inst 
                                                             >> 0x14U)) 
                                                         | (0x1eU 
-                                                           & (vlSelf->TOP__DOT___memRam_inst 
+                                                           & (vlSelf->TOP__DOT___instSRAM_inst 
                                                               >> 7U)))))
                                                   : 0U))
                                              : (((IData)(vlSelf->TOP__DOT__id__DOT___GEN_8)
@@ -426,7 +426,7 @@ VL_ATTR_COLD void VTOP___024root___stl_sequent__TOP__0(VTOP___024root* vlSelf) {
                                                  ((0x6fU 
                                                    == 
                                                    (0x7fU 
-                                                    & vlSelf->TOP__DOT___memRam_inst))
+                                                    & vlSelf->TOP__DOT___instSRAM_inst))
                                                    ? 2U
                                                    : 
                                                   ((0x67U 
@@ -467,9 +467,9 @@ VL_ATTR_COLD void VTOP___024root___stl_sequent__TOP__0(VTOP___024root* vlSelf) {
                                                          : 
                                                         ((1U 
                                                           & (((0x100073U 
-                                                               == vlSelf->TOP__DOT___memRam_inst) 
+                                                               == vlSelf->TOP__DOT___instSRAM_inst) 
                                                               | (0x73U 
-                                                                 == vlSelf->TOP__DOT___memRam_inst)) 
+                                                                 == vlSelf->TOP__DOT___instSRAM_inst)) 
                                                              | (~ (IData)(vlSelf->TOP__DOT__id__DOT___GEN_1))))
                                                           ? 2U
                                                           : 0U)))))))))
@@ -480,7 +480,7 @@ VL_ATTR_COLD void VTOP___024root___stl_sequent__TOP__0(VTOP___024root* vlSelf) {
                                                   ((0x6fU 
                                                     == 
                                                     (0x7fU 
-                                                     & vlSelf->TOP__DOT___memRam_inst))
+                                                     & vlSelf->TOP__DOT___instSRAM_inst))
                                                     ? 1U
                                                     : 
                                                    ((0x67U 
@@ -492,27 +492,27 @@ VL_ATTR_COLD void VTOP___024root___stl_sequent__TOP__0(VTOP___024root* vlSelf) {
                                                       : 0U))))
                                                   ? 
                                                  (((- (IData)(
-                                                              (vlSelf->TOP__DOT___memRam_inst 
+                                                              (vlSelf->TOP__DOT___instSRAM_inst 
                                                                >> 0x1fU))) 
                                                    << 0x14U) 
                                                   | ((0xff000U 
-                                                      & vlSelf->TOP__DOT___memRam_inst) 
+                                                      & vlSelf->TOP__DOT___instSRAM_inst) 
                                                      | ((0x800U 
-                                                         & (vlSelf->TOP__DOT___memRam_inst 
+                                                         & (vlSelf->TOP__DOT___instSRAM_inst 
                                                             >> 9U)) 
                                                         | (0x7feU 
-                                                           & (vlSelf->TOP__DOT___memRam_inst 
+                                                           & (vlSelf->TOP__DOT___instSRAM_inst 
                                                               >> 0x14U)))))
                                                   : 
                                                  (((- (IData)(
-                                                              (vlSelf->TOP__DOT___memRam_inst 
+                                                              (vlSelf->TOP__DOT___instSRAM_inst 
                                                                >> 0x1fU))) 
                                                    << 0xcU) 
                                                   | ((0xfe0U 
-                                                      & (vlSelf->TOP__DOT___memRam_inst 
+                                                      & (vlSelf->TOP__DOT___instSRAM_inst 
                                                          >> 0x14U)) 
                                                      | (0x1fU 
-                                                        & (vlSelf->TOP__DOT___memRam_inst 
+                                                        & (vlSelf->TOP__DOT___instSRAM_inst 
                                                            >> 7U)))))
                                                  : 
                                                 (((IData)(vlSelf->TOP__DOT__id__DOT___GEN_8)
@@ -521,7 +521,7 @@ VL_ATTR_COLD void VTOP___024root___stl_sequent__TOP__0(VTOP___024root* vlSelf) {
                                                   ((0x6fU 
                                                     == 
                                                     (0x7fU 
-                                                     & vlSelf->TOP__DOT___memRam_inst))
+                                                     & vlSelf->TOP__DOT___instSRAM_inst))
                                                     ? 1U
                                                     : 
                                                    ((0x67U 
@@ -533,13 +533,13 @@ VL_ATTR_COLD void VTOP___024root___stl_sequent__TOP__0(VTOP___024root* vlSelf) {
                                                       : 0U))))
                                                   ? 
                                                  (0xfffff000U 
-                                                  & vlSelf->TOP__DOT___memRam_inst)
+                                                  & vlSelf->TOP__DOT___instSRAM_inst)
                                                   : 
                                                  (((- (IData)(
-                                                              (vlSelf->TOP__DOT___memRam_inst 
+                                                              (vlSelf->TOP__DOT___instSRAM_inst 
                                                                >> 0x1fU))) 
                                                    << 0xcU) 
-                                                  | (vlSelf->TOP__DOT___memRam_inst 
+                                                  | (vlSelf->TOP__DOT___instSRAM_inst 
                                                      >> 0x14U)))));
     vlSelf->io_bundleControl_isUnsigned = ((~ (IData)(vlSelf->TOP__DOT__id__DOT____VdfgTmp_hcd9142c5__0)) 
                                            & ((IData)(vlSelf->TOP__DOT__id__DOT___GEN_6) 
@@ -693,35 +693,35 @@ VL_ATTR_COLD void VTOP___024root___stl_sequent__TOP__0(VTOP___024root* vlSelf) {
                                                    ? 
                                                   (((- (IData)(
                                                                (1U 
-                                                                & (vlSelf->TOP__DOT___memRam_rdata 
+                                                                & (vlSelf->TOP__DOT___dataSRAM_res 
                                                                    >> 7U)))) 
                                                     << 8U) 
                                                    | (0xffU 
-                                                      & vlSelf->TOP__DOT___memRam_rdata))
+                                                      & vlSelf->TOP__DOT___dataSRAM_res))
                                                    : 
                                                   ((2U 
                                                     == (IData)(vlSelf->io_bundleControl_lsuType))
                                                     ? 
                                                    (((- (IData)(
                                                                 (1U 
-                                                                 & (vlSelf->TOP__DOT___memRam_rdata 
+                                                                 & (vlSelf->TOP__DOT___dataSRAM_res 
                                                                     >> 0xfU)))) 
                                                      << 0x10U) 
                                                     | (0xffffU 
-                                                       & vlSelf->TOP__DOT___memRam_rdata))
+                                                       & vlSelf->TOP__DOT___dataSRAM_res))
                                                     : 
                                                    ((4U 
                                                      == (IData)(vlSelf->io_bundleControl_lsuType))
-                                                     ? vlSelf->TOP__DOT___memRam_rdata
+                                                     ? vlSelf->TOP__DOT___dataSRAM_res
                                                      : 0U)))
-                                                  : vlSelf->TOP__DOT___memRam_rdata);
+                                                  : vlSelf->TOP__DOT___dataSRAM_res);
     vlSelf->TOP__DOT__pcReg__DOT___GEN = ((IData)(vlSelf->io_bundleControl_isJump) 
                                           | ((IData)(vlSelf->io_bundleControl_isBranch) 
                                              & (IData)(vlSelf->io_resBranch)));
     vlSelf->TOP__DOT___id_io_isEbreak = ((~ ((IData)(vlSelf->io_bundleControl_isALUSrc) 
                                              | (IData)(vlSelf->TOP__DOT__id__DOT___GEN_2))) 
                                          & (0x100073U 
-                                            == vlSelf->TOP__DOT___memRam_inst));
+                                            == vlSelf->TOP__DOT___instSRAM_inst));
     vlSelf->TOP__DOT__ex__DOT__operand2 = ((IData)(vlSelf->io_bundleControl_isALUSrc)
                                             ? vlSelf->TOP__DOT__id__DOT__casez_tmp
                                             : vlSelf->io_src2);
@@ -747,19 +747,19 @@ VL_ATTR_COLD void VTOP___024root___stl_sequent__TOP__0(VTOP___024root* vlSelf) {
                                                                      | ((0x3b3U 
                                                                          == vlSelf->TOP__DOT__id__DOT___GEN_0) 
                                                                         | (0x100073U 
-                                                                           == vlSelf->TOP__DOT___memRam_inst))))))))))));
+                                                                           == vlSelf->TOP__DOT___instSRAM_inst))))))))))));
     vlSelf->TOP__DOT__ex__DOT___GEN = (vlSelf->TOP__DOT__ex__DOT__operand1 
                                        + vlSelf->TOP__DOT__ex__DOT__operand2);
     vlSelf->io_bundleControl_isContext = ((~ (IData)(vlSelf->TOP__DOT__id__DOT___GEN_13)) 
                                           & ((0x73U 
-                                              == vlSelf->TOP__DOT___memRam_inst) 
+                                              == vlSelf->TOP__DOT___instSRAM_inst) 
                                              | ((IData)(vlSelf->TOP__DOT__id__DOT___GEN_1) 
                                                 | (0x30200073U 
-                                                   == vlSelf->TOP__DOT___memRam_inst))));
+                                                   == vlSelf->TOP__DOT___instSRAM_inst))));
     vlSelf->io_bundleControl_csrType = ((IData)(vlSelf->TOP__DOT__id__DOT___GEN_13)
                                          ? 0xfU : (
                                                    (0x73U 
-                                                    == vlSelf->TOP__DOT___memRam_inst)
+                                                    == vlSelf->TOP__DOT___instSRAM_inst)
                                                     ? 2U
                                                     : 
                                                    ((0x173U 
@@ -771,7 +771,7 @@ VL_ATTR_COLD void VTOP___024root___stl_sequent__TOP__0(VTOP___024root* vlSelf) {
                                                       ? 1U
                                                       : 
                                                      ((0x30200073U 
-                                                       == vlSelf->TOP__DOT___memRam_inst)
+                                                       == vlSelf->TOP__DOT___instSRAM_inst)
                                                        ? 3U
                                                        : 0xfU)))));
     vlSelf->TOP__DOT__ex__DOT__casez_tmp = ((8U & (IData)(vlSelf->io_bundleControl_aluType))

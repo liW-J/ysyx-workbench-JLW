@@ -22,8 +22,7 @@ VL_ATTR_COLD void VTOP___024root___eval_initial(VTOP___024root* vlSelf) {
     vlSelf->__Vtrigrprev__TOP__clock = vlSelf->clock;
     vlSelf->__Vtrigrprev__TOP__TOP__DOT___id_io_isEbreak 
         = vlSelf->TOP__DOT___id_io_isEbreak;
-    vlSelf->__Vtrigrprev__TOP__TOP__DOT___memRam_inst 
-        = vlSelf->TOP__DOT___memRam_inst;
+    vlSelf->__Vtrigrprev__TOP__io_resEX = vlSelf->io_resEX;
 }
 
 VL_ATTR_COLD void VTOP___024root___eval_final(VTOP___024root* vlSelf) {
@@ -56,7 +55,7 @@ VL_ATTR_COLD void VTOP___024root___eval_settle(VTOP___024root* vlSelf) {
 #ifdef VL_DEBUG
                 VTOP___024root___dump_triggers__stl(vlSelf);
 #endif
-                VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 753, "", "Settle region did not converge.");
+                VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 755, "", "Settle region did not converge.");
             }
             vlSelf->__VstlIterCount = ((IData)(1U) 
                                        + vlSelf->__VstlIterCount);
@@ -115,7 +114,7 @@ VL_ATTR_COLD void VTOP___024root___dump_triggers__act(VTOP___024root* vlSelf) {
         VL_DBG_MSGF("         'act' region trigger index 2 is active: @([changed] TOP._id_io_isEbreak)\n");
     }
     if (vlSelf->__VactTriggered.at(3U)) {
-        VL_DBG_MSGF("         'act' region trigger index 3 is active: @([changed] TOP._memRam_inst)\n");
+        VL_DBG_MSGF("         'act' region trigger index 3 is active: @([changed] io_resEX)\n");
     }
 }
 #endif  // VL_DEBUG
@@ -139,7 +138,7 @@ VL_ATTR_COLD void VTOP___024root___dump_triggers__nba(VTOP___024root* vlSelf) {
         VL_DBG_MSGF("         'nba' region trigger index 2 is active: @([changed] TOP._id_io_isEbreak)\n");
     }
     if (vlSelf->__VnbaTriggered.at(3U)) {
-        VL_DBG_MSGF("         'nba' region trigger index 3 is active: @([changed] TOP._memRam_inst)\n");
+        VL_DBG_MSGF("         'nba' region trigger index 3 is active: @([changed] io_resEX)\n");
     }
 }
 #endif  // VL_DEBUG
@@ -174,8 +173,8 @@ VL_ATTR_COLD void VTOP___024root___ctor_var_reset(VTOP___024root* vlSelf) {
     vlSelf->io_imm = 0;
     vlSelf->io_resBranch = 0;
     vlSelf->io_writeEnable = 0;
-    vlSelf->TOP__DOT___memRam_rdata = 0;
-    vlSelf->TOP__DOT___memRam_inst = 0;
+    vlSelf->TOP__DOT___instSRAM_inst = 0;
+    vlSelf->TOP__DOT___dataSRAM_res = 0;
     vlSelf->TOP__DOT___id_io_isEbreak = 0;
     vlSelf->TOP__DOT__pcReg__DOT__pcReg = 0;
     vlSelf->TOP__DOT__pcReg__DOT___GEN = 0;
@@ -220,12 +219,12 @@ VL_ATTR_COLD void VTOP___024root___ctor_var_reset(VTOP___024root* vlSelf) {
     vlSelf->TOP__DOT__ex__DOT__operand1 = 0;
     vlSelf->TOP__DOT__ex__DOT__operand2 = 0;
     vlSelf->TOP__DOT__ex__DOT___GEN = 0;
-    vlSelf->TOP__DOT__memRam__DOT__load_flag = 0;
-    vlSelf->TOP__DOT__memRam__DOT__store_flag = 0;
+    vlSelf->TOP__DOT__dataSRAM__DOT__load_flag = 0;
+    vlSelf->TOP__DOT__dataSRAM__DOT__store_flag = 0;
     vlSelf->__Vtrigrprev__TOP__io_pc = 0;
     vlSelf->__Vtrigrprev__TOP__clock = 0;
     vlSelf->__Vtrigrprev__TOP__TOP__DOT___id_io_isEbreak = 0;
-    vlSelf->__Vtrigrprev__TOP__TOP__DOT___memRam_inst = 0;
+    vlSelf->__Vtrigrprev__TOP__io_resEX = 0;
     vlSelf->__VactDidInit = 0;
     for (int __Vi0 = 0; __Vi0 < 4; ++__Vi0) {
         vlSelf->__Vm_traceActivity[__Vi0] = 0;

@@ -5,7 +5,7 @@ import chisel3.util._
 import config.Configs._
 import config.ExeTypes._
  
-class MemRam extends BlackBox with HasBlackBoxResource {
+class DataSRAM extends BlackBox with HasBlackBoxResource {
   val io = IO(new Bundle {
     val clock = Input(Clock())
     val reset = Input(Bool())
@@ -14,10 +14,8 @@ class MemRam extends BlackBox with HasBlackBoxResource {
     val addr = Input(UInt(ADDR_WIDTH.W))
     val len = Input(UInt(DATA_WIDTH.W))
     val wdata = Input(UInt(DATA_WIDTH.W))
-    val pc = Input(UInt(ADDR_WIDTH.W))
-    val rdata = Output(UInt(DATA_WIDTH.W))
-    val inst = Output(UInt(INST_WIDTH.W))
+    val res = Output(UInt(DATA_WIDTH.W))
   })
 
-  addResource("/memRam.v")
+  addResource("/dataSRAM.v")
 }

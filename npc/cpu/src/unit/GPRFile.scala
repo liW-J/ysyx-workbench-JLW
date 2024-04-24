@@ -26,7 +26,6 @@ class GPRFileIO extends Bundle {
   val dataRead2   = Output(UInt(DATA_WIDTH.W))
   val csrData     = Output(UInt(DATA_WIDTH.W))
   val resCSR      = Output(UInt(ADDR_WIDTH.W))
-
 }
 
 class GPRFile extends Module {

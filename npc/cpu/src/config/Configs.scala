@@ -25,5 +25,5 @@ object Configs {
 
   val DATA_BYTE_WIDTH     = DATA_WIDTH / 8 // 数据位宽按字节算
   val DATA_BYTE_WIDTH_LOG = ceil(log(DATA_BYTE_WIDTH) / log(2)).toInt // 数据地址对齐的偏移量
-  val MEM_DATA_SIZE       = 1024 // 数据内存大小
+  val MEM_DATA_SIZE       = 2048 // 数据内存大小
 }

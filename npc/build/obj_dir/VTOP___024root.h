@@ -66,8 +66,8 @@ class VTOP___024root final : public VerilatedModule {
         CData/*0:0*/ TOP__DOT__gprFile__DOT___GEN_6;
         CData/*0:0*/ TOP__DOT__gprFile__DOT____Vcellinp__csrs_ext__W1_en;
         CData/*0:0*/ TOP__DOT__gprFile__DOT____Vcellinp__csrs_ext__W0_en;
-        CData/*0:0*/ TOP__DOT__memRam__DOT__load_flag;
-        CData/*0:0*/ TOP__DOT__memRam__DOT__store_flag;
+        CData/*0:0*/ TOP__DOT__dataSRAM__DOT__load_flag;
+        CData/*0:0*/ TOP__DOT__dataSRAM__DOT__store_flag;
         CData/*0:0*/ __Vtrigrprev__TOP__clock;
         CData/*0:0*/ __Vtrigrprev__TOP__TOP__DOT___id_io_isEbreak;
         CData/*0:0*/ __VactDidInit;
@@ -79,8 +79,8 @@ class VTOP___024root final : public VerilatedModule {
         VL_OUT(io_src1,31,0);
         VL_OUT(io_src2,31,0);
         VL_OUT(io_imm,31,0);
-        IData/*31:0*/ TOP__DOT___memRam_rdata;
-        IData/*31:0*/ TOP__DOT___memRam_inst;
+        IData/*31:0*/ TOP__DOT___instSRAM_inst;
+        IData/*31:0*/ TOP__DOT___dataSRAM_res;
         IData/*31:0*/ TOP__DOT__pcReg__DOT__pcReg;
         IData/*31:0*/ TOP__DOT__id__DOT__casez_tmp;
     };
@@ -94,7 +94,7 @@ class VTOP___024root final : public VerilatedModule {
         IData/*31:0*/ TOP__DOT__ex__DOT___GEN;
         IData/*31:0*/ __VstlIterCount;
         IData/*31:0*/ __Vtrigrprev__TOP__io_pc;
-        IData/*31:0*/ __Vtrigrprev__TOP__TOP__DOT___memRam_inst;
+        IData/*31:0*/ __Vtrigrprev__TOP__io_resEX;
         IData/*31:0*/ __VactIterCount;
         VlUnpacked<IData/*31:0*/, 32> TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory;
         VlUnpacked<IData/*31:0*/, 1024> TOP__DOT__gprFile__DOT__csrs_ext__DOT__Memory;

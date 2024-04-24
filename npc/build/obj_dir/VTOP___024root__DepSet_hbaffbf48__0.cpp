@@ -25,19 +25,8 @@ VL_INLINE_OPT void VTOP___024root___nba_sequent__TOP__3(VTOP___024root* vlSelf) 
     VTOP__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    VTOP___024root___nba_sequent__TOP__3\n"); );
     // Body
-    vlSelf->io_src1 = vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory
-        [vlSelf->io_rs1];
-    vlSelf->TOP__DOT__gprFile__DOT___csrs_ext_R0_data 
-        = vlSelf->TOP__DOT__gprFile__DOT__csrs_ext__DOT__Memory
-        [(0x3ffU & vlSelf->TOP__DOT__id__DOT__casez_tmp)];
     vlSelf->io_src2 = vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory
         [vlSelf->io_rs2];
-    vlSelf->TOP__DOT__ex__DOT__operand1 = ((IData)(vlSelf->io_bundleControl_isJAL)
-                                            ? vlSelf->TOP__DOT__pcReg__DOT__pcReg
-                                            : vlSelf->io_src1);
-    vlSelf->TOP__DOT__ex__DOT__operand2 = ((IData)(vlSelf->io_bundleControl_isALUSrc)
-                                            ? vlSelf->TOP__DOT__id__DOT__casez_tmp
-                                            : vlSelf->io_src2);
     vlSelf->io_resBranch = ((~ ((0U == (IData)(vlSelf->io_bundleControl_aluType)) 
                                 | ((1U == (IData)(vlSelf->io_bundleControl_aluType)) 
                                    | ((2U == (IData)(vlSelf->io_bundleControl_aluType)) 
@@ -61,11 +50,14 @@ VL_INLINE_OPT void VTOP___024root___nba_sequent__TOP__3(VTOP___024root* vlSelf) 
                                                ? (vlSelf->io_src1 
                                                   >= vlSelf->io_src2)
                                                : VL_GTES_III(32, vlSelf->io_src1, vlSelf->io_src2)))))));
-    vlSelf->TOP__DOT__ex__DOT___GEN = (vlSelf->TOP__DOT__ex__DOT__operand1 
-                                       + vlSelf->TOP__DOT__ex__DOT__operand2);
+    vlSelf->TOP__DOT__ex__DOT__operand2 = ((IData)(vlSelf->io_bundleControl_isALUSrc)
+                                            ? vlSelf->TOP__DOT__id__DOT__casez_tmp
+                                            : vlSelf->io_src2);
     vlSelf->TOP__DOT__pcReg__DOT___GEN = ((IData)(vlSelf->io_bundleControl_isJump) 
                                           | ((IData)(vlSelf->io_bundleControl_isBranch) 
                                              & (IData)(vlSelf->io_resBranch)));
+    vlSelf->TOP__DOT__ex__DOT___GEN = (vlSelf->TOP__DOT__ex__DOT__operand1 
+                                       + vlSelf->TOP__DOT__ex__DOT__operand2);
     vlSelf->TOP__DOT__ex__DOT__casez_tmp = ((8U & (IData)(vlSelf->io_bundleControl_aluType))
                                              ? ((4U 
                                                  & (IData)(vlSelf->io_bundleControl_aluType))
@@ -169,28 +161,28 @@ VL_INLINE_OPT void VTOP___024root___nba_sequent__TOP__4(VTOP___024root* vlSelf) 
                                                    ? 
                                                   (((- (IData)(
                                                                (1U 
-                                                                & (vlSelf->TOP__DOT___memRam_rdata 
+                                                                & (vlSelf->TOP__DOT___dataSRAM_res 
                                                                    >> 7U)))) 
                                                     << 8U) 
                                                    | (0xffU 
-                                                      & vlSelf->TOP__DOT___memRam_rdata))
+                                                      & vlSelf->TOP__DOT___dataSRAM_res))
                                                    : 
                                                   ((2U 
                                                     == (IData)(vlSelf->io_bundleControl_lsuType))
                                                     ? 
                                                    (((- (IData)(
                                                                 (1U 
-                                                                 & (vlSelf->TOP__DOT___memRam_rdata 
+                                                                 & (vlSelf->TOP__DOT___dataSRAM_res 
                                                                     >> 0xfU)))) 
                                                      << 0x10U) 
                                                     | (0xffffU 
-                                                       & vlSelf->TOP__DOT___memRam_rdata))
+                                                       & vlSelf->TOP__DOT___dataSRAM_res))
                                                     : 
                                                    ((4U 
                                                      == (IData)(vlSelf->io_bundleControl_lsuType))
-                                                     ? vlSelf->TOP__DOT___memRam_rdata
+                                                     ? vlSelf->TOP__DOT___dataSRAM_res
                                                      : 0U)))
-                                                  : vlSelf->TOP__DOT___memRam_rdata);
+                                                  : vlSelf->TOP__DOT___dataSRAM_res);
 }
 
 void VTOP___024root___nba_sequent__TOP__0(VTOP___024root* vlSelf);
@@ -254,7 +246,7 @@ void VTOP___024root___eval(VTOP___024root* vlSelf) {
 #ifdef VL_DEBUG
                     VTOP___024root___dump_triggers__act(vlSelf);
 #endif
-                    VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 753, "", "Active region did not converge.");
+                    VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 755, "", "Active region did not converge.");
                 }
                 vlSelf->__VactIterCount = ((IData)(1U) 
                                            + vlSelf->__VactIterCount);
@@ -269,7 +261,7 @@ void VTOP___024root___eval(VTOP___024root* vlSelf) {
 #ifdef VL_DEBUG
                 VTOP___024root___dump_triggers__nba(vlSelf);
 #endif
-                VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 753, "", "NBA region did not converge.");
+                VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 755, "", "NBA region did not converge.");
             }
             __VnbaIterCount = ((IData)(1U) + __VnbaIterCount);
             VTOP___024root___eval_nba(vlSelf);

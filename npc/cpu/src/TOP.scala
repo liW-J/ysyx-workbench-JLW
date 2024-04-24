@@ -33,7 +33,8 @@ class TOP(arch: String) extends Module {
   val controller = Module(new Controller())
   val trap       = Module(new Trap())
   val getPC      = Module(new GetPC())
-  val memRam     = Module(new MemRam())
+  val dataSRAM     = Module(new DataSRAM())
+  val instSRAM   = Module(new InstSRAM())
 
   trap.io.isEbreak := id.io.isEbreak
   trap.io.clock    := clock
@@ -43,25 +44,28 @@ class TOP(arch: String) extends Module {
   getPC.io.clock := clock
   getPC.io.reset := reset
 
-  memRam.io.isLoad  := controller.io.bundleControlOut.isLoad
-  memRam.io.isStore := controller.io.bundleControlOut.isStore
-  memRam.io.addr    := ex.io.res
-  memRam.io.len     := controller.io.bundleControlOut.lsuType
-  memRam.io.pc      := pcReg.io.pc
-  memRam.io.wdata   := ex.io.src2
-  memRam.io.clock   := clock
-  memRam.io.reset   := reset
+  instSRAM.io.pc := pcReg.io.pc
+  instSRAM.io.clock := clock
+  instSRAM.io.reset := reset
+
+  dataSRAM.io.isLoad := controller.io.bundleControlOut.isLoad
+  dataSRAM.io.isStore := controller.io.bundleControlOut.isStore
+  dataSRAM.io.addr := ex.io.res
+  dataSRAM.io.len := controller.io.bundleControlOut.lsuType
+  dataSRAM.io.wdata := ex.io.src2
+  dataSRAM.io.clock := clock
+  dataSRAM.io.reset := reset
 
   // judge nextPC by control from frontPC
   pcReg.io.resBranch <> ex.io.resBranch
-  pcReg.io.addrTarget <> memRam.io.rdata
+  pcReg.io.addrTarget <> dataSRAM.io.res
   pcReg.io.isBranch <> controller.io.bundleControlOut.isBranch
   pcReg.io.isJump <> controller.io.bundleControlOut.isJump
   pcReg.io.csrType <> controller.io.bundleControlOut.csrType
   pcReg.io.resCSR <> gprFile.io.resCSR
 
   // get inst to Decoder
-  id.io.inst <> memRam.io.inst
+  id.io.inst <> instSRAM.io.inst
 
   // read or write GPRs from IDres to $rs1/$rs2/$rd
   // if isJump, set nextPC to $rd temporarily
@@ -74,7 +78,7 @@ class TOP(arch: String) extends Module {
   gprFile.io.isContext <> controller.io.bundleControlOut.isContext
   gprFile.io.csrType <> controller.io.bundleControlOut.csrType
   gprFile.io.imm <> id.io.imm
-  gprFile.io.dataWrite <> memRam.io.rdata
+  gprFile.io.dataWrite <> dataSRAM.io.res
   gprFile.io.pc <> pcReg.io.pc
 
   // exec ALU operate by control from thisInstDecode
@@ -97,6 +101,6 @@ class TOP(arch: String) extends Module {
   io.resBranch <> ex.io.resBranch
   io.src1 <> ex.io.src1
   io.src2 <> ex.io.src2
-  io.inst <> memRam.io.inst
+  io.inst <> instSRAM.io.inst
   io.writeEnable <> controller.io.bundleControlOut.writeEnable
 }

@@ -125,15 +125,14 @@ void difftest_step(vaddr_t pc, vaddr_t npc) {
   }
 
   if (is_skip_ref) {
-    Log(ERROR,"00000000");
     // to skip the checking of an instruction, just copy the reg state to reference design
     for(int i = 0; i < MUXDEF(CONFIG_RVE, 16, 32); i++){
       cpu.gpr[i] = gpr(i);
     }
     ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF);
     ref_difftest_regcpy(&ref_r, DIFFTEST_TO_DUT);
-    Log(WARN, "cpoy_pc1=%x", cpu.pc);
-    Log(WARN, "cpoy_pc2=%x", ref_r.pc);
+    // Log(WARN, "cpoy_pc1=%x", cpu.pc);
+    // Log(WARN, "cpoy_pc2=%x", ref_r.pc);
 
     is_skip_ref = false;
     return;
