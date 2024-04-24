@@ -38,6 +38,7 @@ VM_USER_CFLAGS = \
 	-O2 \
 	-DCFLAGS_CPU_TYPE=single \
 	-D__GUEST_ISA__=riscv32 \
+	-D__CPU_TYPE__=single \
 	-DITRACE_COND=true \
 	-DIRINGBUF_COND=true \
 	-DMTRACE_COND=true \
@@ -62,6 +63,7 @@ VM_USER_LDLIBS = \
 	-O2 \
 	-DCFLAGS_CPU_TYPE=single \
 	-D__GUEST_ISA__=riscv32 \
+	-D__CPU_TYPE__=single \
 	-lreadline \
 	-ldl \
 	-pie \

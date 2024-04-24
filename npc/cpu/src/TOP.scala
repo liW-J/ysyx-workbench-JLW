@@ -23,7 +23,7 @@ class TopIO extends Bundle {
   val writeEnable   = Output(Bool())
 }
 
-class TOP extends Module {
+class TOP(arch: String) extends Module {
   val io = IO(new TopIO())
 
   val pcReg      = Module(new PCRegister())

@@ -3,6 +3,12 @@
 CPU      ?= single
 CPU_LIST := single pipeline multip
 
+ifeq ($(filter $(CPU_LIST), $(CPU)),)
+    ifeq ($(findstring $(MAKECMDGOALS), config|clean),)
+        $(error $$CPU is incorrect, optional values in [$(CPU_LIST)])
+    endif
+endif
+
 CPU_BLACKLIST = $(filter-out $(CPU), $(CPU_LIST))
 
 # Sanity check
@@ -53,6 +59,8 @@ CFLAGS_BUILD += $(if $(CONFIG_CC_DEBUG), -Og -ggdb3,)
 CFLAGS_BUILD += $(if $(CONFIG_CC_ASAN), -fsanitize=address,)
 CFLAGS_BUILD += -DCFLAGS_CPU_TYPE=$(CPU)
 CFLAGS_BUILD += -D__GUEST_ISA__=$(CFG_GUEST_ISA)
+CFLAGS_BUILD += -D__CPU_TYPE__=$(CPU)
+
 CFLAGS_TRACE += -DITRACE_COND=$(if $(CONFIG_ITRACE_COND),$(call remove_quote,$(CONFIG_ITRACE_COND)),true)
 CFLAGS_TRACE += -DIRINGBUF_COND=$(if $(CONFIG_IRINGBUF_COND),$(call remove_quote,$(CONFIG_IRINGBUF_COND)),true)
 CFLAGS_TRACE += -DMTRACE_COND=$(if $(CONFIG_MTRACE_COND),$(call remove_quote,$(CONFIG_MTRACE_COND)),true)
@@ -129,7 +137,7 @@ override ARGS_EMBED += $(ARGS_DIFF)
 $(SRCVS_GEN): $(SRCSS)
 	$(call git_commit, "generate verilog")
 	mkdir -p $(BUILD_DIR)                           
-	mill -i __.test.runMain Elaborate --target-dir $(BUILD_DIR)
+	mill -i __.test.runMain Elaborate "$(CPU)" --target-dir $(BUILD_DIR)
 	@sed -i '/\/\/ ----- 8< ----- FILE "firrtl_black_box_resource_files.f" ----- 8< -----/,$$d' $@
 
 $(NPC_BIN): $(INCS) $(SRCS) $(CONFIG)
