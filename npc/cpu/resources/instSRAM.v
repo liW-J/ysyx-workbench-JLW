@@ -1,6 +1,4 @@
 module InstSRAM(
-  input  wire        clock,
-  input  wire        reset,
   input  wire [31:0] pc,
   output reg  [31:0] inst
 );

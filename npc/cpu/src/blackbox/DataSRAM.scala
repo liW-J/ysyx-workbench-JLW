@@ -7,8 +7,6 @@ import config.ExeTypes._
  
 class DataSRAM extends BlackBox with HasBlackBoxResource {
   val io = IO(new Bundle {
-    val clock = Input(Clock())
-    val reset = Input(Bool())
     val isLoad = Input(Bool())
     val isStore = Input(Bool())
     val addr = Input(UInt(ADDR_WIDTH.W))

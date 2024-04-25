@@ -17,7 +17,7 @@ import config.ExeTypes._
 // Output :
 //
 //-----------------------------------------------------------------------------
-class ExecIO extends Bundle {
+class EXUIO extends Bundle {
   val bundleEXControl = new BundleEXControl()
   val dataRead1       = Input(UInt(DATA_WIDTH.W))
   val dataRead2       = Input(UInt(DATA_WIDTH.W))
@@ -31,8 +31,8 @@ class ExecIO extends Bundle {
   val src2            = Output(UInt(DATA_WIDTH.W))
 }
 
-class EX extends Module {
-  val io = IO(new ExecIO())
+class EXU extends Module {
+  val io = IO(new EXUIO())
 
   val resBranch       = WireDefault(false.B)
   val res             = WireDefault(0.U(DATA_WIDTH.W))

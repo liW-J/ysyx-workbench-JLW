@@ -3,8 +3,6 @@ package utils
 import chisel3._
 import config.Configs._
 import config.ExeTypes._
-import javax.xml.transform.OutputKeys
-
 
 class BundleControl extends Bundle {
   val isALUSrc = Output(Bool())

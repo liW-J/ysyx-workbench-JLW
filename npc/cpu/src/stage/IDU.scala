@@ -20,7 +20,7 @@ import config.RV32EInstr._
 // Output :
 //
 //-----------------------------------------------------------------------------
-class DecoderIO extends Bundle {
+class IDUIO extends Bundle {
   val inst          = Input(UInt(INST_WIDTH.W))
   val BundleControl = new BundleControl()
   val bundleReg     = new BundleReg()
@@ -28,8 +28,8 @@ class DecoderIO extends Bundle {
   val isEbreak      = Output(Bool())
 }
 
-class ID extends Module with DecodeUtils {
-  val io = IO(new DecoderIO())
+class IDU extends Module with DecodeUtils {
+  val io = IO(new IDUIO())
 
   io.bundleReg.rs1 := io.inst(19, 15)
   io.bundleReg.rs2 := io.inst(24, 20)

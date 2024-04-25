@@ -2,8 +2,6 @@ import "DPI-C" context function int paddr_read(input int addr, input int len);
 import "DPI-C" context function void paddr_write(input int addr, input int len, input int data);
 
 module DataSRAM(
-  input  wire        clock,
-  input  wire        reset,
   input  wire        isLoad,
   input  wire        isStore,
   input  wire [31:0] addr,

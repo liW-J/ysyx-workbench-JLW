@@ -5,8 +5,8 @@ import config.Configs._
 import utils._
 import unit._
 import blackbox._
-import _root_.stage.ID
-import _root_.stage.EX
+import bus._
+import _root_.stage._
 
 class TopIO extends Bundle {
   val inst          = Output(UInt(INST_WIDTH.W))
@@ -27,16 +27,17 @@ class TOP(arch: String) extends Module {
   val io = IO(new TopIO())
 
   val pcReg      = Module(new PCRegister())
-  val id         = Module(new ID())
+  val idu        = Module(new IDU())
   val gprFile    = Module(new GPRFile())
-  val ex         = Module(new EX())
+  val exu        = Module(new EXU())
   val controller = Module(new Controller())
   val trap       = Module(new Trap())
   val getPC      = Module(new GetPC())
-  val dataSRAM     = Module(new DataSRAM())
-  val instSRAM   = Module(new InstSRAM())
+  val ifu        = Module(new IFU())
+  val lsu        = Module(new LSU())
+  val sram       = Module(new AXI4SRAM())
 
-  trap.io.isEbreak := id.io.isEbreak
+  trap.io.isEbreak := idu.io.isEbreak
   trap.io.clock    := clock
   trap.io.reset    := reset
 
@@ -44,32 +45,36 @@ class TOP(arch: String) extends Module {
   getPC.io.clock := clock
   getPC.io.reset := reset
 
-  instSRAM.io.pc := pcReg.io.pc
-  instSRAM.io.clock := clock
-  instSRAM.io.reset := reset
+  lsu.io.isLoad  := controller.io.bundleControlOut.isLoad
+  lsu.io.isStore := controller.io.bundleControlOut.isStore
+  lsu.io.addr    := exu.io.res
+  lsu.io.len     := controller.io.bundleControlOut.lsuType
+  lsu.io.wdata   := exu.io.src2
 
-  dataSRAM.io.isLoad := controller.io.bundleControlOut.isLoad
-  dataSRAM.io.isStore := controller.io.bundleControlOut.isStore
-  dataSRAM.io.addr := ex.io.res
-  dataSRAM.io.len := controller.io.bundleControlOut.lsuType
-  dataSRAM.io.wdata := ex.io.src2
-  dataSRAM.io.clock := clock
-  dataSRAM.io.reset := reset
+  ifu.io.pc <> pcReg.io.pc
+
+  sram.io.ar <> ifu.io.out
+  sram.io.r <> ifu.io.in
+
+  sram.io.aw := DontCare
+  sram.io.w := DontCare
+  sram.io.b := DontCare
 
   // judge nextPC by control from frontPC
-  pcReg.io.resBranch <> ex.io.resBranch
-  pcReg.io.addrTarget <> dataSRAM.io.res
+  pcReg.io.resBranch <> exu.io.resBranch
+  pcReg.io.addrTarget <> lsu.io.res
   pcReg.io.isBranch <> controller.io.bundleControlOut.isBranch
   pcReg.io.isJump <> controller.io.bundleControlOut.isJump
   pcReg.io.csrType <> controller.io.bundleControlOut.csrType
   pcReg.io.resCSR <> gprFile.io.resCSR
 
   // get inst to Decoder
-  id.io.inst <> instSRAM.io.inst
+  // StageConnect(ifu.io.out, idu.io.in, arch)
+  ifu.io.inst <> idu.io.inst
 
-  // read or write GPRs from IDres to $rs1/$rs2/$rd
+  // read or write GPRs from idres to $rs1/$rs2/$rd
   // if isJump, set nextPC to $rd temporarily
-  gprFile.io.bundleReg <> id.io.bundleReg
+  gprFile.io.bundleReg <> idu.io.bundleReg
   gprFile.io.writeEnable <> controller.io.bundleControlOut.writeEnable
   gprFile.io.lsuType <> controller.io.bundleControlOut.lsuType
   gprFile.io.isJump <> controller.io.bundleControlOut.isJump
@@ -77,30 +82,41 @@ class TOP(arch: String) extends Module {
   gprFile.io.isUnsigned <> controller.io.bundleControlOut.isUnsigned
   gprFile.io.isContext <> controller.io.bundleControlOut.isContext
   gprFile.io.csrType <> controller.io.bundleControlOut.csrType
-  gprFile.io.imm <> id.io.imm
-  gprFile.io.dataWrite <> dataSRAM.io.res
+  gprFile.io.imm <> idu.io.imm
+  gprFile.io.dataWrite <> lsu.io.res
   gprFile.io.pc <> pcReg.io.pc
 
   // exec ALU operate by control from thisInstDecode
-  ex.io.bundleEXControl <> controller.io.bundleEXControl
-  ex.io.dataRead1 <> gprFile.io.dataRead1
-  ex.io.dataRead2 <> gprFile.io.dataRead2
-  ex.io.csrData <> gprFile.io.csrData
-  ex.io.imm <> id.io.imm
-  ex.io.pc <> pcReg.io.pc
+  exu.io.bundleEXControl <> controller.io.bundleEXControl
+  exu.io.dataRead1 <> gprFile.io.dataRead1
+  exu.io.dataRead2 <> gprFile.io.dataRead2
+  exu.io.csrData <> gprFile.io.csrData
+  exu.io.imm <> idu.io.imm
+  exu.io.pc <> pcReg.io.pc
 
-  controller.io.bundleControlIn <> id.io.BundleControl
+  controller.io.bundleControlIn <> idu.io.BundleControl
 
-  io.rs1 <> id.io.bundleReg.rs1
-  io.rs2 <> id.io.bundleReg.rs2
-  io.rd <> id.io.bundleReg.rd
-  io.imm <> id.io.imm
+  io.rs1 <> idu.io.bundleReg.rs1
+  io.rs2 <> idu.io.bundleReg.rs2
+  io.rd <> idu.io.bundleReg.rd
+  io.imm <> idu.io.imm
   io.pc <> pcReg.io.pc
-  io.bundleControl <> id.io.BundleControl
-  io.resEX <> ex.io.res
-  io.resBranch <> ex.io.resBranch
-  io.src1 <> ex.io.src1
-  io.src2 <> ex.io.src2
-  io.inst <> instSRAM.io.inst
+  io.bundleControl <> idu.io.BundleControl
+  io.resEX <> exu.io.res
+  io.resBranch <> exu.io.resBranch
+  io.src1 <> exu.io.src1
+  io.src2 <> exu.io.src2
+  io.inst <> ifu.io.inst
   io.writeEnable <> controller.io.bundleControlOut.writeEnable
 }
+
+// object StageConnect {
+//   def apply[T <: Data](left: DecoupledIO[T], right: DecoupledIO[T], arch: String) = {
+//     if (arch == "single") {
+//       left.ready  := true.B
+//       right.valid := true.B
+//       right.bits  := left.bits
+//     } else if (arch == "multi") { right <> left }
+//     else if (arch == "pipeline") { right <> RegEnable(left, left.fire) }
+//   }
+// }
