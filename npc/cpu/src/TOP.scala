@@ -26,7 +26,6 @@ class TopIO extends Bundle {
 class TOP(arch: String) extends Module {
   val io = IO(new TopIO())
 
-  val pcReg      = Module(new PCRegister())
   val idu        = Module(new IDU())
   val gprFile    = Module(new GPRFile())
   val exu        = Module(new EXU())
@@ -41,7 +40,7 @@ class TOP(arch: String) extends Module {
   trap.io.clock    := clock
   trap.io.reset    := reset
 
-  getPC.io.pc    := pcReg.io.pc
+  getPC.io.pc    := ifu.io.pc
   getPC.io.clock := clock
   getPC.io.reset := reset
 
@@ -51,22 +50,23 @@ class TOP(arch: String) extends Module {
   lsu.io.len     := controller.io.bundleControlOut.lsuType
   lsu.io.wdata   := exu.io.src2
 
-  ifu.io.pc <> pcReg.io.pc
+  // ifu.io.pc <> pcReg.io.pc
 
-  sram.io.ar <> ifu.io.out
-  sram.io.r <> ifu.io.in
+  sram.io.ar <> ifu.io.out.ar
+  sram.io.r <> ifu.io.out.r
+  ifu.io.out.w <> exu.io.in.w
+  exu.io.out.w <> lsu.io.in.w
+  lsu.io.out.w <> gprFile.io.in.w
+  gprFile.io.out.w <> ifu.io.in.w
 
-  sram.io.aw := DontCare
-  sram.io.w := DontCare
-  sram.io.b := DontCare
-
+  
   // judge nextPC by control from frontPC
-  pcReg.io.resBranch <> exu.io.resBranch
-  pcReg.io.addrTarget <> lsu.io.res
-  pcReg.io.isBranch <> controller.io.bundleControlOut.isBranch
-  pcReg.io.isJump <> controller.io.bundleControlOut.isJump
-  pcReg.io.csrType <> controller.io.bundleControlOut.csrType
-  pcReg.io.resCSR <> gprFile.io.resCSR
+  ifu.io.resBranch <> exu.io.resBranch
+  ifu.io.addrTarget <> lsu.io.res
+  ifu.io.isBranch <> controller.io.bundleControlOut.isBranch
+  ifu.io.isJump <> controller.io.bundleControlOut.isJump
+  ifu.io.csrType <> controller.io.bundleControlOut.csrType
+  ifu.io.resCSR <> gprFile.io.resCSR
 
   // get inst to Decoder
   // StageConnect(ifu.io.out, idu.io.in, arch)
@@ -84,7 +84,7 @@ class TOP(arch: String) extends Module {
   gprFile.io.csrType <> controller.io.bundleControlOut.csrType
   gprFile.io.imm <> idu.io.imm
   gprFile.io.dataWrite <> lsu.io.res
-  gprFile.io.pc <> pcReg.io.pc
+  gprFile.io.pc <> ifu.io.pc
 
   // exec ALU operate by control from thisInstDecode
   exu.io.bundleEXControl <> controller.io.bundleEXControl
@@ -92,7 +92,7 @@ class TOP(arch: String) extends Module {
   exu.io.dataRead2 <> gprFile.io.dataRead2
   exu.io.csrData <> gprFile.io.csrData
   exu.io.imm <> idu.io.imm
-  exu.io.pc <> pcReg.io.pc
+  exu.io.pc <> ifu.io.pc
 
   controller.io.bundleControlIn <> idu.io.BundleControl
 
@@ -100,7 +100,7 @@ class TOP(arch: String) extends Module {
   io.rs2 <> idu.io.bundleReg.rs2
   io.rd <> idu.io.bundleReg.rd
   io.imm <> idu.io.imm
-  io.pc <> pcReg.io.pc
+  io.pc <> ifu.io.pc
   io.bundleControl <> idu.io.BundleControl
   io.resEX <> exu.io.res
   io.resBranch <> exu.io.resBranch
@@ -108,6 +108,46 @@ class TOP(arch: String) extends Module {
   io.src2 <> exu.io.src2
   io.inst <> ifu.io.inst
   io.writeEnable <> controller.io.bundleControlOut.writeEnable
+
+  sram.io.aw := DontCare
+  sram.io.w := DontCare
+  sram.io.b := DontCare
+
+  ifu.io.out.aw := DontCare
+  ifu.io.out.b := DontCare
+  ifu.io.in.ar := DontCare
+  ifu.io.in.r := DontCare
+  ifu.io.in.aw := DontCare
+  ifu.io.in.b := DontCare
+
+  exu.io.in.ar := DontCare
+  exu.io.in.r := DontCare
+  exu.io.in.aw := DontCare
+  exu.io.in.b := DontCare
+  exu.io.out.ar := DontCare
+  exu.io.out.r := DontCare
+  exu.io.out.aw := DontCare
+  exu.io.out.b := DontCare
+
+  lsu.io.in.ar := DontCare
+  lsu.io.in.r := DontCare
+  lsu.io.in.aw := DontCare
+  lsu.io.in.b := DontCare
+  lsu.io.out.ar := DontCare
+  lsu.io.out.r := DontCare
+  lsu.io.out.aw := DontCare
+  lsu.io.out.b := DontCare
+  lsu.io.out.w := DontCare
+
+  gprFile.io.in.ar := DontCare
+  gprFile.io.in.r := DontCare
+  gprFile.io.in.aw := DontCare
+  gprFile.io.in.b := DontCare
+  gprFile.io.out.ar := DontCare
+  gprFile.io.out.r := DontCare
+  gprFile.io.out.aw := DontCare
+  gprFile.io.out.b := DontCare
+
 }
 
 // object StageConnect {

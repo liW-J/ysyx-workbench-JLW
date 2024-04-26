@@ -29,6 +29,8 @@ class EXUIO extends Bundle {
   val resCSR          = Output(UInt(DATA_WIDTH.W))
   val src1            = Output(UInt(DATA_WIDTH.W))
   val src2            = Output(UInt(DATA_WIDTH.W))
+  val in     = Flipped(new AXI4LiteIO)
+  val out     = new AXI4LiteIO
 }
 
 class EXU extends Module {
@@ -42,6 +44,20 @@ class EXU extends Module {
   val csrData         = WireDefault(0.U(DATA_WIDTH.W))
   val isJAL, isALUSrc = WireDefault(false.B)
 
+  io.in.ar := DontCare
+  io.in.r := DontCare
+  io.in.aw := DontCare
+  io.in.b := DontCare
+  io.out.ar := DontCare
+  io.out.r := DontCare
+  io.out.aw := DontCare
+  io.out.b := DontCare
+
+  io.in.w.ready := true.B
+  io.out.w.valid := false.B
+  io.out.w.bits.data := 0.U
+  io.out.w.bits.strb := 0.U
+
   src1     := io.dataRead1
   src2     := io.dataRead2
   csrData  := io.csrData
@@ -51,49 +67,51 @@ class EXU extends Module {
   val operand1 = Mux(isJAL, io.pc, src1)
   val operand2 = Mux(isALUSrc, io.imm, src2)
 
-  switch(io.bundleEXControl.aluType) {
-    is(ALU_LUI) { res := operand2 }
-    is(ALU_ADD) { res := operand1 +& operand2 }
-    is(ALU_SUB) { res := operand1 -& operand2 }
-    is(ALU_AND) { res := operand1 & operand2 }
-    is(ALU_OR) { res := operand1 | operand2 }
-    is(ALU_XOR) { res := operand1 ^ operand2 }
-    is(ALU_LT) {
-      when(io.bundleEXControl.isBranch) {
+  when(io.in.w.fire){
+    io.out.w.valid := true.B
+    switch(io.bundleEXControl.aluType) {
+      is(ALU_LUI) { res := operand2 }
+      is(ALU_ADD) { res := operand1 +& operand2 }
+      is(ALU_SUB) { res := operand1 -& operand2 }
+      is(ALU_AND) { res := operand1 & operand2 }
+      is(ALU_OR) { res := operand1 | operand2 }
+      is(ALU_XOR) { res := operand1 ^ operand2 }
+      is(ALU_LT) {
+        when(io.bundleEXControl.isBranch) {
+          when(io.bundleEXControl.isUnsigned) {
+            resBranch := src1 < src2
+          }.otherwise { resBranch := src1.asSInt < src2.asSInt }
+          res := operand1 +& operand2
+        }.otherwise {
+          when(io.bundleEXControl.isUnsigned) {
+            res := operand1 < operand2
+          }.otherwise { res := operand1.asSInt < operand2.asSInt }
+        }
+      }
+      is(ALU_EQ) {
+        resBranch := (src1 === src2)
+        res       := operand1 +& operand2
+      }
+      is(ALU_NEQ) {
+        resBranch := (src1 =/= src2)
+        res       := operand1 +& operand2
+      }
+      is(ALU_GE) {
         when(io.bundleEXControl.isUnsigned) {
-          resBranch := src1 < src2
-        }.otherwise { resBranch := src1.asSInt < src2.asSInt }
+          resBranch := src1 >= src2
+        }.otherwise { resBranch := src1.asSInt >= src2.asSInt }
         res := operand1 +& operand2
-      }.otherwise {
-        when(io.bundleEXControl.isUnsigned) {
-          res := operand1 < operand2
-        }.otherwise { res := operand1.asSInt < operand2.asSInt }
+      }
+      is(ALU_SRA) { res := (operand1.asSInt >> operand2(4, 0)).asUInt }
+      is(ALU_SRL) { res := (operand1 >> operand2(4, 0)) }
+      is(ALU_SLL) { res := (operand1 << operand2(4, 0)) }
+      is(ALU_CSR_RS) {
+        res := operand1 | csrData
+      }
+      is(ALU_CSR_RW) {
+        res := operand1
       }
     }
-    is(ALU_EQ) {
-      resBranch := (src1 === src2)
-      res       := operand1 +& operand2
-    }
-    is(ALU_NEQ) {
-      resBranch := (src1 =/= src2)
-      res       := operand1 +& operand2
-    }
-    is(ALU_GE) {
-      when(io.bundleEXControl.isUnsigned) {
-        resBranch := src1 >= src2
-      }.otherwise { resBranch := src1.asSInt >= src2.asSInt }
-      res := operand1 +& operand2
-    }
-    is(ALU_SRA) { res := (operand1.asSInt >> operand2(4, 0)).asUInt }
-    is(ALU_SRL) { res := (operand1 >> operand2(4, 0)) }
-    is(ALU_SLL) { res := (operand1 << operand2(4, 0)) }
-    is(ALU_CSR_RS) {
-      res := operand1 | csrData
-    }
-    is(ALU_CSR_RW) {
-      res := operand1
-    }
-
   }
 
   io.src1      := src1

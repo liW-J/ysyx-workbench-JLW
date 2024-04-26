@@ -11,38 +11,80 @@ import utils._
 import scala.annotation.switch
 
 class IFUIO extends Bundle {
-  val pc   = Input(UInt(ADDR_WIDTH.W))
+  val isJump     = Input(Bool())
+  val isBranch   = Input(Bool())
+  val resBranch  = Input(Bool())
+  val addrTarget = Input(UInt(ADDR_WIDTH.W))
+  val csrType    = Input(UInt(EXE_TYPES_WIDTH.W))
+  val resCSR     = Input(UInt(ADDR_WIDTH.W))
+  val pc   = Output(UInt(ADDR_WIDTH.W))
   val inst = Output(UInt(INST_WIDTH.W))
-  val out  = Decoupled(new AXI4LiteAIO)
-  val in   = Flipped(Decoupled(new AXI4LiteRIO))
+  val in      = Flipped(new AXI4LiteIO)
+  val out = new AXI4LiteIO()
 }
 
 class IFU extends Module {
   val io = IO(new IFUIO())
   
-  io.out.valid := true.B
-  io.out.bits.addr := io.pc
+  io.in.ar  := DontCare
+  io.in.r   := DontCare
+  io.in.aw  := DontCare
+  io.in.b   := DontCare
+  io.out.aw := DontCare
+  io.out.b := DontCare
 
-  io.in.ready := false.B
+  io.out.ar.valid := true.B
+  io.out.ar.bits.addr := io.pc
 
-  printf("io.out.valid = %d\n", io.out.valid)
-  printf("io.out.ready = %d\n", io.out.ready)
-  printf("io.in.ready = %d\n", io.in.ready)
-  printf("io.in.valid = %d\n", io.in.valid)
-  printf("io.in.bits.data = %x\n\n", io.in.bits.data)
+  io.out.r.ready := true.B
 
-  val s_idle :: s_wait_ready :: Nil = Enum(2)
+  io.out.w.valid := false.B
+  io.out.w.bits.data := io.out.r.bits.data
+  io.out.w.bits.strb := 0.U
+
+  io.in.w.ready := true.B
+
+  val pcReg = RegInit(UInt(ADDR_WIDTH.W), START_ADDR.U) // init pcAddr: 0x80000000
+  val resBranch = RegEnable(io.resBranch, io.out.w.fire)
+  
+  when(io.in.w.fire){
+    when(io.isJump || (io.isBranch && resBranch) || (io.csrType === CSR_ECALL) || (io.csrType === CSR_MRET)) {
+      when(io.isJump || (io.isBranch && resBranch)) {
+        pcReg := io.addrTarget
+      }.otherwise {
+        pcReg := io.resCSR
+      }
+    }.otherwise {
+      pcReg := pcReg + ADDR_BYTE_WIDTH.U
+    }
+  }
+
+  io.pc := pcReg
+
+
+  val s_idle :: s_get_inst :: s_wait_ready :: Nil = Enum(3)
   val state = RegInit(s_idle)
   state := MuxLookup(state, s_idle)(List(
-    s_idle       -> Mux(io.out.valid, s_wait_ready, s_idle),
-    s_wait_ready -> Mux(io.out.ready, s_idle, s_wait_ready)
+    s_idle       -> Mux(io.out.ar.valid, s_get_inst, s_idle),
+    s_get_inst   -> Mux(io.out.w.valid, s_wait_ready, s_get_inst),
+    s_wait_ready -> Mux(~io.out.w.valid, s_idle, s_wait_ready)
   ))
 
   switch(state){
-    is(s_idle){ io.in.ready := false.B }
-    is(s_wait_ready){ io.in.ready := true.B }
+    is(s_idle){ 
+      io.out.ar.valid := true.B
+      io.out.w.valid := false.B
+    }
+    is(s_get_inst){ 
+      io.out.ar.valid := false.B
+      io.out.w.valid := true.B
+    }
+    is(s_wait_ready){ 
+      io.out.ar.valid := false.B
+      io.out.w.valid := false.B
+    }
   }
 
-
-  io.inst := io.in.bits.data
+  io.inst := io.out.r.bits.data
 }
+ 

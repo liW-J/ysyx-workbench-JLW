@@ -25,39 +25,39 @@ VL_INLINE_OPT void VTOP___024root___nba_sequent__TOP__3(VTOP___024root* vlSelf) 
     VTOP__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    VTOP___024root___nba_sequent__TOP__3\n"); );
     // Body
+    vlSelf->io_src1 = vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory
+        [vlSelf->io_rs1];
+    vlSelf->TOP__DOT__gprFile__DOT___csrs_ext_R0_data 
+        = vlSelf->TOP__DOT__gprFile__DOT__csrs_ext__DOT__Memory
+        [(0x3ffU & vlSelf->TOP__DOT__idu__DOT__casez_tmp)];
+    vlSelf->TOP__DOT__gprFile__DOT___GEN = ((IData)(vlSelf->TOP__DOT__lsu__DOT__state) 
+                                            & ((IData)(vlSelf->io_bundleControl_writeEnable) 
+                                               & (0U 
+                                                  != (IData)(vlSelf->io_rd))));
+    vlSelf->TOP__DOT__ifu__DOT___GEN = ((IData)(vlSelf->io_bundleControl_isJump) 
+                                        | ((IData)(vlSelf->io_bundleControl_isBranch) 
+                                           & (IData)(vlSelf->TOP__DOT__ifu__DOT__resBranch)));
     vlSelf->io_src2 = vlSelf->TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory
         [vlSelf->io_rs2];
-    vlSelf->io_resBranch = ((~ ((0U == (IData)(vlSelf->io_bundleControl_aluType)) 
-                                | ((1U == (IData)(vlSelf->io_bundleControl_aluType)) 
-                                   | ((2U == (IData)(vlSelf->io_bundleControl_aluType)) 
-                                      | ((3U == (IData)(vlSelf->io_bundleControl_aluType)) 
-                                         | ((4U == (IData)(vlSelf->io_bundleControl_aluType)) 
-                                            | (5U == (IData)(vlSelf->io_bundleControl_aluType)))))))) 
-                            & ((0xbU == (IData)(vlSelf->io_bundleControl_aluType))
-                                ? ((IData)(vlSelf->io_bundleControl_isBranch) 
-                                   & ((IData)(vlSelf->io_bundleControl_isUnsigned)
-                                       ? (vlSelf->io_src1 
-                                          < vlSelf->io_src2)
-                                       : VL_LTS_III(32, vlSelf->io_src1, vlSelf->io_src2)))
-                                : ((9U == (IData)(vlSelf->io_bundleControl_aluType))
-                                    ? (vlSelf->io_src1 
-                                       == vlSelf->io_src2)
-                                    : ((0xaU == (IData)(vlSelf->io_bundleControl_aluType))
-                                        ? (vlSelf->io_src1 
-                                           != vlSelf->io_src2)
-                                        : ((0xcU == (IData)(vlSelf->io_bundleControl_aluType)) 
-                                           & ((IData)(vlSelf->io_bundleControl_isUnsigned)
-                                               ? (vlSelf->io_src1 
-                                                  >= vlSelf->io_src2)
-                                               : VL_GTES_III(32, vlSelf->io_src1, vlSelf->io_src2)))))));
+    vlSelf->TOP__DOT__exu__DOT__operand1 = ((IData)(vlSelf->io_bundleControl_isJAL)
+                                             ? vlSelf->TOP__DOT__ifu__DOT__pcReg
+                                             : vlSelf->io_src1);
     vlSelf->TOP__DOT__exu__DOT__operand2 = ((IData)(vlSelf->io_bundleControl_isALUSrc)
                                              ? vlSelf->TOP__DOT__idu__DOT__casez_tmp
                                              : vlSelf->io_src2);
-    vlSelf->TOP__DOT__pcReg__DOT___GEN = ((IData)(vlSelf->io_bundleControl_isJump) 
-                                          | ((IData)(vlSelf->io_bundleControl_isBranch) 
-                                             & (IData)(vlSelf->io_resBranch)));
     vlSelf->TOP__DOT__exu__DOT___GEN = (vlSelf->TOP__DOT__exu__DOT__operand1 
                                         + vlSelf->TOP__DOT__exu__DOT__operand2);
+    if (vlSelf->TOP__DOT__ifu__DOT___io_out_w_valid_output) {
+        vlSelf->TOP__DOT__lsu__DOT__dataSRAM_io_addr_r 
+            = vlSelf->io_resEX;
+        vlSelf->TOP__DOT__lsu__DOT__dataSRAM_io_isStore_r 
+            = vlSelf->io_bundleControl_isStore;
+        vlSelf->TOP__DOT__lsu__DOT__dataSRAM_io_isLoad_r 
+            = vlSelf->io_bundleControl_isLoad;
+    }
+    vlSelf->TOP__DOT__ifu__DOT___io_out_w_valid_output 
+        = ((0U != (IData)(vlSelf->TOP__DOT__ifu__DOT__state)) 
+           & (1U == (IData)(vlSelf->TOP__DOT__ifu__DOT__state)));
     vlSelf->TOP__DOT__exu__DOT__casez_tmp = ((8U & (IData)(vlSelf->io_bundleControl_aluType))
                                               ? ((4U 
                                                   & (IData)(vlSelf->io_bundleControl_aluType))
@@ -145,18 +145,47 @@ VL_INLINE_OPT void VTOP___024root___nba_sequent__TOP__3(VTOP___024root* vlSelf) 
                                                     & (IData)(vlSelf->io_bundleControl_aluType))
                                                     ? vlSelf->TOP__DOT__exu__DOT___GEN
                                                     : vlSelf->TOP__DOT__exu__DOT__operand2))));
-    vlSelf->io_resEX = vlSelf->TOP__DOT__exu__DOT__casez_tmp;
+    if (vlSelf->TOP__DOT__ifu__DOT___io_out_w_valid_output) {
+        vlSelf->io_resEX = vlSelf->TOP__DOT__exu__DOT__casez_tmp;
+        vlSelf->io_resBranch = ((~ ((0U == (IData)(vlSelf->io_bundleControl_aluType)) 
+                                    | ((1U == (IData)(vlSelf->io_bundleControl_aluType)) 
+                                       | ((2U == (IData)(vlSelf->io_bundleControl_aluType)) 
+                                          | ((3U == (IData)(vlSelf->io_bundleControl_aluType)) 
+                                             | ((4U 
+                                                 == (IData)(vlSelf->io_bundleControl_aluType)) 
+                                                | (5U 
+                                                   == (IData)(vlSelf->io_bundleControl_aluType)))))))) 
+                                & ((0xbU == (IData)(vlSelf->io_bundleControl_aluType))
+                                    ? ((IData)(vlSelf->io_bundleControl_isBranch) 
+                                       & ((IData)(vlSelf->io_bundleControl_isUnsigned)
+                                           ? (vlSelf->io_src1 
+                                              < vlSelf->io_src2)
+                                           : VL_LTS_III(32, vlSelf->io_src1, vlSelf->io_src2)))
+                                    : ((9U == (IData)(vlSelf->io_bundleControl_aluType))
+                                        ? (vlSelf->io_src1 
+                                           == vlSelf->io_src2)
+                                        : ((0xaU == (IData)(vlSelf->io_bundleControl_aluType))
+                                            ? (vlSelf->io_src1 
+                                               != vlSelf->io_src2)
+                                            : ((0xcU 
+                                                == (IData)(vlSelf->io_bundleControl_aluType)) 
+                                               & ((IData)(vlSelf->io_bundleControl_isUnsigned)
+                                                   ? 
+                                                  (vlSelf->io_src1 
+                                                   >= vlSelf->io_src2)
+                                                   : 
+                                                  VL_GTES_III(32, vlSelf->io_src1, vlSelf->io_src2)))))));
+    } else {
+        vlSelf->io_resEX = 0U;
+        vlSelf->io_resBranch = 0U;
+    }
 }
 
-VL_INLINE_OPT void VTOP___024root___nba_comb__TOP__0(VTOP___024root* vlSelf) {
+VL_INLINE_OPT void VTOP___024root___nba_sequent__TOP__4(VTOP___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     VTOP__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    VL_DEBUG_IF(VL_DBG_MSGF("+    VTOP___024root___nba_comb__TOP__0\n"); );
+    VL_DEBUG_IF(VL_DBG_MSGF("+    VTOP___024root___nba_sequent__TOP__4\n"); );
     // Body
-    vlSelf->TOP__DOT___lsu_io_res = (((IData)(vlSelf->io_bundleControl_isLoad) 
-                                      | (IData)(vlSelf->io_bundleControl_isStore))
-                                      ? vlSelf->TOP__DOT__lsu__DOT___dataSRAM_res
-                                      : vlSelf->TOP__DOT__exu__DOT__casez_tmp);
     vlSelf->TOP__DOT__gprFile__DOT__dataWrite = (((~ (IData)(vlSelf->io_bundleControl_isUnsigned)) 
                                                   & (IData)(vlSelf->io_bundleControl_isLoad))
                                                   ? 
@@ -211,9 +240,10 @@ void VTOP___024root___eval_nba(VTOP___024root* vlSelf) {
     }
     if (vlSelf->__VnbaTriggered.at(1U)) {
         VTOP___024root___nba_sequent__TOP__3(vlSelf);
+        vlSelf->__Vm_traceActivity[4U] = 1U;
     }
-    if ((vlSelf->__VnbaTriggered.at(1U) | vlSelf->__VnbaTriggered.at(3U))) {
-        VTOP___024root___nba_comb__TOP__0(vlSelf);
+    if (vlSelf->__VnbaTriggered.at(3U)) {
+        VTOP___024root___nba_sequent__TOP__4(vlSelf);
     }
 }
 
@@ -250,7 +280,7 @@ void VTOP___024root___eval(VTOP___024root* vlSelf) {
 #ifdef VL_DEBUG
                     VTOP___024root___dump_triggers__act(vlSelf);
 #endif
-                    VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 889, "", "Active region did not converge.");
+                    VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 899, "", "Active region did not converge.");
                 }
                 vlSelf->__VactIterCount = ((IData)(1U) 
                                            + vlSelf->__VactIterCount);
@@ -265,7 +295,7 @@ void VTOP___024root___eval(VTOP___024root* vlSelf) {
 #ifdef VL_DEBUG
                 VTOP___024root___dump_triggers__nba(vlSelf);
 #endif
-                VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 889, "", "NBA region did not converge.");
+                VL_FATAL_MT("/home/sends/local/share/ysyx-workbench/npc/build/TOP.v", 899, "", "NBA region did not converge.");
             }
             __VnbaIterCount = ((IData)(1U) + __VnbaIterCount);
             VTOP___024root___eval_nba(vlSelf);

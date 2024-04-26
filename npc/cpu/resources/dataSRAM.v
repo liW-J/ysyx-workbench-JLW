@@ -13,7 +13,7 @@ module DataSRAM(
   reg load_flag ;
   reg store_flag ;
 
-  always @(addr) begin
+  always @(isLoad or isStore or addr) begin
     load_flag = isLoad;
     store_flag = isStore;
     if (load_flag) begin

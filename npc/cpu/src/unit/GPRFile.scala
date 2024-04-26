@@ -26,10 +26,26 @@ class GPRFileIO extends Bundle {
   val dataRead2   = Output(UInt(DATA_WIDTH.W))
   val csrData     = Output(UInt(DATA_WIDTH.W))
   val resCSR      = Output(UInt(ADDR_WIDTH.W))
+  val in       = Flipped(new AXI4LiteIO)
+  val out      = new AXI4LiteIO()
 }
 
 class GPRFile extends Module {
   val io = IO(new GPRFileIO())
+
+  io.in.ar  := DontCare
+  io.in.r   := DontCare
+  io.in.aw  := DontCare
+  io.in.b   := DontCare
+  io.out.ar := DontCare
+  io.out.r  := DontCare
+  io.out.aw := DontCare
+  io.out.b  := DontCare
+
+  io.in.w.ready := true.B
+  io.out.w.valid := false.B
+  io.out.w.bits.data := 0.U
+  io.out.w.bits.strb := 0.U
 
   // register file
   val regs      = Mem(REG_NUMS, UInt(DATA_WIDTH.W))
@@ -55,10 +71,12 @@ class GPRFile extends Module {
     }
   }.otherwise { dataWrite := io.dataWrite }
 
-  when(io.writeEnable && io.bundleReg.rd =/= 0.U) {
-    when(io.isJump) { //JAL or JALR will set pc+4 into $rd
-      regs.write(io.bundleReg.rd, snpc)
-    }.otherwise { regs.write(io.bundleReg.rd, dataWrite) }
+  when(io.in.w.fire){
+    when(io.writeEnable && io.bundleReg.rd =/= 0.U) {
+      when(io.isJump) { //JAL or JALR will set pc+4 into $rd
+        regs.write(io.bundleReg.rd, snpc)
+      }.otherwise { regs.write(io.bundleReg.rd, dataWrite) }
+    }
   }
 
   when(io.isContext){
@@ -86,6 +104,18 @@ class GPRFile extends Module {
         resCSR :=  csrs.read(CSR_MEPC)
       }
     }  
+  }
+
+  val s_idle :: s_wait_ready :: Nil = Enum(2)
+  val state = RegInit(s_idle)
+  state := MuxLookup(state, s_idle)(List(
+    s_idle       -> Mux(io.in.w.fire, s_wait_ready, s_idle),
+    s_wait_ready -> Mux(io.out.w.ready, s_idle, s_wait_ready)
+  ))
+
+  switch(state){
+    is(s_idle){ io.out.w.valid := false.B }
+    is(s_wait_ready){ io.out.w.valid := true.B }
   }
 
   io.resCSR := resCSR

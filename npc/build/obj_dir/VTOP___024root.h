@@ -21,6 +21,8 @@ class VTOP___024root final : public VerilatedModule {
     struct {
         VL_IN8(clock,0,0);
         CData/*0:0*/ TOP__DOT___idu_io_isEbreak;
+        CData/*0:0*/ TOP__DOT__lsu__DOT__dataSRAM_io_isLoad_r;
+        CData/*0:0*/ TOP__DOT__lsu__DOT__dataSRAM_io_isStore_r;
         VL_IN8(reset,0,0);
         VL_OUT8(io_bundleControl_isALUSrc,0,0);
         VL_OUT8(io_bundleControl_isJump,0,0);
@@ -39,7 +41,6 @@ class VTOP___024root final : public VerilatedModule {
         VL_OUT8(io_rd,4,0);
         VL_OUT8(io_resBranch,0,0);
         VL_OUT8(io_writeEnable,0,0);
-        CData/*0:0*/ TOP__DOT__pcReg__DOT___GEN;
         CData/*0:0*/ TOP__DOT__idu__DOT___GEN_1;
         CData/*0:0*/ TOP__DOT__idu__DOT___GEN_2;
         CData/*0:0*/ TOP__DOT__idu__DOT___GEN_3;
@@ -64,15 +65,26 @@ class VTOP___024root final : public VerilatedModule {
         CData/*0:0*/ TOP__DOT__gprFile__DOT___GEN_3;
         CData/*0:0*/ TOP__DOT__gprFile__DOT___GEN_4;
         CData/*0:0*/ TOP__DOT__gprFile__DOT___GEN_6;
+        CData/*0:0*/ TOP__DOT__gprFile__DOT__state;
         CData/*0:0*/ TOP__DOT__gprFile__DOT____Vcellinp__csrs_ext__W1_en;
         CData/*0:0*/ TOP__DOT__gprFile__DOT____Vcellinp__csrs_ext__W0_en;
-        CData/*0:0*/ TOP__DOT__ifu__DOT__state;
+        CData/*0:0*/ TOP__DOT__ifu__DOT__resBranch;
+        CData/*1:0*/ TOP__DOT__ifu__DOT__state;
+        CData/*0:0*/ TOP__DOT__ifu__DOT___state_T_4;
+        CData/*0:0*/ TOP__DOT__ifu__DOT___state_T_6;
+        CData/*0:0*/ TOP__DOT__ifu__DOT___state_T_8;
+        CData/*0:0*/ TOP__DOT__ifu__DOT___io_out_w_valid_output;
+        CData/*0:0*/ TOP__DOT__ifu__DOT___GEN;
+        CData/*0:0*/ TOP__DOT__lsu__DOT__state;
         CData/*0:0*/ TOP__DOT__lsu__DOT__dataSRAM__DOT__load_flag;
         CData/*0:0*/ TOP__DOT__lsu__DOT__dataSRAM__DOT__store_flag;
-        CData/*0:0*/ TOP__DOT__sram__DOT__state;
         CData/*0:0*/ __Vtrigrprev__TOP__clock;
         CData/*0:0*/ __Vtrigrprev__TOP__TOP__DOT___idu_io_isEbreak;
+        CData/*0:0*/ __Vtrigrprev__TOP__TOP__DOT__lsu__DOT__dataSRAM_io_isLoad_r;
+        CData/*0:0*/ __Vtrigrprev__TOP__TOP__DOT__lsu__DOT__dataSRAM_io_isStore_r;
         CData/*0:0*/ __VactDidInit;
+    };
+    struct {
         CData/*0:0*/ __VactContinue;
         SData/*9:0*/ TOP__DOT__idu__DOT___GEN;
         VL_OUT(io_inst,31,0);
@@ -83,9 +95,6 @@ class VTOP___024root final : public VerilatedModule {
         VL_OUT(io_imm,31,0);
         IData/*31:0*/ TOP__DOT___sram_io_r_bits_data;
         IData/*31:0*/ TOP__DOT___lsu_io_res;
-    };
-    struct {
-        IData/*31:0*/ TOP__DOT__pcReg__DOT__pcReg;
         IData/*31:0*/ TOP__DOT__idu__DOT__casez_tmp;
         IData/*16:0*/ TOP__DOT__idu__DOT___GEN_0;
         IData/*31:0*/ TOP__DOT__gprFile__DOT___csrs_ext_R0_data;
@@ -94,15 +103,15 @@ class VTOP___024root final : public VerilatedModule {
         IData/*31:0*/ TOP__DOT__exu__DOT__operand1;
         IData/*31:0*/ TOP__DOT__exu__DOT__operand2;
         IData/*31:0*/ TOP__DOT__exu__DOT___GEN;
-        IData/*31:0*/ TOP__DOT__lsu__DOT___dataSRAM_res;
-        IData/*31:0*/ TOP__DOT__sram__DOT__instSRAM_io_pc_r;
+        IData/*31:0*/ TOP__DOT__ifu__DOT__pcReg;
+        IData/*31:0*/ TOP__DOT__lsu__DOT__dataSRAM_io_addr_r;
         IData/*31:0*/ __VstlIterCount;
-        IData/*31:0*/ __Vtrigrprev__TOP__TOP__DOT__sram__DOT__instSRAM_io_pc_r;
-        IData/*31:0*/ __Vtrigrprev__TOP__io_resEX;
+        IData/*31:0*/ __Vtrigrprev__TOP__io_pc;
+        IData/*31:0*/ __Vtrigrprev__TOP__TOP__DOT__lsu__DOT__dataSRAM_io_addr_r;
         IData/*31:0*/ __VactIterCount;
         VlUnpacked<IData/*31:0*/, 32> TOP__DOT__gprFile__DOT__regs_ext__DOT__Memory;
         VlUnpacked<IData/*31:0*/, 1024> TOP__DOT__gprFile__DOT__csrs_ext__DOT__Memory;
-        VlUnpacked<CData/*0:0*/, 4> __Vm_traceActivity;
+        VlUnpacked<CData/*0:0*/, 5> __Vm_traceActivity;
     };
     VlTriggerVec<1> __VstlTriggered;
     VlTriggerVec<4> __VactTriggered;

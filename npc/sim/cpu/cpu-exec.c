@@ -32,6 +32,8 @@ static bool g_print_mem = false;
 static bool g_print_func = false;
 static bool is_ebreak = false;
 static vaddr_t g_pc = 0;
+vaddr_t flag_pc = 0x80000000;
+int count = -1;
 
 void device_update();
 void difftest_watchpoint();
@@ -84,9 +86,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   s->snpc = pc+4;
   s->isa.inst.val = top.io_inst;
   if (is_ebreak) NPCTRAP(pc, 0);
-  single_cycle();
-  cpu.pc = g_pc;
-  s->dnpc = g_pc;
+  
 
   
   
@@ -110,16 +110,21 @@ static void exec_once(Decode *s, vaddr_t pc) {
   disassemble(p, s->logbuf + sizeof(s->logbuf) - p,
       MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.inst.val, ilen);
 #endif
+  single_cycle();
+  cpu.pc = g_pc;
+  s->dnpc = g_pc;
 }
 
 static void execute(uint64_t n) {
   Decode s;
   for (;n > 0; n --) {
-    // Log(DEBUG, "inst_before=%08x", top.io_inst);
-    // Log(DEBUG, "PC: %x", top.io_pc);
     exec_once(&s, g_pc);
-    g_nr_guest_inst ++;
-    trace_and_difftest(&s, g_pc);
+    if(count == 2){
+      g_nr_guest_inst ++;
+      trace_and_difftest(&s, g_pc);
+      count = 0;
+    }else{ count += 1;}
+    
     if (npc_state.state != NPC_RUNNING) break;
     IFDEF(CONFIG_DEVICE, device_update());
   }
