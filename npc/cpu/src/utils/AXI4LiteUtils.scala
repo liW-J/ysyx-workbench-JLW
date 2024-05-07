@@ -7,6 +7,7 @@ import config.ExeTypes._
 
 class AXI4LiteAIO extends Bundle {
     val addr = Output(UInt(ADDR_WIDTH.W))
+    val len = Output(UInt(DATA_WIDTH.W))
 }
 
 class AXI4LiteRIO extends Bundle {

@@ -35,7 +35,7 @@ class VTOP__Syms final : public VerilatedSyms {
 
     // SCOPE NAMES
     VerilatedScope __Vscope_TOP__getPC;
-    VerilatedScope __Vscope_TOP__lsu__dataSRAM;
+    VerilatedScope __Vscope_TOP__sram__dataSRAM;
     VerilatedScope __Vscope_TOP__sram__instSRAM;
     VerilatedScope __Vscope_TOP__trap;
 

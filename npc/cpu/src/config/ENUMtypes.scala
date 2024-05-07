@@ -8,6 +8,14 @@ object OpTypes {
   val typeI :: typeU :: typeS :: typeJ :: typeR :: typeB :: noTYPE :: Nil = Enum(7)
 }
 
+object Status {
+  val s_idle :: s_get_inst :: s_wait_ready :: s_get_data :: Nil = Enum(4)
+}
+
+object ArbiterExec {
+  val exec_IFU :: exec_LSU :: exec_NONE :: Nil = Enum(3)
+}
+
 //enum ALU_OP for EX stage
 object ExeTypes {
   val EXE_TYPES_WIDTH = 4

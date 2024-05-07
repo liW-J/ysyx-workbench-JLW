@@ -5,12 +5,10 @@ import chisel3.util._
 import config.ExeTypes._
 import config.Configs._
 import config.CSRNums._
+import config.Status._
 import utils._
-import javax.swing.InputMap
-import javax.xml.transform.OutputKeys
-import scala.annotation.switch
 
-class GPRFileIO extends Bundle {
+class WBUIO extends Bundle {
   val writeEnable = Input(Bool())
   val isJump      = Input(Bool())
   val isLoad      = Input(Bool())
@@ -26,26 +24,12 @@ class GPRFileIO extends Bundle {
   val dataRead2   = Output(UInt(DATA_WIDTH.W))
   val csrData     = Output(UInt(DATA_WIDTH.W))
   val resCSR      = Output(UInt(ADDR_WIDTH.W))
-  val in       = Flipped(new AXI4LiteIO)
-  val out      = new AXI4LiteIO()
+  val lsuStatus   = Input(UInt(DATA_WIDTH.W))
+  // val in       = Flipped(new AXI4LiteIO)
 }
 
-class GPRFile extends Module {
-  val io = IO(new GPRFileIO())
-
-  io.in.ar  := DontCare
-  io.in.r   := DontCare
-  io.in.aw  := DontCare
-  io.in.b   := DontCare
-  io.out.ar := DontCare
-  io.out.r  := DontCare
-  io.out.aw := DontCare
-  io.out.b  := DontCare
-
-  io.in.w.ready := true.B
-  io.out.w.valid := false.B
-  io.out.w.bits.data := 0.U
-  io.out.w.bits.strb := 0.U
+class WBU extends Module {
+  val io = IO(new WBUIO())
 
   // register file
   val regs      = Mem(REG_NUMS, UInt(DATA_WIDTH.W))
@@ -53,6 +37,7 @@ class GPRFile extends Module {
   val dataWrite = WireDefault(0.U(DATA_WIDTH.W))
   val resCSR    = WireDefault(0.U(ADDR_WIDTH.W))
   val snpc      = WireDefault(0.U(ADDR_WIDTH.W))
+  val bValid = RegInit(0.U)
   
   // if use $zero reg, set 0 as output
   when(io.bundleReg.rs1 === 0.U) { io.dataRead1 := 0.U }
@@ -70,8 +55,8 @@ class GPRFile extends Module {
       is(LSU_W) { dataWrite := io.dataWrite }
     }
   }.otherwise { dataWrite := io.dataWrite }
-
-  when(io.in.w.fire){
+  
+  when(io.lsuStatus === s_wait_ready){
     when(io.writeEnable && io.bundleReg.rd =/= 0.U) {
       when(io.isJump) { //JAL or JALR will set pc+4 into $rd
         regs.write(io.bundleReg.rd, snpc)
@@ -104,18 +89,6 @@ class GPRFile extends Module {
         resCSR :=  csrs.read(CSR_MEPC)
       }
     }  
-  }
-
-  val s_idle :: s_wait_ready :: Nil = Enum(2)
-  val state = RegInit(s_idle)
-  state := MuxLookup(state, s_idle)(List(
-    s_idle       -> Mux(io.in.w.fire, s_wait_ready, s_idle),
-    s_wait_ready -> Mux(io.out.w.ready, s_idle, s_wait_ready)
-  ))
-
-  switch(state){
-    is(s_idle){ io.out.w.valid := false.B }
-    is(s_wait_ready){ io.out.w.valid := true.B }
   }
 
   io.resCSR := resCSR

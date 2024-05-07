@@ -27,7 +27,7 @@ class TOP(arch: String) extends Module {
   val io = IO(new TopIO())
 
   val idu        = Module(new IDU())
-  val gprFile    = Module(new GPRFile())
+  val wbu        = Module(new WBU())
   val exu        = Module(new EXU())
   val controller = Module(new Controller())
   val trap       = Module(new Trap())
@@ -35,6 +35,7 @@ class TOP(arch: String) extends Module {
   val ifu        = Module(new IFU())
   val lsu        = Module(new LSU())
   val sram       = Module(new AXI4SRAM())
+  val arbiter    = Module(new AXI4Arbiter())
 
   trap.io.isEbreak := idu.io.isEbreak
   trap.io.clock    := clock
@@ -50,49 +51,56 @@ class TOP(arch: String) extends Module {
   lsu.io.len     := controller.io.bundleControlOut.lsuType
   lsu.io.wdata   := exu.io.src2
 
-  // ifu.io.pc <> pcReg.io.pc
+  arbiter.io.in2ifu <> ifu.io.out
+  arbiter.io.in2lsu <> lsu.io.out
+  arbiter.io.isIFU := ifu.io.isIFU
+  arbiter.io.isLSU := lsu.io.isLSU
+  arbiter.io.resIFU := sram.io.resIFU
+  arbiter.io.resLSU := sram.io.resLSU
 
-  sram.io.ar <> ifu.io.out.ar
-  sram.io.r <> ifu.io.out.r
-  ifu.io.out.w <> exu.io.in.w
-  exu.io.out.w <> lsu.io.in.w
-  lsu.io.out.w <> gprFile.io.in.w
-  gprFile.io.out.w <> ifu.io.in.w
+  sram.io.in <> arbiter.io.out
+  sram.io.isIFU := ifu.io.isIFU
+  sram.io.isLSU := lsu.io.isLSU
 
-  
+  exu.io.out <> lsu.io.in
+
   // judge nextPC by control from frontPC
   ifu.io.resBranch <> exu.io.resBranch
   ifu.io.addrTarget <> lsu.io.res
   ifu.io.isBranch <> controller.io.bundleControlOut.isBranch
   ifu.io.isJump <> controller.io.bundleControlOut.isJump
   ifu.io.csrType <> controller.io.bundleControlOut.csrType
-  ifu.io.resCSR <> gprFile.io.resCSR
+  ifu.io.resCSR <> wbu.io.resCSR
+  ifu.io.lsuStatus <> lsu.io.status
 
   // get inst to Decoder
   // StageConnect(ifu.io.out, idu.io.in, arch)
-  ifu.io.inst <> idu.io.inst
+  idu.io.inst <> ifu.io.inst
+  idu.io.status <> ifu.io.status
 
   // read or write GPRs from idres to $rs1/$rs2/$rd
   // if isJump, set nextPC to $rd temporarily
-  gprFile.io.bundleReg <> idu.io.bundleReg
-  gprFile.io.writeEnable <> controller.io.bundleControlOut.writeEnable
-  gprFile.io.lsuType <> controller.io.bundleControlOut.lsuType
-  gprFile.io.isJump <> controller.io.bundleControlOut.isJump
-  gprFile.io.isLoad <> controller.io.bundleControlOut.isLoad
-  gprFile.io.isUnsigned <> controller.io.bundleControlOut.isUnsigned
-  gprFile.io.isContext <> controller.io.bundleControlOut.isContext
-  gprFile.io.csrType <> controller.io.bundleControlOut.csrType
-  gprFile.io.imm <> idu.io.imm
-  gprFile.io.dataWrite <> lsu.io.res
-  gprFile.io.pc <> ifu.io.pc
+  wbu.io.bundleReg <> idu.io.bundleReg
+  wbu.io.writeEnable <> controller.io.bundleControlOut.writeEnable
+  wbu.io.lsuType <> controller.io.bundleControlOut.lsuType
+  wbu.io.isJump <> controller.io.bundleControlOut.isJump
+  wbu.io.isLoad <> controller.io.bundleControlOut.isLoad
+  wbu.io.isUnsigned <> controller.io.bundleControlOut.isUnsigned
+  wbu.io.isContext <> controller.io.bundleControlOut.isContext
+  wbu.io.csrType <> controller.io.bundleControlOut.csrType
+  wbu.io.imm <> idu.io.imm
+  wbu.io.dataWrite <> lsu.io.res
+  wbu.io.pc <> ifu.io.pc
+  wbu.io.lsuStatus <> lsu.io.status
 
   // exec ALU operate by control from thisInstDecode
   exu.io.bundleEXControl <> controller.io.bundleEXControl
-  exu.io.dataRead1 <> gprFile.io.dataRead1
-  exu.io.dataRead2 <> gprFile.io.dataRead2
-  exu.io.csrData <> gprFile.io.csrData
+  exu.io.dataRead1 <> wbu.io.dataRead1
+  exu.io.dataRead2 <> wbu.io.dataRead2
+  exu.io.csrData <> wbu.io.csrData
   exu.io.imm <> idu.io.imm
   exu.io.pc <> ifu.io.pc
+  exu.io.ifuStatus <> ifu.io.status
 
   controller.io.bundleControlIn <> idu.io.BundleControl
 
@@ -109,44 +117,13 @@ class TOP(arch: String) extends Module {
   io.inst <> ifu.io.inst
   io.writeEnable <> controller.io.bundleControlOut.writeEnable
 
-  sram.io.aw := DontCare
-  sram.io.w := DontCare
-  sram.io.b := DontCare
+  arbiter.io.in2ifu.aw := DontCare
+  arbiter.io.in2ifu.w := DontCare
+  arbiter.io.in2ifu.b := DontCare
+  arbiter.io.in2lsu.b := DontCare
 
   ifu.io.out.aw := DontCare
-  ifu.io.out.b := DontCare
-  ifu.io.in.ar := DontCare
-  ifu.io.in.r := DontCare
-  ifu.io.in.aw := DontCare
-  ifu.io.in.b := DontCare
-
-  exu.io.in.ar := DontCare
-  exu.io.in.r := DontCare
-  exu.io.in.aw := DontCare
-  exu.io.in.b := DontCare
-  exu.io.out.ar := DontCare
-  exu.io.out.r := DontCare
-  exu.io.out.aw := DontCare
-  exu.io.out.b := DontCare
-
-  lsu.io.in.ar := DontCare
-  lsu.io.in.r := DontCare
-  lsu.io.in.aw := DontCare
-  lsu.io.in.b := DontCare
-  lsu.io.out.ar := DontCare
-  lsu.io.out.r := DontCare
-  lsu.io.out.aw := DontCare
-  lsu.io.out.b := DontCare
-  lsu.io.out.w := DontCare
-
-  gprFile.io.in.ar := DontCare
-  gprFile.io.in.r := DontCare
-  gprFile.io.in.aw := DontCare
-  gprFile.io.in.b := DontCare
-  gprFile.io.out.ar := DontCare
-  gprFile.io.out.r := DontCare
-  gprFile.io.out.aw := DontCare
-  gprFile.io.out.b := DontCare
+  ifu.io.out.w := DontCare
 
 }
 

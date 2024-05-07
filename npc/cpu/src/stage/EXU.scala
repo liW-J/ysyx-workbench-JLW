@@ -2,21 +2,12 @@ package stage
 
 import chisel3._
 import chisel3.util._
-
+import config.Status._
 import config.Configs._
 import config.OpTypes._
 import utils._
 import config.ExeTypes._
 
-//-----------------------------------------------------------------------------
-// EX
-//-----------------------------------------------------------------------------
-//
-// Description :
-// Input  :
-// Output :
-//
-//-----------------------------------------------------------------------------
 class EXUIO extends Bundle {
   val bundleEXControl = new BundleEXControl()
   val dataRead1       = Input(UInt(DATA_WIDTH.W))
@@ -24,13 +15,13 @@ class EXUIO extends Bundle {
   val csrData         = Input(UInt(DATA_WIDTH.W))
   val imm             = Input(UInt(DATA_WIDTH.W))
   val pc              = Input(UInt(ADDR_WIDTH.W))
+  val ifuStatus       = Input(UInt(DATA_WIDTH.W))
   val resBranch       = Output(Bool())
   val res             = Output(UInt(DATA_WIDTH.W))
   val resCSR          = Output(UInt(DATA_WIDTH.W))
   val src1            = Output(UInt(DATA_WIDTH.W))
   val src2            = Output(UInt(DATA_WIDTH.W))
-  val in     = Flipped(new AXI4LiteIO)
-  val out     = new AXI4LiteIO
+  val out             = new AXI4LiteIO
 }
 
 class EXU extends Module {
@@ -41,22 +32,19 @@ class EXU extends Module {
   val resCSR          = WireDefault(0.U(DATA_WIDTH.W))
   val src1            = WireDefault(0.U(DATA_WIDTH.W))
   val src2            = WireDefault(0.U(DATA_WIDTH.W))
+  val operand1        = WireDefault(0.U(DATA_WIDTH.W))
+  val operand2        = WireDefault(0.U(DATA_WIDTH.W))
   val csrData         = WireDefault(0.U(DATA_WIDTH.W))
   val isJAL, isALUSrc = WireDefault(false.B)
 
-  io.in.ar := DontCare
-  io.in.r := DontCare
-  io.in.aw := DontCare
-  io.in.b := DontCare
   io.out.ar := DontCare
-  io.out.r := DontCare
-  io.out.aw := DontCare
-  io.out.b := DontCare
+  io.out.r  := DontCare
 
-  io.in.w.ready := true.B
-  io.out.w.valid := false.B
-  io.out.w.bits.data := 0.U
+  io.out.w.valid     := false.B
   io.out.w.bits.strb := 0.U
+  io.out.aw.valid    := false.B
+  io.out.aw.bits.len := 0.U
+  io.out.b.ready     := false.B
 
   src1     := io.dataRead1
   src2     := io.dataRead2
@@ -64,11 +52,22 @@ class EXU extends Module {
   isJAL    := io.bundleEXControl.isJAL
   isALUSrc := io.bundleEXControl.isALUSrc
 
-  val operand1 = Mux(isJAL, io.pc, src1)
-  val operand2 = Mux(isALUSrc, io.imm, src2)
+  when(isJAL) {
+    operand1 := io.pc
+  }.otherwise {
+    operand1 := src1
+  }
 
-  when(io.in.w.fire){
-    io.out.w.valid := true.B
+  when(isALUSrc) {
+    operand2 := io.imm
+  }.otherwise {
+    operand2 := src2
+  }
+
+  when(io.ifuStatus === s_get_inst) {
+    io.out.aw.valid := true.B
+    io.out.w.valid  := true.B
+    io.out.b.ready  := true.B
     switch(io.bundleEXControl.aluType) {
       is(ALU_LUI) { res := operand2 }
       is(ALU_ADD) { res := operand1 +& operand2 }
@@ -114,9 +113,11 @@ class EXU extends Module {
     }
   }
 
-  io.src1      := src1
-  io.src2      := src2
-  io.res       := res
-  io.resBranch := resBranch
-  io.resCSR    := resCSR
+  io.src1             := src1
+  io.src2             := src2
+  io.res              := res
+  io.resBranch        := resBranch
+  io.resCSR           := resCSR
+  io.out.aw.bits.addr := res
+  io.out.w.bits.data  := src2
 }

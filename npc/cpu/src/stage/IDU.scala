@@ -22,6 +22,7 @@ import config.RV32EInstr._
 //-----------------------------------------------------------------------------
 class IDUIO extends Bundle {
   val inst          = Input(UInt(INST_WIDTH.W))
+  val status        = Input(UInt(DATA_WIDTH.W))
   val BundleControl = new BundleControl()
   val bundleReg     = new BundleReg()
   val imm           = Output(UInt(DATA_WIDTH.W))
@@ -98,7 +99,6 @@ class IDU extends Module with DecodeUtils {
 
   val opType::isALUSrc::isJump::isBranch::isJAL::writeEnable::isLoad::isStore::isUnsigned::isContext::lsuType::aluType::csrType::isEbreak::Nil = csignals
 
-
   switch(opType) {
     is(typeI) {imm := decodeImm(inst, typeI)}
     is(typeU) {imm := decodeImm(inst, typeU)}
@@ -115,7 +115,7 @@ class IDU extends Module with DecodeUtils {
   io.BundleControl.isLoad      := isLoad
   io.BundleControl.isStore     := isStore
   io.BundleControl.isUnsigned  := isUnsigned
-  io.BundleControl.isContext  := isContext
+  io.BundleControl.isContext   := isContext
   io.BundleControl.lsuType     := lsuType
   io.BundleControl.aluType     := aluType
   io.BundleControl.csrType     := csrType

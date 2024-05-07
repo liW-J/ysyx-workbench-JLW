@@ -33,7 +33,7 @@ static bool g_print_func = false;
 static bool is_ebreak = false;
 static vaddr_t g_pc = 0;
 vaddr_t flag_pc = 0x80000000;
-int count = -1;
+int count = 0;
 
 void device_update();
 void difftest_watchpoint();
@@ -71,6 +71,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
 
   // top.eval();
   // Log(DEBUG, "inst=%08x", top.io_inst);
+  single_cycle();
   // Log(DEBUG, "PC: %x", g_pc);
   // Log(DEBUG, "reg1=%08x", top.io_rs1);
   // Log(DEBUG, "reg2=%08x", top.io_rs2);
@@ -110,7 +111,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   disassemble(p, s->logbuf + sizeof(s->logbuf) - p,
       MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.inst.val, ilen);
 #endif
-  single_cycle();
+  
   cpu.pc = g_pc;
   s->dnpc = g_pc;
 }

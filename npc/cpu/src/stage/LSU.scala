@@ -2,7 +2,7 @@ package stage
 
 import chisel3._
 import chisel3.util._
-
+import config.Status._
 import config.Configs._
 import config.ExeTypes._
 import blackbox._
@@ -16,6 +16,8 @@ class LSUIO extends Bundle {
   val len     = Input(UInt(DATA_WIDTH.W))
   val wdata   = Input(UInt(DATA_WIDTH.W))
   val res     = Output(UInt(DATA_WIDTH.W))
+  val isLSU   = Output(Bool())
+  val status  = Output(UInt(DATA_WIDTH.W))
   val in      = Flipped(new AXI4LiteIO)
   val out     = new AXI4LiteIO()
 }
@@ -23,41 +25,46 @@ class LSUIO extends Bundle {
 class LSU extends Module {
   val io = IO(new LSUIO())
 
-  val dataMem  = Mem(MEM_DATA_SIZE, UInt(DATA_WIDTH.W))
-  val dataSRAM = Module(new DataSRAM())
   val res      = WireDefault(0.U(DATA_WIDTH.W))
 
-  io.in.ar  := DontCare
-  io.in.r   := DontCare
-  io.in.aw  := DontCare
-  io.in.b   := DontCare
-  io.out.ar := DontCare
-  io.out.r  := DontCare
-  io.out.aw := DontCare
+  io.in  := DontCare
   io.out.b  := DontCare
+  io.isLSU := false.B
 
+  io.in.aw.ready := true.B
   io.in.w.ready  := true.B
-  io.out.w.valid := false.B
-  io.out.w.bits.data := 0.U
+  io.out.r.ready := true.B
   io.out.w.bits.strb := 0.U
 
-  dataSRAM.io.len     := io.len
-  dataSRAM.io.wdata   := io.wdata
-  dataSRAM.io.addr    := RegEnable(io.addr, io.in.w.fire)
-  dataSRAM.io.isLoad  := RegEnable(io.isLoad, io.in.w.fire)
-  dataSRAM.io.isStore := RegEnable(io.isStore, io.in.w.fire)
+  val len = io.len
+  val addr = io.addr
+  val isLoad = WireDefault(false.B)
+  val isStore = WireDefault(false.B)
+  val wdata = io.in.w.bits.data
+    
+  isLoad := io.isLoad
+  isStore := io.isStore
 
-  val s_idle :: s_wait_ready :: Nil = Enum(2)
-  val state = RegInit(s_idle)
-  state := MuxLookup(state, s_idle)(List(
-    s_idle       -> Mux(io.in.w.fire, s_wait_ready, s_idle),
-    s_wait_ready -> Mux(io.out.w.valid, s_idle, s_wait_ready)
-  ))
-
-  switch(state){
-    is(s_idle){ io.out.w.valid := false.B }
-    is(s_wait_ready){ io.out.w.valid := true.B }
+  when(io.in.aw.fire){ 
+    io.isLSU := true.B 
+    io.out.w.valid := true.B
   }
 
-  io.res := dataSRAM.io.res
+  io.out.ar.valid := io.isLoad
+  io.out.aw.valid := io.isStore
+  io.out.w.valid := io.isStore
+  io.out.ar.bits.len := io.len
+  io.out.aw.bits.len := io.len
+  io.out.ar.bits.addr := addr
+  io.out.aw.bits.addr := addr
+  io.out.w.bits.data := wdata
+
+  val state = RegInit(s_idle)
+  state := MuxLookup(state, s_idle)(List(
+    s_idle       -> Mux(io.in.aw.valid, s_wait_ready, s_idle),
+    s_wait_ready -> Mux(io.out.ar.ready, s_idle, s_wait_ready)
+  ))
+
+  io.status := state
+  io.res := io.out.r.bits.data
 }
