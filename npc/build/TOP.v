@@ -815,14 +815,14 @@ module LSU(	// @[<stdin>:1155:10]
   output [31:0] io_out_w_bits_data	// @[cpu/src/stage/LSU.scala:26:14]
 );
 
-  reg [1:0] state;	// @[cpu/src/stage/LSU.scala:65:22]
+  reg [1:0] state;	// @[cpu/src/stage/LSU.scala:62:22]
   always @(posedge clock) begin	// @[<stdin>:1156:11]
     if (reset)	// @[<stdin>:1156:11]
-      state <= 2'h0;	// @[cpu/src/stage/LSU.scala:26:14, :65:22, :68:24]
-    else if (state == 2'h2)	// @[cpu/src/stage/LSU.scala:65:22, :66:36, :67:24]
-      state <= 2'h0;	// @[cpu/src/stage/LSU.scala:26:14, :65:22, :68:24]
-    else	// @[cpu/src/stage/LSU.scala:66:36]
-      state <= {state == 2'h0 & io_in_aw_valid, 1'h0};	// @[<stdin>:1155:10, cpu/src/stage/LSU.scala:26:14, :65:22, :66:36, :67:24, :68:24]
+      state <= 2'h0;	// @[cpu/src/stage/LSU.scala:26:14, :62:22, :65:24]
+    else if (state == 2'h2)	// @[cpu/src/stage/LSU.scala:62:22, :63:36, :64:24]
+      state <= 2'h0;	// @[cpu/src/stage/LSU.scala:26:14, :62:22, :65:24]
+    else	// @[cpu/src/stage/LSU.scala:63:36]
+      state <= {state == 2'h0 & io_in_aw_valid, 1'h0};	// @[<stdin>:1155:10, cpu/src/stage/LSU.scala:26:14, :62:22, :63:36, :64:24, :65:24]
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// @[<stdin>:1155:10]
     `ifdef FIRRTL_BEFORE_INITIAL	// @[<stdin>:1155:10]
@@ -835,7 +835,7 @@ module LSU(	// @[<stdin>:1155:10]
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT	// @[<stdin>:1155:10]
         _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;	// @[<stdin>:1155:10]
-        state = _RANDOM[/*Zero width*/ 1'b0][1:0];	// @[<stdin>:1155:10, cpu/src/stage/LSU.scala:65:22]
+        state = _RANDOM[/*Zero width*/ 1'b0][1:0];	// @[<stdin>:1155:10, cpu/src/stage/LSU.scala:62:22]
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// @[<stdin>:1155:10]
@@ -844,7 +844,7 @@ module LSU(	// @[<stdin>:1155:10]
   `endif // ENABLE_INITIAL_REG_
   assign io_res = io_out_r_bits_data;	// @[<stdin>:1155:10]
   assign io_isLSU = io_in_aw_valid;	// @[<stdin>:1155:10]
-  assign io_status = {30'h0, state};	// @[<stdin>:1155:10, cpu/src/stage/LSU.scala:65:22, :71:13]
+  assign io_status = {30'h0, state};	// @[<stdin>:1155:10, cpu/src/stage/LSU.scala:62:22, :68:13]
   assign io_out_ar_valid = io_isLoad;	// @[<stdin>:1155:10]
   assign io_out_ar_bits_addr = io_addr;	// @[<stdin>:1155:10]
   assign io_out_ar_bits_len = io_len;	// @[<stdin>:1155:10]
@@ -1323,3 +1323,9 @@ module DataSRAM(
 
 endmodule
 
+// ----- 8< ----- FILE "firrtl_black_box_resource_files.f" ----- 8< -----
+
+dataSRAM.v
+getPC.v
+instSRAM.v
+trap.v

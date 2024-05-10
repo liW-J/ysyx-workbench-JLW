@@ -30,6 +30,7 @@ remove_quote = $(patsubst "%",%,$(1))
 # CONFIG_ISA = "riscv32"
 # CONFIG_ENGINE = "interpreter"
 
+YSYX_SOC_TOP_NAME = ysyxSoCFull
 CFG_CFLAGS_TOP_NAME   = TOP
 CFG_GUEST_ISA ?= $(call remove_quote, $(CONFIG_ISA))
 CFG_ENGINE    ?= $(call remove_quote, $(CONFIG_ENGINE))
@@ -40,10 +41,17 @@ DIR_OBJ   = $(BUILD_DIR)/obj_dir
 NPC_BIN_NAME = $(CFG_GUEST_ISA)-npc-$(CFG_ENGINE)
 NPC_BIN      = $(BUILD_DIR)/$(NPC_BIN_NAME)
 
+YSYX_SOC_DIR += $(SOC_HOME)/perip/uart16550/rtl  \
+								$(SOC_HOME)/perip/spi/rtl
+								
+VERILATOR_INCS_DIR = $(shell find $(YSYX_SOC_DIR) -name "*.v")
+
 VERILATOR         = verilator
 VERILATOR_CFLAGS += -MMD --build -cc                                \
                     -O3 --x-assign fast --x-initial fast --noassert \
                     --trace                                         \
+										--timescale "1ns/1ns"                           \
+										--no-timing                                     \
 
 INCS_DIR = $(NPC_HOME)/include           	\
 					 $(NPC_HOME)/include/generated 	\
@@ -86,7 +94,9 @@ SRCSS_BLACKLIST     = $(SRCSS_SRC_BLACKLIST)                               \
 SRCSS_WHITELIST     = $(shell find $(SRCSS_DIR) -name "*.scala")
 SRCSS               = $(filter-out $(SRCSS_BLACKLIST), $(SRCSS_WHITELIST))
 
-SRCVS_GEN = $(BUILD_DIR)/$(CFG_CFLAGS_TOP_NAME).v 
+SRCVS_GEN = $(BUILD_DIR)/$(CFG_CFLAGS_TOP_NAME).v    \
+						$(SOC_HOME)/build/$(YSYX_SOC_TOP_NAME).v    
+						
 
 # SRCVS_DIR = $(abspath $(NPC_HOME)/cpu/srcv)
 # SRCVS     = $(shell find $(SRCVS_DIR) -name "*.v")
@@ -113,7 +123,7 @@ SRCCS_WHITELIST     = $(shell find $(SRCCS_DIR) -name "*.c")
 SRCCS               = $(filter-out $(SRCCS_BLACKLIST), $(SRCCS_WHITELIST)) \
                       $(NPC_HOME)/sim/utils/disasm.cc
 
-SRCS = $(SRCVS_GEN) $(SRCCS)
+SRCS = $(SRCVS_GEN) $(VERILATOR_INCFLAGS) $(SRCCS)
 
 CONFIG = $(NPC_HOME)/.config
 
@@ -143,7 +153,8 @@ $(SRCVS_GEN): $(SRCSS)
 $(NPC_BIN): $(INCS) $(SRCS) $(CONFIG)
 	@rm -rf $(DIR_OBJ)
 	$(VERILATOR) $(VERILATOR_CFLAGS)            \
-	--top-module $(CFG_CFLAGS_TOP_NAME) $(SRCS) \
+	$(addprefix -I , $(YSYX_SOC_DIR))     \
+	--top-module $(YSYX_SOC_TOP_NAME) $(CFG_CFLAGS_TOP_NAME) $(SRCS) \
 	$(addprefix -CFLAGS ,  $(CFLAGS))           \
 	$(addprefix -LDFLAGS , $(LDFLAGS))          \
 	--Mdir $(DIR_OBJ) --exe -o                  \
