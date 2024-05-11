@@ -24,7 +24,7 @@ class EXUIO extends Bundle {
   val out             = new AXI4LiteIO
 }
 
-class EXU extends Module {
+class ysyx_23060194_EXU extends Module {
   val io = IO(new EXUIO())
 
   val resBranch       = WireDefault(false.B)

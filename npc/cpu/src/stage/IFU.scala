@@ -25,7 +25,7 @@ class IFUIO extends Bundle {
   val out        = new AXI4LiteIO()
 }
 
-class IFU extends Module {
+class ysyx_23060194_IFU extends Module {
   val io = IO(new IFUIO())
 
   io.out          := DontCare

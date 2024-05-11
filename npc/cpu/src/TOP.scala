@@ -9,31 +9,31 @@ import bus._
 import _root_.stage._
 
 class TopIO extends Bundle {
-  val inst          = Output(UInt(INST_WIDTH.W))
-  val pc            = Output(UInt(ADDR_WIDTH.W))
-  val bundleControl = new BundleControl()
-  val resEX         = Output(UInt(DATA_WIDTH.W))
-  val src1          = Output(UInt(DATA_WIDTH.W))
-  val src2          = Output(UInt(DATA_WIDTH.W))
-  val rs1           = Output(UInt(REG_NUMS_LOG.W))
-  val rs2           = Output(UInt(REG_NUMS_LOG.W))
-  val rd            = Output(UInt(REG_NUMS_LOG.W))
-  val imm           = Output(UInt(DATA_WIDTH.W))
-  val resBranch     = Output(Bool())
-  val writeEnable   = Output(Bool())
+  // val inst          = Output(UInt(INST_WIDTH.W))
+  // val pc            = Output(UInt(ADDR_WIDTH.W))
+  // val bundleControl = new BundleControl()
+  // val resEX         = Output(UInt(DATA_WIDTH.W))
+  // val src1          = Output(UInt(DATA_WIDTH.W))
+  // val src2          = Output(UInt(DATA_WIDTH.W))
+  // val rs1           = Output(UInt(REG_NUMS_LOG.W))
+  // val rs2           = Output(UInt(REG_NUMS_LOG.W))
+  // val rd            = Output(UInt(REG_NUMS_LOG.W))
+  // val imm           = Output(UInt(DATA_WIDTH.W))
+  // val resBranch     = Output(Bool())
+  // val writeEnable   = Output(Bool())
 }
 
-class TOP(arch: String) extends Module {
+class ysyx_23060194(arch: String) extends Module {
   val io = IO(new TopIO())
 
-  val idu        = Module(new IDU())
-  val wbu        = Module(new WBU())
-  val exu        = Module(new EXU())
+  val idu        = Module(new ysyx_23060194_IDU())
+  val wbu        = Module(new ysyx_23060194_WBU())
+  val exu        = Module(new ysyx_23060194_EXU())
   val controller = Module(new Controller())
   val trap       = Module(new Trap())
   val getPC      = Module(new GetPC())
-  val ifu        = Module(new IFU())
-  val lsu        = Module(new LSU())
+  val ifu        = Module(new ysyx_23060194_IFU())
+  val lsu        = Module(new ysyx_23060194_LSU())
   val sram       = Module(new AXI4SRAM())
   val arbiter    = Module(new AXI4Arbiter())
 
@@ -104,18 +104,18 @@ class TOP(arch: String) extends Module {
 
   controller.io.bundleControlIn <> idu.io.BundleControl
 
-  io.rs1 <> idu.io.bundleReg.rs1
-  io.rs2 <> idu.io.bundleReg.rs2
-  io.rd <> idu.io.bundleReg.rd
-  io.imm <> idu.io.imm
-  io.pc <> ifu.io.pc
-  io.bundleControl <> idu.io.BundleControl
-  io.resEX <> exu.io.res
-  io.resBranch <> exu.io.resBranch
-  io.src1 <> exu.io.src1
-  io.src2 <> exu.io.src2
-  io.inst <> ifu.io.inst
-  io.writeEnable <> controller.io.bundleControlOut.writeEnable
+  // io.rs1 <> idu.io.bundleReg.rs1
+  // io.rs2 <> idu.io.bundleReg.rs2
+  // io.rd <> idu.io.bundleReg.rd
+  // io.imm <> idu.io.imm
+  // io.pc <> ifu.io.pc
+  // io.bundleControl <> idu.io.BundleControl
+  // io.resEX <> exu.io.res
+  // io.resBranch <> exu.io.resBranch
+  // io.src1 <> exu.io.src1
+  // io.src2 <> exu.io.src2
+  // io.inst <> ifu.io.inst
+  // io.writeEnable <> controller.io.bundleControlOut.writeEnable
 
   arbiter.io.in2ifu.aw := DontCare
   arbiter.io.in2ifu.w := DontCare

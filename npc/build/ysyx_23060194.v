@@ -182,7 +182,7 @@ module csrs_combMem(	// @[cpu/src/stage/WBU.scala:36:22]
   assign R2_data = R2_en ? Memory[R2_addr] : 32'bx;	// @[cpu/src/stage/WBU.scala:36:22]
 endmodule
 
-module IDU(	// @[<stdin>:3:10]
+module ysyx_23060194_IDU(	// @[<stdin>:3:10]
   input  [31:0] io_inst,	// @[cpu/src/stage/IDU.scala:33:14]
   output        io_BundleControl_isALUSrc,	// @[cpu/src/stage/IDU.scala:33:14]
                 io_BundleControl_isJump,	// @[cpu/src/stage/IDU.scala:33:14]
@@ -454,7 +454,7 @@ module IDU(	// @[<stdin>:3:10]
       | _csignals_T_140 | _GEN_2) & _csignals_T_621;	// @[<stdin>:3:10, src/main/scala/chisel3/util/Lookup.scala:31:38, :34:39]
 endmodule
 
-module WBU(	// @[<stdin>:762:10]
+module ysyx_23060194_WBU(	// @[<stdin>:762:10]
   input         clock,	// @[<stdin>:763:11]
                 io_writeEnable,	// @[cpu/src/stage/WBU.scala:32:14]
                 io_isJump,	// @[cpu/src/stage/WBU.scala:32:14]
@@ -567,7 +567,7 @@ module WBU(	// @[<stdin>:762:10]
       : _GEN_2 ? _csrs_ext_R1_data : _GEN_5 ? _csrs_ext_R2_data : 32'h0;	// @[<stdin>:762:10, cpu/src/stage/WBU.scala:36:22, :37:30, :38:30, :67:21, :68:24, :85:22, :89:16]
 endmodule
 
-module EXU(	// @[<stdin>:870:10]
+module ysyx_23060194_EXU(	// @[<stdin>:870:10]
   input         io_bundleEXControl_isALUSrc,	// @[cpu/src/stage/EXU.scala:28:14]
                 io_bundleEXControl_isJAL,	// @[cpu/src/stage/EXU.scala:28:14]
                 io_bundleEXControl_isBranch,	// @[cpu/src/stage/EXU.scala:28:14]
@@ -709,7 +709,7 @@ endmodule
 
 // external module GetPC
 
-module IFU(	// @[<stdin>:1066:10]
+module ysyx_23060194_IFU(	// @[<stdin>:1066:10]
   input         clock,	// @[<stdin>:1067:11]
                 reset,	// @[<stdin>:1068:11]
                 io_isJump,	// @[cpu/src/stage/IFU.scala:29:14]
@@ -795,7 +795,7 @@ module IFU(	// @[<stdin>:1066:10]
   assign io_out_ar_bits_addr = pcReg;	// @[<stdin>:1066:10, cpu/src/stage/IFU.scala:36:26]
 endmodule
 
-module LSU(	// @[<stdin>:1155:10]
+module ysyx_23060194_LSU(	// @[<stdin>:1155:10]
   input         clock,	// @[<stdin>:1156:11]
                 reset,	// @[<stdin>:1157:11]
                 io_isLoad,	// @[cpu/src/stage/LSU.scala:26:14]
@@ -960,7 +960,7 @@ module AXI4Arbiter(	// @[<stdin>:1288:10]
   assign io_out_w_bits_data = _GEN_1 ? 32'h0 : io_in2lsu_w_bits_data;	// @[<stdin>:1288:10, cpu/src/bus/AXI4Arbiter.scala:22:14, :42:16, :48:23, :50:23]
 endmodule
 
-module TOP(	// @[<stdin>:1412:10]
+module ysyx_23060194(	// @[<stdin>:1412:10]
   input         clock,	// @[<stdin>:1413:11]
                 reset,	// @[<stdin>:1414:11]
   output [31:0] io_inst,	// @[cpu/src/TOP.scala:27:14]
@@ -1050,7 +1050,7 @@ module TOP(	// @[<stdin>:1412:10]
   wire [4:0]  _idu_io_bundleReg_rd;	// @[cpu/src/TOP.scala:29:26]
   wire [31:0] _idu_io_imm;	// @[cpu/src/TOP.scala:29:26]
   wire        _idu_io_isEbreak;	// @[cpu/src/TOP.scala:29:26]
-  IDU idu (	// @[cpu/src/TOP.scala:29:26]
+  ysyx_23060194_IDU idu (	// @[cpu/src/TOP.scala:29:26]
     .io_inst                      (_ifu_io_inst),	// @[cpu/src/TOP.scala:35:26]
     .io_BundleControl_isALUSrc    (_idu_io_BundleControl_isALUSrc),
     .io_BundleControl_isJump      (_idu_io_BundleControl_isJump),
@@ -1070,7 +1070,7 @@ module TOP(	// @[<stdin>:1412:10]
     .io_imm                       (_idu_io_imm),
     .io_isEbreak                  (_idu_io_isEbreak)
   );
-  WBU wbu (	// @[cpu/src/TOP.scala:30:26]
+  ysyx_23060194_WBU wbu (	// @[cpu/src/TOP.scala:30:26]
     .clock            (clock),
     .io_writeEnable   (_controller_io_bundleControlOut_writeEnable),	// @[cpu/src/TOP.scala:32:26]
     .io_isJump        (_controller_io_bundleControlOut_isJump),	// @[cpu/src/TOP.scala:32:26]
@@ -1091,7 +1091,7 @@ module TOP(	// @[<stdin>:1412:10]
     .io_csrData       (_wbu_io_csrData),
     .io_resCSR        (_wbu_io_resCSR)
   );
-  EXU exu (	// @[cpu/src/TOP.scala:31:26]
+  ysyx_23060194_EXU exu (	// @[cpu/src/TOP.scala:31:26]
     .io_bundleEXControl_isALUSrc   (_controller_io_bundleEXControl_isALUSrc),	// @[cpu/src/TOP.scala:32:26]
     .io_bundleEXControl_isJAL      (_controller_io_bundleEXControl_isJAL),	// @[cpu/src/TOP.scala:32:26]
     .io_bundleEXControl_isBranch   (_controller_io_bundleEXControl_isBranch),	// @[cpu/src/TOP.scala:32:26]
@@ -1148,7 +1148,7 @@ module TOP(	// @[<stdin>:1412:10]
     .reset (reset),
     .pc    (_ifu_io_pc)	// @[cpu/src/TOP.scala:35:26]
   );
-  IFU ifu (	// @[cpu/src/TOP.scala:35:26]
+  ysyx_23060194_IFU ifu (	// @[cpu/src/TOP.scala:35:26]
     .clock               (clock),
     .reset               (reset),
     .io_isJump           (_controller_io_bundleControlOut_isJump),	// @[cpu/src/TOP.scala:32:26]
@@ -1166,7 +1166,7 @@ module TOP(	// @[<stdin>:1412:10]
     .io_out_ar_valid     (_ifu_io_out_ar_valid),
     .io_out_ar_bits_addr (_ifu_io_out_ar_bits_addr)
   );
-  LSU lsu (	// @[cpu/src/TOP.scala:36:26]
+  ysyx_23060194_LSU lsu (	// @[cpu/src/TOP.scala:36:26]
     .clock               (clock),
     .reset               (reset),
     .io_isLoad           (_controller_io_bundleControlOut_isLoad),	// @[cpu/src/TOP.scala:32:26]
@@ -1323,9 +1323,3 @@ module DataSRAM(
 
 endmodule
 
-// ----- 8< ----- FILE "firrtl_black_box_resource_files.f" ----- 8< -----
-
-dataSRAM.v
-getPC.v
-instSRAM.v
-trap.v

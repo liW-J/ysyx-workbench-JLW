@@ -29,7 +29,7 @@ class IDUIO extends Bundle {
   val isEbreak      = Output(Bool())
 }
 
-class IDU extends Module with DecodeUtils {
+class ysyx_23060194_IDU extends Module with DecodeUtils {
   val io = IO(new IDUIO())
 
   io.bundleReg.rs1 := io.inst(19, 15)

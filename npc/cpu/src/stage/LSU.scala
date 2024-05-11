@@ -22,7 +22,7 @@ class LSUIO extends Bundle {
   val out     = new AXI4LiteIO()
 }
 
-class LSU extends Module {
+class ysyx_23060194_LSU extends Module {
   val io = IO(new LSUIO())
 
   val res      = WireDefault(0.U(DATA_WIDTH.W))

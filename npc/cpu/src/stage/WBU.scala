@@ -28,7 +28,7 @@ class WBUIO extends Bundle {
   // val in       = Flipped(new AXI4LiteIO)
 }
 
-class WBU extends Module {
+class ysyx_23060194_WBU extends Module {
   val io = IO(new WBUIO())
 
   // register file
