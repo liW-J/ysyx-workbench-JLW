@@ -21,10 +21,17 @@ class TopIO extends Bundle {
   // val imm           = Output(UInt(DATA_WIDTH.W))
   // val resBranch     = Output(Bool())
   // val writeEnable   = Output(Bool())
+  val master = new AXI4IO()
+  val slave = Flipped(new AXI4IO())
+  val interrupt = Input(Bool())
 }
 
 class ysyx_23060194(arch: String) extends Module {
   val io = IO(new TopIO())
+
+  io.master := DontCare
+  io.slave := DontCare
+  // io.interrupt := false.B
 
   val idu        = Module(new ysyx_23060194_IDU())
   val wbu        = Module(new ysyx_23060194_WBU())

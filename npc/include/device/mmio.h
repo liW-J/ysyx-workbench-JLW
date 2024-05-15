@@ -21,10 +21,10 @@
 word_t mmio_read(paddr_t addr, int len);
 void mmio_write(paddr_t addr, int len, word_t data);
 
-extern "C" void flash_read(uint32_t addr, uint32_t *data) {
+extern "C" void flash_read(int addr, int *data) {
     assert(0);
 }
-extern "C" void mrom_read(uint32_t addr, uint32_t *data) {
+extern "C" void mrom_read(int addr, int *data) {
     assert(0);
 }
 

@@ -4,9 +4,9 @@ import chisel3._
 import config.Configs._
 import config.ExeTypes._
 
-object CPUAXI4BundleParameters {
-  def apply() = AXI4BundleParameters(addrBits = 32, dataBits = 64, idBits = ChipLinkParam.idBits)
-}
+// object CPUAXI4BundleParameters {
+//   def apply() = AXI4BundleParameters(addrBits = 32, dataBits = 64, idBits = ChipLinkParam.idBits)
+// }
 
 class BundleControl extends Bundle {
   val isALUSrc = Output(Bool())

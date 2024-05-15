@@ -19,7 +19,7 @@
 // Located at src/isa/$(GUEST_ISA)/include/isa-def.h
 #include <isa-def.h>
 #include <verilated.h>   //访问验证程序例程的库
-#include "VTOP.h"
+#include "VysyxSoCFull.h"
 
 // The macro `__GUEST_ISA__` is defined in $(CFLAGS).
 // It will be expanded as "x86" or "mips32" ...
@@ -29,7 +29,7 @@ typedef concat(__GUEST_ISA__, _ISADecodeInfo) ISADecodeInfo;
 
 // reg
 extern CPU_state cpu;
-extern VTOP top;
+extern VysyxSoCFull top;
 void isa_reg_display();
 word_t isa_reg_str2val(const char *name, bool *success);
 

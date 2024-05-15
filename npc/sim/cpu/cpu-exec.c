@@ -5,8 +5,8 @@
 #include <cpu/ifetch.h>
 #include <verilated.h>   //访问验证程序例程的库
 #include <verilated_vcd_c.h>  //向VCD文件中写入波形
-#include "VTOP.h"
-#include "VTOP__Dpi.h"
+#include "VysyxSoCFull.h"
+#include "VysyxSoCFull__Dpi.h"
 #include "svdpi.h"
 
 /* The assembly code of instructions executed is only output to the screen
@@ -23,7 +23,7 @@ VerilatedVcdC *tfp = NULL;
 
 #define MAX_INST_TO_PRINT 10
 CPU_state cpu = {};
-VTOP top ;
+VysyxSoCFull top ;
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
@@ -85,7 +85,8 @@ static void exec_once(Decode *s, vaddr_t pc) {
   // Log(DEBUG, "G_PC: %x", g_pc);
   s->pc = pc;
   s->snpc = pc+4;
-  s->isa.inst.val = top.io_inst;
+  // s->isa.inst.val = top.io_inst;
+  s->isa.inst.val = g_pc;
   if (is_ebreak) NPCTRAP(pc, 0);
   
 

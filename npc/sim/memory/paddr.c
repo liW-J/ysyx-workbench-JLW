@@ -17,7 +17,7 @@
 #include <memory/paddr.h>
 #include <device/mmio.h>
 #include <isa.h>
-#include "VTOP__Dpi.h"
+#include "VysyxSoCFull__Dpi.h"
 
 
 #if   defined(CONFIG_PMEM_MALLOC)

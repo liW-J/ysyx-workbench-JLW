@@ -18,14 +18,14 @@
 
 #include <common.h>
 #include <isa.h>
-#include <VTOP___024root.h>
+#include <VysyxSoCFull___024root.h>
 
 static inline int check_reg_idx(int idx) {
   IFDEF(CONFIG_RT_CHECK, assert(idx >= 0 && idx < MUXDEF(CONFIG_RVE, 16, 32)));
   return idx;
 }
 
-#define gpr(idx) ( top.rootp->TOP__DOT__wbu__DOT__regs_ext__DOT__Memory[check_reg_idx(idx)] )
+#define gpr(idx) ( top.rootp->ysyxSoCFull__DOT__asic__DOT__cpu__DOT__cpu__DOT__wbu__DOT__regs_ext__DOT__Memory[check_reg_idx(idx)] )
 
 static inline const char* reg_name(int idx) {
   extern const char* regs[];
