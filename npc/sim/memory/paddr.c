@@ -65,6 +65,15 @@ int paddr_read(int addr, int len) {
   return 0;
 }
 
+void mrom_read(int addr, int *data) {
+  #ifdef CONFIG_MTRACE_COND
+    if (MTRACE_COND) { display_pread(addr, len); }
+  #endif
+  if (likely(in_pmem(addr))) *data = pmem_read(addr, 4);
+  Log(DEBUG, "addr=%x",addr);
+  Log(DEBUG, "mrom=%x", *data);
+}
+
 void paddr_write(int addr, int len, int data) {
   #ifdef CONFIG_MTRACE_COND
     if (MTRACE_COND) { display_pwrite(addr, len, data); }

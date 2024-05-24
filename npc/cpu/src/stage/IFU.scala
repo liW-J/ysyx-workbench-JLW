@@ -49,6 +49,10 @@ class ysyx_23060194_IFU extends Module {
     }
   }
 
+  printf("NPC-PC=%x\n", io.pc);
+  printf("NPC-INST=%x\n", io.inst);
+  printf("isIFU=%x\n", io.isIFU);
+
   io.pc               := pcReg
   io.out.ar.bits.addr := pcReg
 

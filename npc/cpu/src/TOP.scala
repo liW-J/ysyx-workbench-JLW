@@ -21,8 +21,8 @@ class TopIO extends Bundle {
   // val imm           = Output(UInt(DATA_WIDTH.W))
   // val resBranch     = Output(Bool())
   // val writeEnable   = Output(Bool())
-  val master = new AXI4IO()
-  val slave = Flipped(new AXI4IO())
+  val master    = new AXI4IO()
+  val slave     = Flipped(new AXI4IO())
   val interrupt = Input(Bool())
 }
 
@@ -30,8 +30,7 @@ class ysyx_23060194(arch: String) extends Module {
   val io = IO(new TopIO())
 
   io.master := DontCare
-  io.slave := DontCare
-  // io.interrupt := false.B
+  io.slave  := DontCare
 
   val idu        = Module(new ysyx_23060194_IDU())
   val wbu        = Module(new ysyx_23060194_WBU())
@@ -60,8 +59,8 @@ class ysyx_23060194(arch: String) extends Module {
 
   arbiter.io.in2ifu <> ifu.io.out
   arbiter.io.in2lsu <> lsu.io.out
-  arbiter.io.isIFU := ifu.io.isIFU
-  arbiter.io.isLSU := lsu.io.isLSU
+  arbiter.io.isIFU  := ifu.io.isIFU
+  arbiter.io.isLSU  := lsu.io.isLSU
   arbiter.io.resIFU := sram.io.resIFU
   arbiter.io.resLSU := sram.io.resLSU
 
@@ -111,26 +110,24 @@ class ysyx_23060194(arch: String) extends Module {
 
   controller.io.bundleControlIn <> idu.io.BundleControl
 
-  // io.rs1 <> idu.io.bundleReg.rs1
-  // io.rs2 <> idu.io.bundleReg.rs2
-  // io.rd <> idu.io.bundleReg.rd
-  // io.imm <> idu.io.imm
-  // io.pc <> ifu.io.pc
-  // io.bundleControl <> idu.io.BundleControl
-  // io.resEX <> exu.io.res
-  // io.resBranch <> exu.io.resBranch
-  // io.src1 <> exu.io.src1
-  // io.src2 <> exu.io.src2
-  // io.inst <> ifu.io.inst
-  // io.writeEnable <> controller.io.bundleControlOut.writeEnable
-
   arbiter.io.in2ifu.aw := DontCare
-  arbiter.io.in2ifu.w := DontCare
-  arbiter.io.in2ifu.b := DontCare
-  arbiter.io.in2lsu.b := DontCare
+  arbiter.io.in2ifu.w  := DontCare
+  arbiter.io.in2ifu.b  := DontCare
+  arbiter.io.in2lsu.b  := DontCare
 
   ifu.io.out.aw := DontCare
-  ifu.io.out.w := DontCare
+  ifu.io.out.w  := DontCare
+
+  io.master.arvalid := arbiter.io.out.ar.valid
+  io.master.araddr  := arbiter.io.out.ar.bits.addr
+  io.master.awvalid := arbiter.io.out.aw.valid
+  io.master.awaddr  := arbiter.io.out.aw.bits.addr
+  io.master.rready := arbiter.io.out.r.ready
+  io.master.wvalid := arbiter.io.out.w.valid
+  io.master.wdata := arbiter.io.out.w.bits.data 
+  ifu.io.out.r.valid := io.master.rvalid
+  ifu.io.out.ar.ready := io.master.arready
+  while (io.master.rvalid == true.B){ifu.io.out.r.bits.data := io.master.rdata}
 
 }
 

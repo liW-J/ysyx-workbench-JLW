@@ -10,7 +10,7 @@ object Configs {
   val DATA_WIDTH_H    = DATA_WIDTH / 2 // 半字数据位宽
   val DATA_WIDTH_B    = DATA_WIDTH / 4 // 字节数据位宽
 
-  val START_ADDR = 0x80000000L // pc起始地址
+  val START_ADDR = 0x20000000L // pc起始地址
 
   val INST_WIDTH          = 32 // 指令位宽
   val INST_BYTE_WIDTH     = INST_WIDTH / 8 // 指令位宽按字节算

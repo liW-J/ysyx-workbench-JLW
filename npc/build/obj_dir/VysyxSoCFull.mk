@@ -91,6 +91,7 @@ VM_USER_CLASSES = \
 	hostcall \
 	init \
 	main \
+	mrom \
 	paddr \
 	vaddr \
 	monitor \
@@ -172,6 +173,8 @@ hostcall.o: /home/sends/local/share/ysyx-workbench/npc/sim/engine/interpreter/ho
 init.o: /home/sends/local/share/ysyx-workbench/npc/sim/engine/interpreter/init.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 main.o: /home/sends/local/share/ysyx-workbench/npc/sim/main.c
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+mrom.o: /home/sends/local/share/ysyx-workbench/npc/sim/memory/mrom.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 paddr.o: /home/sends/local/share/ysyx-workbench/npc/sim/memory/paddr.c
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
